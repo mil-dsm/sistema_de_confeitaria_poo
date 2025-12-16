@@ -2,6 +2,8 @@ package Arq;
 
 import java.util.HashMap;
 
+import Cliente;
+
 public class Encomenda implements Entregavel {
     private Cliente cliente;
     private String tipoEntrega; // "retirada" ou "delivery"
@@ -10,7 +12,7 @@ public class Encomenda implements Entregavel {
 
     public Encomenda(Cliente cliente) {
         this.cliente = cliente;
-        this.tipoEntrega = "retirada";
+        this.tipoEntrega = null;
         this.valorTotal = calcularValorTotal();
         this.itens = new HashMap<>();
     }
