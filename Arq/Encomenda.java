@@ -118,7 +118,7 @@ public class Encomenda implements Entregavel {
     // Método que lista os itens da encomenda atualmente
     public void listarItens() {
         for(Produto p : itens.keySet()) {
-            System.out.println("Produto: " p.getNome() + ", quantidade: " + itens.get(p));
+            System.out.println("Produto: " p.getNome() + ", Quantidade: " + itens.get(p));
         }
     }
 }
