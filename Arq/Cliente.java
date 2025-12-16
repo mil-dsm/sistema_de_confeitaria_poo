@@ -4,48 +4,56 @@ public class Cliente {
     private String nome;
     private String endereco;
 
-    public Cliente(String nome, String endereco) {
-        this.nome = nome;
-        this.endereco = endereco;
+    public class Cliente(String nome, String endereco) {
+    nome=this.nome;
+    endereco=this.endereco;
     }
 
-    // Podemos aplicar uma exceção no default, dizendo que não há entregas para tal endereço.
-    public double estimarDistancia(){
-        switch(endereco){
-            case "Alto São Francisco":
-                return 1.0;
-            case "Campo Velho":
-                return 2.0;
-            case "Centro":
-                return 0.5;
-            case "Campo Novo":
-                return 3.5;
-            case "Herval":
-                return 1.5;
-            case "Carrascal":
-                return 4.0;
-            default:
-                return 0.0;
-        }
-    } 
+ public double estimarDistancia(this.endereco){
+    switch(endereco){
+        case "Alto São Francisco"
+        return 1.0;
+        break;
 
+        case "Campo Velho"
+        return 2.0;
+        break;
+
+        case "Centro"
+        return 0.5;
+        break;
+
+        case "Campo Novo"
+        return 3.5;
+        break;
+
+        case "Herval"
+        return 1.5;
+        break;
+
+        case "Carrascal"
+        return 4.0;
+        break;
+    }
+ } 
     public String getNome() {
-        return nome;
-    }
+    return nome;
+}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+public void setNome(String nome) {
+    this.nome = nome;
+}
 
-    public String getEndereco() {
-        return endereco;
-    }
+public String getEndereco() {
+    return endereco;
+}
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
+public void setEndereco(String endereco) {
+    this.endereco = endereco;
+}
 
-    public String toString() {
-        return "Cliente: " + nome + ", Endereço: " + endereco;
-    }
+@Override
+public String toString() {
+    return "Cliente: " + nome + ", Endereço: " + endereco;
+}
 }
