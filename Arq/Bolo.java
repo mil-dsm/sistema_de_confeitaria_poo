@@ -1,4 +1,6 @@
-public class Bolo extends Produto {
+package Arq;
+
+public class Bolo extends Produto implements Promocionavel {
     String sabor;
     String cobertura;
     char tamanho;

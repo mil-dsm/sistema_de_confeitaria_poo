@@ -1,3 +1,5 @@
+package Arq;
+
 public class Donut extends Produto {
     private String recheio;
     private String cobertura;
@@ -15,7 +17,6 @@ public class Donut extends Produto {
         double preco = precoBase;
         if(recheio != null) preco += 3;
         if(recheio != null) preco += 2;
-
         if(recheio != null) preco += 1.5;
 
         return preco * quantidade;
