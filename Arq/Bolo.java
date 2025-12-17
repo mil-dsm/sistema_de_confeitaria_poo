@@ -1,9 +1,10 @@
 package Arq;
 
 public class Bolo extends Produto implements Promocionavel {
-    String sabor;
-    String cobertura;
-    char tamanho;
+    private String sabor;
+    private String cobertura;
+    private char tamanho;
+    // static int estoque;
 
     public Bolo(double precoBase, String validade, int quantidade, String sabor, String cobertura, char tamanho) {
         super("Bolo", precoBase, validade, quantidade);
@@ -11,7 +12,31 @@ public class Bolo extends Produto implements Promocionavel {
         this.cobertura = cobertura;
         this.tamanho = tamanho;
     }
+
+    public String getSabor() {
+        return sabor;
+    }
+
+    public void setSabor(String sabor) {
+        this.sabor = sabor;
+    }
+
+    public String getCobertura() {
+        return cobertura;
+    }
     
+    public void setCobertura(String cobertura) {
+        this.cobertura = cobertura;
+    }
+
+    public char getTamanho() {
+        return tamanho;
+    }
+    
+    public void setTamanho(char tamanho) {
+        this.tamanho = tamanho;
+    }
+
     @Override
     public double calcularPrecoFinal() {
         double precoFinal = super.precoBase;
