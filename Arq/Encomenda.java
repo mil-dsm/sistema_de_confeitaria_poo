@@ -2,8 +2,6 @@ package Arq;
 
 import java.util.HashMap;
 
-import Cliente;
-
 public class Encomenda implements Entregavel {
     private Cliente cliente;
     private String tipoEntrega; // "retirada" ou "delivery"
@@ -13,8 +11,12 @@ public class Encomenda implements Entregavel {
     public Encomenda(Cliente cliente) {
         this.cliente = cliente;
         this.tipoEntrega = null;
-        this.valorTotal = calcularValorTotal();
+        this.valorTotal = 0;
         this.itens = new HashMap<>();
+    }
+
+    public Cliente getCliente() {
+        return cliente;
     }
 
     // Metódo para definir o tidoEntrega
@@ -108,6 +110,7 @@ public class Encomenda implements Entregavel {
     }
 
     // Método que calcula o valor total da compra, ou seja, a soma de todos os preços e o frete
+    // Método atribui o resultado ao atributo valorTotal
     public double calcularValorTotal() {
         double valorTotal = 0;
         for(Produto p : itens.keySet()) {
