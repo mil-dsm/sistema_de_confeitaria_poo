@@ -33,11 +33,12 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
 
         if(existe) {
             JOptionPane.showMessageDialog(view, "Encomenda já cadastrada para este CPF.");
-        }
-        else {
+        } else {
             String novaLinha = cpf + ";ABERTA";
             arq.escreverArquivo(nomeArquivo, novaLinha);
             JOptionPane.showMessageDialog(view, "Encomenda criada com sucesso.");
         }
+
+        view.habilitarBotoesEncomenda();
     }
 }

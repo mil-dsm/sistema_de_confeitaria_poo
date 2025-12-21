@@ -37,14 +37,14 @@ public class EncomendaView extends JFrame {
         // Listener para o botão Adicionar Produto
         btnAdicionarProduto = new JButton("Adicionar Produto");
         btnAdicionarProduto.setEnabled(false);
-        ListenerBtnAdicionarProduto l3 = new ListenerBtnAdicionarProduto(this);
-        btnAdicionarProduto.addActionListener(l3);
+        // ListenerBtnAdicionarProduto l3 = new ListenerBtnAdicionarProduto(this);
+        // btnAdicionarProduto.addActionListener(l3);
 
         // Listener para o botão Remover Produto
         btnRemoverProduto = new JButton("Remover Produto");
         btnRemoverProduto.setEnabled(false);
-        ListenerBtnRemoverProduto l4 = new ListenerBtnRemoverProduto(this);
-        btnRemoverProduto.addActionListener(l4);
+        // ListenerBtnRemoverProduto l4 = new ListenerBtnRemoverProduto(this);
+        // btnRemoverProduto.addActionListener(l4);
 
         // Listener para o botão Finalizar Encomenda
         JButton btnFinalizarEncomenda = new JButton("Finalizar Encomenda");
