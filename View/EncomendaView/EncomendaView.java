@@ -1,15 +1,17 @@
 package View.EncomendaView;
 
+import java.util.ArrayList;
 import javax.swing.*;
 
 import TO.EncomendaTO;
 import View.EncomendaView.Listeners.*;
 
 public class EncomendaView extends JFrame {
-    // A tela apenas mostra uma encomenda por vez
-    // Só é possível criar uma nova encomenda após finalizar a anterior
     private EncomendaTO encomendaAtual;
+    private JButton btnVoltar;
     private JTextField tfCpf;
+    private JButton btnBuscarCriarEncomenda;
+    private JTextArea taAreaProdutos;
     private JButton btnAdicionarProduto;
     private JButton btnRemoverProduto;
     private JButton btnFinalizarEncomenda;
@@ -25,14 +27,19 @@ public class EncomendaView extends JFrame {
         tfCpf = new JTextField(15);
 
         // Listener para o botão Voltar
-        JButton btnVoltar = new JButton("Voltar");
+        btnVoltar = new JButton("Voltar");
         ListenerBtnVoltar l1 = new ListenerBtnVoltar(this);
         btnVoltar.addActionListener(l1);
 
         // Listener para o botão de Buscar / Criar Encomenda
-        JButton btnBuscarCriarEncomenda = new JButton("Buscar / Criar Encomenda");
+        btnBuscarCriarEncomenda = new JButton("Buscar / Criar Encomenda");
         ListenerBtnBuscarCriarEncomenda l2 = new ListenerBtnBuscarCriarEncomenda(this, tfCpf);
         btnBuscarCriarEncomenda.addActionListener(l2);
+
+        taAreaProdutos = new JTextArea(10, 25);
+        taAreaProdutos.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(taAreaProdutos);
 
         // Listener para o botão Adicionar Produto
         btnAdicionarProduto = new JButton("Adicionar Produto");
@@ -47,7 +54,7 @@ public class EncomendaView extends JFrame {
         // btnRemoverProduto.addActionListener(l4);
 
         // Listener para o botão Finalizar Encomenda
-        JButton btnFinalizarEncomenda = new JButton("Finalizar Encomenda");
+        btnFinalizarEncomenda = new JButton("Finalizar Encomenda");
         btnFinalizarEncomenda.setEnabled(false);
         ListenerBtnFinalizarEncomenda l5 = new ListenerBtnFinalizarEncomenda(this, tfCpf);
         btnFinalizarEncomenda.addActionListener(l5);
@@ -57,6 +64,7 @@ public class EncomendaView extends JFrame {
         painel.add(lbCpf);
         painel.add(tfCpf);
         painel.add(btnBuscarCriarEncomenda);
+        painel.add(scrollPane);
         painel.add(btnAdicionarProduto);
         painel.add(btnRemoverProduto);
         painel.add(btnFinalizarEncomenda);
@@ -83,9 +91,20 @@ public class EncomendaView extends JFrame {
         btnFinalizarEncomenda.setEnabled(true);
     }
 
+    // Método que habilita os botões relacionados à encomenda quando há uma encomenda ativa
+    // e desabilita caso o contrário
     public void desabilitarBotoesEncomenda() {
         btnAdicionarProduto.setEnabled(false);
         btnRemoverProduto.setEnabled(false);
         btnFinalizarEncomenda.setEnabled(false);
+    }
+
+    // Método que atualiza a área que mostra os produtos da encomenda
+    // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
+    public void atualizarAreaProdutos(ArrayList<String> produtos) {
+        taAreaProdutos.setText("");
+        for(String produto : produtos) {
+            taAreaProdutos.append(produto + "\n");
+        }
     }
 }

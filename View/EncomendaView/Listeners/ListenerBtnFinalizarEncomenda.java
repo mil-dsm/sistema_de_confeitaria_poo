@@ -1,13 +1,20 @@
 package View.EncomendaView.Listeners;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import Arq.ManipulaArquivosEncomenda;
 import View.EncomendaView.EncomendaView;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+/** 
+ * Classe que implementa o listener para o botão de finalizar encomenda.
+ * Ao clicar no botão, verifica se há uma encomenda aberta para o CPF fornecido.
+ * Se houver, solicita confirmação para finalizar a encomenda.
+ * Se confirmado, atualiza o status da encomenda para "FINALIZADA" no arquivo
+ * e desabilita os botões relacionados à encomenda.
+ * Se não houver encomenda aberta, exibe uma mensagem informando o usuário.
+ */
 public class ListenerBtnFinalizarEncomenda implements ActionListener {
     private EncomendaView view;
     private JTextField tfCpf;
@@ -35,6 +42,7 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
 
         if(linha.endsWith("FINALIZADA")) {
             JOptionPane.showMessageDialog(view, "Encomenda já foi finalizada.");
+            view.desabilitarBotoesEncomenda();
             return;
         }
 
