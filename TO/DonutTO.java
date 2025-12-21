@@ -1,13 +1,12 @@
-package Arq;
+package TO;
 
-public class Donut extends Produto {
+public class DonutTO extends ProdutoTO {
     private String recheio;
     private String cobertura;
     private boolean confete;
-    // static int estoque;
 
-    public Donut(double precoBase, String validade, int quantidade, String recheio, String cobertura, boolean confete) {
-        super("Donut", precoBase, validade, quantidade);
+    public DonutTO(String nome, double precoBase, String validade, int quantidade, String recheio, String cobertura, boolean confete) {
+        super(nome, precoBase, validade, quantidade);
         this.recheio = recheio;
         this.cobertura = cobertura;
         this.confete = confete;

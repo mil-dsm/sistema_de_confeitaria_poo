@@ -1,24 +1,23 @@
-package Arq;
+package TO;
 
-public class Bolo extends Produto implements Promocionavel {
-    private String sabor;
+public class BoloTO extends ProdutoTO {
+    private String recheio;
     private String cobertura;
     private char tamanho;
-    // static int estoque;
 
-    public Bolo(double precoBase, String validade, int quantidade, String sabor, String cobertura, char tamanho) {
-        super("Bolo", precoBase, validade, quantidade);
-        this.sabor = sabor;
+    public BoloTO(String nome, double precoBase, String validade, int quantidade, String recheio, String cobertura, char tamanho) {
+        super(nome, precoBase, validade, quantidade);
+        this.recheio = recheio;
         this.cobertura = cobertura;
         this.tamanho = tamanho;
     }
 
-    public String getSabor() {
-        return sabor;
+    public String getRecheio() {
+        return recheio;
     }
 
-    public void setSabor(String sabor) {
-        this.sabor = sabor;
+    public void setRecheio(String recheio) {
+        this.recheio = recheio;
     }
 
     public String getCobertura() {
@@ -62,7 +61,7 @@ public class Bolo extends Produto implements Promocionavel {
 
     @Override
     public String toString() {
-        return ("Bolo: [Sabor: " + sabor + ", Cobertura: " + cobertura + ", Tamanho: " + tamanho + "]\n" + super.toString());
+        return ("Bolo: [Recheio: " + recheio + ", Cobertura: " + cobertura + ", Tamanho: " + tamanho + "]\n" + super.toString());
     }
 
 }
