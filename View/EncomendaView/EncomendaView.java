@@ -1,8 +1,9 @@
-package View;
+package View.EncomendaView;
 
 import javax.swing.*;
+
 import TO.EncomendaTO;
-import View.Listeners.*;
+import View.EncomendaView.Listeners.*;
 
 public class EncomendaView extends JFrame {
     // A tela apenas mostra uma encomenda por vez

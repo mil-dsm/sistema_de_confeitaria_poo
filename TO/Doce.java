@@ -1,15 +1,16 @@
 package TO;
+public class Doce extends ProdutoTO {
 
-public class DoceTO extends ProdutoTO {
     String tipo;
 
-    public DoceTO(String nome, double precoBase, String validade, int quantidade, String tipo) {
+    public Doce(String nome, double precoBase, String validade, int quantidade, String tipo) {
         super(nome, precoBase, validade, quantidade);
         this.tipo = tipo;
     }
 
     @Override
     public double calcularPrecoFinal() {
+
         double precoFinal = super.precoBase;
         switch (tipo) {
             case "brigadeiro":

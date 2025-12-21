@@ -7,28 +7,13 @@ public class LojaView extends JFrame {
         setTitle("Loja");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel lbNome = new JLabel("Nome");
-        JTextField tfNome = new JTextField(15);
-
-        JLabel lbCPF = new JLabel("CPF");
-        JTextField tfCPF = new JTextField(15);
-
-        JLabel lbEndereco = new JLabel("Endereco");
-        JTextField tfEndereco = new JTextField(15);
-
-        JButton btnCadastrar = new JButton("Cadastrar");
+        JButton btnCadastrar = new JButton("Cadastro");
+        JButton btnEncomenda = new JButton("Encomenda");
 
         JPanel painel = new JPanel();
-        painel.add(lbNome);
-        painel.add(tfNome);
-
-        painel.add(lbCPF);
-        painel.add(tfCPF);
-
-        painel.add(lbEndereco);
-        painel.add(tfEndereco);
 
         painel.add(btnCadastrar);
+        painel.add(btnEncomenda);
         
         add(painel);
         setVisible(true);

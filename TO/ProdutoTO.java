@@ -1,8 +1,8 @@
 package TO;
-
 //classe abstrata pai que extende todos os produtos da confeitaria
 
 public abstract class ProdutoTO {
+
     protected String nome;
     protected double precoBase;
     protected String validade;
