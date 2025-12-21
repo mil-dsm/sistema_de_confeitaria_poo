@@ -1,15 +1,13 @@
 package View.EncomendaView.Listeners;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import Arq.*;
 import TO.EncomendaTO;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class ListenerBtnAdicionarProduto implements ActionListener {
-    JFrame componentePai;
     private EncomendaTO encomendaAtual;
 
     public ListenerBtnAdicionarProduto(EncomendaTO encomendaAtual) {
