@@ -3,6 +3,9 @@ package Arq;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Estrutura esperada: cpf;status;produto1,produto2,produto3,...
+ */
 public class ManipulaArquivosEncomenda {
     public String diretorio = "dados/";
 
