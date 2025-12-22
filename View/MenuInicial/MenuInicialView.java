@@ -9,7 +9,7 @@ public class MenuInicialView extends JFrame {
         setTitle("Menu Inicial");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setSize(400, 200);
+        setSize(350, 450);
 
         JButton btnCadastrar = new JButton("Cadastro");
         ListenerBtnCadastrar l1 = new ListenerBtnCadastrar();
