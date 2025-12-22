@@ -1,10 +1,9 @@
-package View.EncomendaView;
+package View.Encomenda;
 
 import java.util.ArrayList;
 import javax.swing.*;
-
 import TO.EncomendaTO;
-import View.EncomendaView.Listeners.*;
+import View.Encomenda.Listeners.*;
 
 public class EncomendaView extends JFrame {
     private EncomendaTO encomendaAtual;

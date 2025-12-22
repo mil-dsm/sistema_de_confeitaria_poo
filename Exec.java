@@ -1,8 +1,7 @@
-import View.*;
-import View.MenuInicialView.LojaView;
+import View.MenuInicial.MenuInicialView;
 
 public class Exec {
     public static void main(String[] args) {
-        LojaView l = new LojaView();
+        new MenuInicialView();
     }
 }

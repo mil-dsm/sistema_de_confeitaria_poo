@@ -1,11 +1,10 @@
-package View.EncomendaView.Listeners;
+package View.Encomenda.Listeners;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import Arq.ManipulaArquivosEncomenda;
-import View.EncomendaView.EncomendaView;
+import View.Encomenda.EncomendaView;
 
 /** 
  * Classe que implementa o listener para o botão de finalizar encomenda.
@@ -26,6 +25,7 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
         this.arq = new ManipulaArquivosEncomenda();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         String cpf = tfCpf.getText().trim();
         if(cpf.isEmpty()) {

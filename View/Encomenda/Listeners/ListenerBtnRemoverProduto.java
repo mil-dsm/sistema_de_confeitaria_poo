@@ -1,4 +1,4 @@
-package View.EncomendaView.Listeners;
+package View.Encomenda.Listeners;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +14,7 @@ public class ListenerBtnRemoverProduto implements ActionListener {
         this.encomendaAtual = encomendaAtual;
     }
 
+    @Override
     public void actionPerformed(ActionEvent event) {
         // Implementação do evento de clique no botão Remover Produto
     }
