@@ -16,13 +16,13 @@ import View.Encomenda.EncomendaView;
  * Quando não existir, cria uma nova encomenda e exibe uma mensagem de sucesso
  */
 public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
-    private EncomendaView view;
+    private EncomendaView componentePai;
     private JTextField tfCpf;
     private ManipulaArquivosEncomenda arqEncomenda;
     private ManipulaArquivosCliente arqCliente;
 
-    public ListenerBtnBuscarCriarEncomenda(EncomendaView view, JTextField tfCpf) {
-        this.view = view;
+    public ListenerBtnBuscarCriarEncomenda(EncomendaView componentePai, JTextField tfCpf) {
+        this.componentePai = componentePai;
         this.tfCpf = tfCpf;
         this.arqEncomenda = new ManipulaArquivosEncomenda();
         this.arqCliente = new ManipulaArquivosCliente();
@@ -33,25 +33,25 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
         String cpf = tfCpf.getText().trim();
 
         if(cpf.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Informe o CPF.");
+            JOptionPane.showMessageDialog(componentePai, "Informe o CPF.");
             return;
         }
 
         if (!arqCliente.clienteExiste(cpf)) {
-            JOptionPane.showMessageDialog(view, "Cliente não cadastrado.");
+            JOptionPane.showMessageDialog(componentePai, "Cliente não cadastrado.");
             return;
         }
 
         String nomeArquivo = "encomendas.txt";
         boolean existeAberta = arqEncomenda.existeEncomendaAberta(nomeArquivo, cpf);
         if(existeAberta) {
-            JOptionPane.showMessageDialog(view, "Já existe uma encomenda em aberto para este CPF.");
-            view.habilitarBotoesEncomenda();
+            JOptionPane.showMessageDialog(componentePai, "Já existe uma encomenda em aberto para este CPF.");
+            componentePai.habilitarBotoesEncomenda();
         } else {
             String novaLinha = cpf + ";ABERTA";
             arqEncomenda.escreverArquivo(nomeArquivo, novaLinha);
-            JOptionPane.showMessageDialog(view, "Encomenda criada com sucesso.");
-            view.habilitarBotoesEncomenda();
+            JOptionPane.showMessageDialog(componentePai, "Encomenda criada com sucesso.");
+            componentePai.habilitarBotoesEncomenda();
         }
     }
 }

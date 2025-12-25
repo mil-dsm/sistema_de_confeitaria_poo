@@ -42,6 +42,7 @@ public class ManipulaArquivosEncomenda {
         return alArquivo;
     }
     
+    // Remove uma linha inteira do arquivo e retorna um boolean como confirmação
     public boolean removerElementoArquivo(String nomeArquivo, String valorRemocao) {
         ArrayList<String> alArquivo = retornarConteudoArquivo(nomeArquivo);
         
@@ -62,6 +63,7 @@ public class ManipulaArquivosEncomenda {
         return false;
     }
     
+    // Imprime todos os elementos do arquivo e retorna true. Caso não seja possível, retorna false
     public boolean imprimirArquivo(String nomeArquivo) {
         ArrayList<String> alArquivo = retornarConteudoArquivo(nomeArquivo);
         if(alArquivo.isEmpty()) {
@@ -109,6 +111,7 @@ public class ManipulaArquivosEncomenda {
         return false;
     }
 
+    // Busca todos os produtos adicionados a uma encomenda e retorna um ArrayList com os produtos
     public ArrayList<String> getProdutosEncomenda(String nomeArquivo, String cpf) {
         ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
         ArrayList<String> produtos = new ArrayList<>();

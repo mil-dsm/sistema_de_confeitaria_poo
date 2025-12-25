@@ -15,12 +15,12 @@ import View.Encomenda.EncomendaView;
  * Se não houver encomenda aberta, exibe uma mensagem informando o usuário.
  */
 public class ListenerBtnFinalizarEncomenda implements ActionListener {
-    private EncomendaView view;
+    private EncomendaView componentePai;
     private JTextField tfCpf;
     private ManipulaArquivosEncomenda arq;
 
-    public ListenerBtnFinalizarEncomenda(EncomendaView view, JTextField tfCpf) {
-        this.view = view;
+    public ListenerBtnFinalizarEncomenda(EncomendaView componentePai, JTextField tfCpf) {
+        this.componentePai = componentePai;
         this.tfCpf = tfCpf;
         this.arq = new ManipulaArquivosEncomenda();
     }
@@ -29,7 +29,7 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cpf = tfCpf.getText().trim();
         if(cpf.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Informe o CPF.");
+            JOptionPane.showMessageDialog(componentePai, "Informe o CPF.");
             return;
         }
 
@@ -37,17 +37,17 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
         String linha = arq.buscaLinhaPorCpf(nomeArquivo, cpf);
 
         if(linha == null) {
-            JOptionPane.showMessageDialog(view, "Encomenda não encontrada para este CPF.");
+            JOptionPane.showMessageDialog(componentePai, "Encomenda não encontrada para este CPF.");
         }
 
         if(linha.endsWith("FINALIZADA")) {
-            JOptionPane.showMessageDialog(view, "Encomenda já foi finalizada.");
-            view.desabilitarBotoesEncomenda();
+            JOptionPane.showMessageDialog(componentePai, "Encomenda já foi finalizada.");
+            componentePai.desabilitarBotoesEncomenda();
             return;
         }
 
         // Confirmação de finalização
-        int opc = JOptionPane.showConfirmDialog(view, "Deseja finalizar a encomenda?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        int opc = JOptionPane.showConfirmDialog(componentePai, "Deseja finalizar a encomenda?", "Confirmação", JOptionPane.YES_NO_OPTION);
         
         if(opc == JOptionPane.NO_OPTION) {
             return;
@@ -60,6 +60,6 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
         String novaLinha = cpf + ";FINALIZADA";
         
         arq.escreverArquivo(nomeArquivo, novaLinha);
-        JOptionPane.showMessageDialog(view, "Encomenda finalizada com sucesso.");
+        JOptionPane.showMessageDialog(componentePai, "Encomenda finalizada com sucesso.");
     }
 }

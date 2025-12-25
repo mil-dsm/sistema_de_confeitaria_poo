@@ -10,21 +10,21 @@ import java.awt.event.ActionListener;
  * Se houver uma encomenda em andamento, solicita confirmação do usuário para cancelá-la.
  */
 public class ListenerBtnVoltar implements ActionListener {
-    private EncomendaView view;
+    private EncomendaView componentePai;
 
-    public ListenerBtnVoltar(EncomendaView view) {
-        this.view = view;
+    public ListenerBtnVoltar(EncomendaView componentePai) {
+        this.componentePai = componentePai;
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if(view.getEncomendaAtual() != null) {
-            int opc = JOptionPane.showConfirmDialog(view, "Encomenda em andamento. Deseja cancelar?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if(componentePai.getEncomendaAtual() != null) {
+            int opc = JOptionPane.showConfirmDialog(componentePai, "Encomenda em andamento. Deseja cancelar?", "Confirmação", JOptionPane.YES_NO_OPTION);
             if(opc == JOptionPane.NO_OPTION) {
                 return;
             }
         }
-        view.setEncomendaAtual(null);
-        view.dispose();
+        componentePai.setEncomendaAtual(null);
+        componentePai.dispose();
     }
 }
