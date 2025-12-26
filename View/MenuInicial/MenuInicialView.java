@@ -12,7 +12,7 @@ public class MenuInicialView extends JFrame {
         setSize(350, 450);
 
         JButton btnCadastrar = new JButton("Cadastro");
-        ListenerBtnCadastrar l1 = new ListenerBtnCadastrar();
+        ListenerBtnCadastrar l1 = new ListenerBtnCadastrar(this);
         btnCadastrar.addActionListener(l1);
 
         JButton btnEncomenda = new JButton("Encomenda");
