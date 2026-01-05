@@ -11,6 +11,7 @@ public class EncomendaView extends JFrame {
     private JButton btnVoltar;
     private JTextField tfCpf;
     private JButton btnBuscarCriarEncomenda;
+    private JLabel lbTipoEntrega;
     private JRadioButton rbEntrega;
     private JRadioButton rbRetirada;
     private JTextArea taAreaProdutos;
@@ -44,6 +45,7 @@ public class EncomendaView extends JFrame {
         btnBuscarCriarEncomenda.addActionListener(l2);
 
         // Selecionar o tipo de entrega
+        lbTipoEntrega = new JLabel("Tipo de entrega");
         rbEntrega = new JRadioButton("Entrega");
         rbRetirada = new JRadioButton("Retirada na loja");
 
@@ -58,6 +60,7 @@ public class EncomendaView extends JFrame {
 
         lbTotal = new JLabel("Total");
         tfTotal = new JTextField();
+        tfTotal.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(taAreaProdutos);
 
@@ -85,6 +88,14 @@ public class EncomendaView extends JFrame {
         painel.add(tfCpf);
         painel.add(btnBuscarCriarEncomenda);
         painel.add(scrollPane);
+        painel.add(lbTipoEntrega);
+        painel.add(rbEntrega);
+        painel.add(rbRetirada);
+        painel.add(taAreaProdutos);
+        painel.add(lbValorFrete);
+        painel.add(tfValorFrete);
+        painel.add(lbTotal);
+        painel.add(tfTotal);
         painel.add(btnAdicionarProduto);
         painel.add(btnRemoverProduto);
         painel.add(btnFinalizarEncomenda);
