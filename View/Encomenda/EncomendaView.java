@@ -171,6 +171,7 @@ public class EncomendaView extends JFrame {
         String nomeArquivo = "encomendas.txt";
         
         arq.adicionaProdutoEncomenda(nomeArquivo, cpf, codigoProduto);
-        // Atualizar área que mostra os produtos atravéz do produtos.txt
+        // Atualizar área que mostra os produtos através do produtos.txt
+        // Implementar
     }
 }
