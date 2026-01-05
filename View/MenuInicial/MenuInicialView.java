@@ -1,8 +1,7 @@
 package View.MenuInicial;
 
 import javax.swing.*;
-import View.MenuInicial.Listeners.ListenerBtnEncomenda;
-import View.MenuInicial.Listeners.ListenerBtnSair;
+import View.MenuInicial.Listeners.*;
 
 public class MenuInicialView extends JFrame {
     public MenuInicialView() {
@@ -16,7 +15,7 @@ public class MenuInicialView extends JFrame {
         btnCadastrar.addActionListener(l1);
 
         JButton btnEncomenda = new JButton("Encomenda");
-        ListenerBtnEncomenda l2 = new ListenerBtnEncomenda();
+        ListenerBtnEncomenda l2 = new ListenerBtnEncomenda(this);
         btnEncomenda.addActionListener(l2);
 
         JButton btnSair = new JButton("Sair");
