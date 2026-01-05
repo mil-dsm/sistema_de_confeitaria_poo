@@ -28,12 +28,6 @@ public class DoceTO extends ProdutoTO {
         return precoFinal * quantidade;
     }
 
-    @Override
-    public String gerarLinhaArquivo() {
-        return getCodigo() + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + 
-        "tipo=" + tipo;
-    }
-
     //Sobrescrita de toString: seu toString() + super.toString()
     @Override
     public String toString() {

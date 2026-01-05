@@ -55,12 +55,6 @@ public class BoloTO extends ProdutoTO {
 
         return (precoFinal);
     }
-
-    @Override
-    public String gerarLinhaArquivo() {
-        return getCodigo() + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + 
-        "recheio=" + recheio + "|cobertura=" + cobertura + "|tamanho=" + tamanho;
-    }
     
     @Override
     public String toString() {
