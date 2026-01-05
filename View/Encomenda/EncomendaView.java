@@ -29,7 +29,7 @@ public class EncomendaView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(350, 450);
 
-        JPanel painel = new JPanel();
+        JPanel panel = new JPanel();
 
         JLabel lbCpf = new JLabel("CPF Cliente");
         tfCpf = new JTextField(15);
@@ -82,25 +82,25 @@ public class EncomendaView extends JFrame {
         ListenerBtnFinalizarEncomenda l5 = new ListenerBtnFinalizarEncomenda(this, tfCpf);
         btnFinalizarEncomenda.addActionListener(l5);
         
-        painel.add(btnVoltar);
+        panel.add(btnVoltar);
         
-        painel.add(lbCpf);
-        painel.add(tfCpf);
-        painel.add(btnBuscarCriarEncomenda);
-        painel.add(scrollPane);
-        painel.add(lbTipoEntrega);
-        painel.add(rbEntrega);
-        painel.add(rbRetirada);
-        painel.add(taAreaProdutos);
-        painel.add(lbValorFrete);
-        painel.add(tfValorFrete);
-        painel.add(lbTotal);
-        painel.add(tfTotal);
-        painel.add(btnAdicionarProduto);
-        painel.add(btnRemoverProduto);
-        painel.add(btnFinalizarEncomenda);
+        panel.add(lbCpf);
+        panel.add(tfCpf);
+        panel.add(btnBuscarCriarEncomenda);
+        panel.add(scrollPane);
+        panel.add(lbTipoEntrega);
+        panel.add(rbEntrega);
+        panel.add(rbRetirada);
+        panel.add(taAreaProdutos);
+        panel.add(lbValorFrete);
+        panel.add(tfValorFrete);
+        panel.add(lbTotal);
+        panel.add(tfTotal);
+        panel.add(btnAdicionarProduto);
+        panel.add(btnRemoverProduto);
+        panel.add(btnFinalizarEncomenda);
 
-        add(painel);
+        add(panel);
         setVisible(true);
     }
 
