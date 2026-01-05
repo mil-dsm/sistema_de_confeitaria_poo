@@ -146,6 +146,9 @@ public class EncomendaView extends JFrame {
         tfValorFrete.setText("");
     }
     
+    // Precisa adicionar o código de cada produto junto
+    //
+    //
     // Método que atualiza a área que mostra os produtos da encomenda
     // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
     public void atualizarAreaProdutos(ArrayList<String> produtos) {
@@ -163,6 +166,9 @@ public class EncomendaView extends JFrame {
         btnFinalizarEncomenda.setEnabled(false);
     }
     
+    // Implementar
+    //
+    //
     // Método que adiciona um produto à encomenda a partir do seu código único
     // Utiliza método de adicionar o elemento a encomenda aberta, e o método de
     // atualizar a página inicial da encomenda.

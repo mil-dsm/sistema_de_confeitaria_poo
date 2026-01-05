@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
 import View.Encomenda.EncomendaView;
-import View.Produto.ProdutoView;
+import View.Produto.ProdutoView; // Adicionar
 
 /**
  * Listener do Botão "Adicionar Produto", que procura pelo CPF do cliente que está editando a encomenda,

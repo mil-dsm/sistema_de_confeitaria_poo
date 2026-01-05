@@ -3,7 +3,8 @@ package View.Encomenda.Listeners;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import Arq.*;
+import Arq.ManipulaArquivosEncomenda;
+import Arq.ManipulaArquivosProduto; // Adicionar implementação
 import TO.EncomendaTO;
 import View.Encomenda.EncomendaView;
 
@@ -13,8 +14,8 @@ import View.Encomenda.EncomendaView;
  */
 public class ListenerBtnRemoverProduto implements ActionListener {
     private EncomendaView componentePai;
-    ManipulaArquivosEncomenda encomendaArq;
-    ManipulaArquivosProdutos produtoArq; 
+    private ManipulaArquivosEncomenda encomendaArq;
+    private ManipulaArquivosProdutos produtoArq;
 
     public ListenerBtnRemoverProduto(EncomendaView componentePai) {
         this.componentePai = componentePai;
