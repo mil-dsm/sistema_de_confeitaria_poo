@@ -57,6 +57,12 @@ public class BoloTO extends ProdutoTO {
     }
 
     @Override
+    public String gerarLinhaArquivo() {
+        return getCodigo() + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + 
+        "recheio=" + recheio + "|cobertura=" + cobertura + "|tamanho=" + tamanho;
+    }
+    
+    @Override
     public String toString() {
         return ("Bolo: [Recheio: " + recheio + ", Cobertura: " + cobertura + ", Tamanho: " + tamanho + "]\n" + super.toString());
     }
