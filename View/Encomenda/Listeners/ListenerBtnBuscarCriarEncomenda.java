@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
-/* import Arq.ManipulaArquivosCliente; */
+import Arq.ManipulaArquivosCliente;
 import View.Encomenda.EncomendaView;
 
 /**
@@ -27,7 +27,7 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
         this.tfCpf = tfCpf;
         this.arqEncomenda = new ManipulaArquivosEncomenda();
         /* Adicionar manipulação de arquivos do cliente */
-        // this.arqCliente = new ManipulaArquivosCliente();
+        this.arqCliente = new ManipulaArquivosCliente();
     }
 
     @Override
