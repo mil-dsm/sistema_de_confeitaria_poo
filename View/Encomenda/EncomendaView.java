@@ -2,6 +2,7 @@ package View.Encomenda;
 
 import java.util.ArrayList;
 import javax.swing.*;
+import Arq.ManipulaArquivosEncomenda;
 import TO.EncomendaTO;
 import View.Encomenda.Listeners.*;
 
@@ -10,10 +11,17 @@ public class EncomendaView extends JFrame {
     private JButton btnVoltar;
     private JTextField tfCpf;
     private JButton btnBuscarCriarEncomenda;
+    private JRadioButton rbEntrega;
+    private JRadioButton rbRetirada;
     private JTextArea taAreaProdutos;
+    private JLabel lbValorFrete;
+    private JTextField tfValorFrete;
+    private JLabel lbTotal;
+    private JTextField tfTotal;
     private JButton btnAdicionarProduto;
     private JButton btnRemoverProduto;
     private JButton btnFinalizarEncomenda;
+    private ManipulaArquivosEncomenda arq;
 
     public EncomendaView() {
         setTitle("Encomenda");
@@ -35,22 +43,35 @@ public class EncomendaView extends JFrame {
         ListenerBtnBuscarCriarEncomenda l2 = new ListenerBtnBuscarCriarEncomenda(this, tfCpf);
         btnBuscarCriarEncomenda.addActionListener(l2);
 
+        // Selecionar o tipo de entrega
+        rbEntrega = new JRadioButton("Entrega");
+        rbRetirada = new JRadioButton("Retirada na loja");
+
+        // Mostrar os produtos da encomenda
         taAreaProdutos = new JTextArea(10, 25);
         taAreaProdutos.setEditable(false);
+    
+        // Mostrar o valor total do frete
+        lbValorFrete = new JLabel("Valor do frete");
+        tfValorFrete = new JTextField();
+        tfValorFrete.setEditable(false);
+
+        lbTotal = new JLabel("Total");
+        tfTotal = new JTextField();
 
         JScrollPane scrollPane = new JScrollPane(taAreaProdutos);
 
         // Listener para o botão Adicionar Produto
         btnAdicionarProduto = new JButton("Adicionar Produto");
         btnAdicionarProduto.setEnabled(false);
-        // ListenerBtnAdicionarProduto l3 = new ListenerBtnAdicionarProduto(this);
-        // btnAdicionarProduto.addActionListener(l3);
+        ListenerBtnAdicionarProduto l3 = new ListenerBtnAdicionarProduto(this);
+        btnAdicionarProduto.addActionListener(l3);
 
         // Listener para o botão Remover Produto
         btnRemoverProduto = new JButton("Remover Produto");
         btnRemoverProduto.setEnabled(false);
-        // ListenerBtnRemoverProduto l4 = new ListenerBtnRemoverProduto(this);
-        // btnRemoverProduto.addActionListener(l4);
+        ListenerBtnRemoverProduto l4 = new ListenerBtnRemoverProduto(this);
+        btnRemoverProduto.addActionListener(l4);
 
         // Listener para o botão Finalizar Encomenda
         btnFinalizarEncomenda = new JButton("Finalizar Encomenda");
@@ -105,5 +126,19 @@ public class EncomendaView extends JFrame {
         for(String produto : produtos) {
             taAreaProdutos.append(produto + "\n");
         }
+    }
+
+    // Método que atualiza o valor do frete a partir da opção escolhida
+    public void atualizarFrete();
+
+    // Método que adiciona um produto à encomenda a partir do seu código único
+    // Utiliza método de adicionar o elemento a encomenda aberta, e o método de
+    // atualizar a página inicial da encomenda.
+    public void adicionarProduto(int codigoProduto) {
+        String cpf = getCpfCliente();
+        String nomeArquivo = "encomendas.txt";
+        
+        arq.adicionaProdutoEncomenda(nomeArquivo, cpf, codigoProduto);
+        // Atualizar área que mostra os produtos atravéz do produtos.txt
     }
 }

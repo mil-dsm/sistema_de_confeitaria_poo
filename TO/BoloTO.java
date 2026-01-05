@@ -5,11 +5,8 @@ public class BoloTO extends ProdutoTO {
     private String cobertura;
     private char tamanho;
 
-    public BoloTO(String nome, double precoBase, String validade, int quantidade, String recheio, String cobertura, char tamanho) {
-        super(nome, precoBase, validade, quantidade);
-        this.recheio = recheio;
-        this.cobertura = cobertura;
-        this.tamanho = tamanho;
+    public BoloTO(String nome, double precoBase) {
+        super(nome, precoBase);
     }
 
     public String getRecheio() {

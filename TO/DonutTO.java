@@ -5,11 +5,8 @@ public class DonutTO extends ProdutoTO {
     private String cobertura;
     private boolean confete;
 
-    public DonutTO(String nome, double precoBase, String validade, int quantidade, String recheio, String cobertura, boolean confete) {
-        super(nome, precoBase, validade, quantidade);
-        this.recheio = recheio;
-        this.cobertura = cobertura;
-        this.confete = confete;
+    public DonutTO(String nome, double precoBase) {
+        super(nome, precoBase);
     }
 
     public String getRecheio() {

@@ -2,7 +2,7 @@ package View.MenuInicial.Listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import View.Cliente.ClienteView;
+// import View.Cliente.ClienteView;
 
 /**
  * Listener para o botão de cadastro na tela inicial da loja.
@@ -10,6 +10,6 @@ import View.Cliente.ClienteView;
  */
 public class ListenerBtnCadastrar implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-        new ClienteView();
+        // new ClienteView();
     }
 }

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
-import Arq.ManipulaArquivosCliente;
+/* import Arq.ManipulaArquivosCliente; */
 import View.Encomenda.EncomendaView;
 
 /**
@@ -19,13 +19,15 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
     private EncomendaView componentePai;
     private JTextField tfCpf;
     private ManipulaArquivosEncomenda arqEncomenda;
-    private ManipulaArquivosCliente arqCliente;
+    /* Adicionar manipulação de arquivos do cliente */
+    // private ManipulaArquivosCliente arqCliente;
 
     public ListenerBtnBuscarCriarEncomenda(EncomendaView componentePai, JTextField tfCpf) {
         this.componentePai = componentePai;
         this.tfCpf = tfCpf;
         this.arqEncomenda = new ManipulaArquivosEncomenda();
-        this.arqCliente = new ManipulaArquivosCliente();
+        /* Adicionar manipulação de arquivos do cliente */
+        // this.arqCliente = new ManipulaArquivosCliente();
     }
 
     @Override
@@ -37,7 +39,8 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
             return;
         }
 
-        if (!arqCliente.clienteExiste(cpf)) {
+        /* Implementar verificação se o cliente está cadastrado */
+        if(!arqCliente.clienteExiste(cpf)) {
             JOptionPane.showMessageDialog(componentePai, "Cliente não cadastrado.");
             return;
         }

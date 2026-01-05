@@ -24,6 +24,7 @@ public class ListenerBtnVoltar implements ActionListener {
                 return;
             }
         }
+
         componentePai.setEncomendaAtual(null);
         componentePai.dispose();
     }
