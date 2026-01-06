@@ -10,11 +10,13 @@ public class ManipulaArquivosEncomenda {
     public String diretorio;
     public String nomeArquivo;
     public File arq;
+    public ManipulaArquivosProduto arqProduto;
 
     public ManipulaArquivosEncomenda() {
         diretorio = "dados/";
         nomeArquivo = "encomendas.txt";
         arq = new File(diretorio+nomeArquivo);
+        arqProduto = new ManipulaArquivosProduto();
     }
 
     // Método que escreve em uma linha do arquivo
@@ -195,8 +197,6 @@ public class ManipulaArquivosEncomenda {
     // de produtos e somar a uma variável externa.
     public double calcularTotalProdutos(String cpf) {
         ArrayList<String> codigos = getProdutosEncomenda(cpf);
-        ManipulaArquivosProduto arqProduto = new ManipulaArquivosProduto();
-
         double total = 0.0;
 
         for (String cod : codigos) {
