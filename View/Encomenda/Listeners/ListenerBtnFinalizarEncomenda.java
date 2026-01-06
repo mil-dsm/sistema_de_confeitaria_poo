@@ -60,6 +60,7 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
         String novaLinha = cpf + ";FINALIZADA";
         
         arq.escreverArquivo(nomeArquivo, novaLinha);
+        componentePai.desabilitarBotoesEncomenda();
         JOptionPane.showMessageDialog(componentePai, "Encomenda finalizada com sucesso.");
     }
 }

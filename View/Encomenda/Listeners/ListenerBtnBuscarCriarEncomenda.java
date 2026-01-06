@@ -3,8 +3,8 @@ package View.Encomenda.Listeners;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import Arq.ManipulaArquivosEncomenda;
-// import Arq.ManipulaArquivosCliente; // Adicionar
+import Arq.*;
+import TO.ClienteTO;
 import View.Encomenda.EncomendaView;
 
 /**
@@ -19,15 +19,15 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
     private EncomendaView componentePai;
     private JTextField tfCpf;
     private ManipulaArquivosEncomenda arqEncomenda;
-    /* Adicionar manipulação de arquivos do cliente */
-    // private ManipulaArquivosCliente arqCliente;
+    private ManipulaArquivosCliente arqCliente;
+    private ClienteTO clienteAtual;
 
     public ListenerBtnBuscarCriarEncomenda(EncomendaView componentePai, JTextField tfCpf) {
         this.componentePai = componentePai;
         this.tfCpf = tfCpf;
-        this.arqEncomenda = new ManipulaArquivosEncomenda();
-        /* Adicionar manipulação de arquivos do cliente */
-        // this.arqCliente = new ManipulaArquivosCliente();
+        arqEncomenda = new ManipulaArquivosEncomenda();
+        arqCliente = new ManipulaArquivosCliente();
+        clienteAtual = new ClienteTO();
     }
 
     @Override
@@ -39,20 +39,24 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
             return;
         }
 
-        // /* Implementar verificação se o cliente está cadastrado */
-        // if(!arqCliente.clienteExiste(cpf)) {
-        //     JOptionPane.showMessageDialog(componentePai, "Cliente não cadastrado.");
-        //     return;
-        // }
+        // Verificação se o cliente está cadastrado
+        if(!arqCliente.clienteExiste(cpf)) {
+            JOptionPane.showMessageDialog(componentePai, "Cliente não cadastrado.");
+            return;
+        }
 
-        String nomeArquivo = "encomendas.txt";
-        boolean existeAberta = arqEncomenda.existeEncomendaAberta(nomeArquivo, cpf);
-        if(existeAberta) {
+        // Diz qual o cliente criado
+        clienteAtual.setNome(arqCliente.getNome(cpf));
+        clienteAtual.setEndereco(arqCliente.getEndereco(cpf));
+        clienteAtual.setCpf(cpf);
+
+        // Verifica o arquivo encomendas.txt
+        if(arqEncomenda.existeEncomendaAberta(cpf)) {
             JOptionPane.showMessageDialog(componentePai, "Já existe uma encomenda em aberto para este CPF.");
             componentePai.habilitarBotoesEncomenda();
         } else {
             String novaLinha = cpf + ";ABERTA";
-            arqEncomenda.escreverArquivo(nomeArquivo, novaLinha);
+            arqEncomenda.escreverArquivo(novaLinha);
             JOptionPane.showMessageDialog(componentePai, "Encomenda criada com sucesso.");
             componentePai.habilitarBotoesEncomenda();
         }

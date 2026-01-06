@@ -2,13 +2,19 @@ package View.Encomenda;
 
 import java.util.ArrayList;
 import javax.swing.*;
-import Arq.ManipulaArquivosEncomenda;
+import Arq.*;
+import TO.ClienteTO;
 import TO.EncomendaTO;
 import View.Encomenda.Listeners.*;
 
 public class EncomendaView extends JFrame {
-    // Encomenda a ser trabalhada
+    // Encomenda a ser trabalhada e cliente vinculado
+    private ClienteTO clienteAtual;
     private EncomendaTO encomendaAtual;
+    // Arquivos
+    private ManipulaArquivosCliente arqCliente;
+    private ManipulaArquivosEncomenda arqEncomenda;
+    private ManipulaArquivosProdutos arqProduto;
     // Botão de retorna para o menu inicial
     private JButton btnVoltar;
     // Adicionar o CPF do cliente CADASTRADO
@@ -34,12 +40,17 @@ public class EncomendaView extends JFrame {
     private JButton btnRemoverProduto;
     // Botão de finalizar a encomenda
     private JButton btnFinalizarEncomenda;
-    private ManipulaArquivosEncomenda arq;
 
     public EncomendaView() {
         setTitle("Encomenda");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(350, 450);
+
+        encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
+        clienteAtual = new ClienteTO();
+        arqCliente = new ManipulaArquivosCliente();
+        arqEncomenda = new ManipulaArquivosEncomenda();
+        arqProduto = new ManipulaArquivosProdutos();
 
         JPanel panel = new JPanel();
         
@@ -129,55 +140,63 @@ public class EncomendaView extends JFrame {
         return tfCpf.getText();
     }
 
-    public void habilitarBotoesEncomenda() {
-        btnAdicionarProduto.setEnabled(true);
-        btnRemoverProduto.setEnabled(true);
-        btnFinalizarEncomenda.setEnabled(true);
-    }
-
+    
     // Método que retorna qual o tipo de entrega selecionado
     public String getTipoEntrega() {
         if(rbEntrega.isSelected() == true) return "delivery";
         else return "retirada";
     }
     
-    // Método que atualiza o valor do frete a partir da opção escolhida
-    public void atualizarFrete() {
-        tfValorFrete.setText("");
-    }
-    
-    // Precisa adicionar o código de cada produto junto
-    //
-    //
     // Método que atualiza a área que mostra os produtos da encomenda
     // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
-    public void atualizarAreaProdutos(ArrayList<String> produtos) {
+    public void atualizarAreaProdutos(ArrayList<String> codigos) {
         taAreaProdutos.setText("");
-        for(String produto : produtos) {
+
+        for(String cod : codigos) {
+            int codigo = Integer.parseInt(cod);
+            String produto = arqProduto.getProdutoPorCodigo(codigo);
             taAreaProdutos.append(produto + "\n");
         }
     }
+
+    // Método que atualiza o valor do frete a partir da opção escolhida.
+    // Cria uma variável temporária que gerencia o frete a partir do endereço do cliente.
+    public void atualizarFrete() {
+        tfValorFrete.setText("");
+        clienteAtual.setNome(arqCliente.getNome(getCpfCliente()));
+        clienteAtual.setCpf(getCpfCliente());
+        clienteAtual.setEndereco(arqCliente.getEndereco(getCpfCliente()));
+        tfValorFrete.setText(String.valueOf(clienteAtual.estimarDistancia()));
+    }
     
+    // Método que atualiza o valor do total da compra
+    // Acontece a chamada do método que calcula o novo valor total e soma do frete
+    public void atualizarValorTotal(ArrayList<String> produtos) {
+        tfTotal.setText("");
+    }
+    
+    // Método que adiciona um produto à encomenda a partir do seu código único
+    // Utiliza método de adicionar o elemento a encomenda aberta, e o método de
+    // atualizar a página inicial da encomenda.
+    public void adicionarProduto(int codigoProduto) {
+        String cpf = getCpfCliente();
+        arqEncomenda.adicionaProdutoEncomenda(cpf, codigoProduto);
+        ArrayList<String> produtos = arqEncomenda.getProdutosEncomenda(cpf);
+        atualizarAreaProdutos(produtos);
+        atualizarValorTotal(produtos);
+    }
+    
+    public void habilitarBotoesEncomenda() {
+        btnAdicionarProduto.setEnabled(true);
+        btnRemoverProduto.setEnabled(true);
+        btnFinalizarEncomenda.setEnabled(true);
+    }
+
     // Método que habilita os botões relacionados à encomenda quando há uma encomenda ativa
     // e desabilita caso o contrário
     public void desabilitarBotoesEncomenda() {
         btnAdicionarProduto.setEnabled(false);
         btnRemoverProduto.setEnabled(false);
         btnFinalizarEncomenda.setEnabled(false);
-    }
-    
-    // Implementar
-    //
-    //
-    // Método que adiciona um produto à encomenda a partir do seu código único
-    // Utiliza método de adicionar o elemento a encomenda aberta, e o método de
-    // atualizar a página inicial da encomenda.
-    public void adicionarProduto(int codigoProduto) {
-        String cpf = getCpfCliente();
-        String nomeArquivo = "encomendas.txt";
-        
-        arq.adicionaProdutoEncomenda(nomeArquivo, cpf, codigoProduto);
-        // Atualizar área que mostra os produtos através do produtos.txt
-        // Implementar
     }
 }

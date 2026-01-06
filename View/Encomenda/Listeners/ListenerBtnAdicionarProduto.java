@@ -33,8 +33,9 @@ public class ListenerBtnAdicionarProduto implements ActionListener {
         if(linha == null || linha.contains(";ABERTA") == false) {
             JOptionPane.showMessageDialog(encomendaAtual, "Não existe encomenda aberta nesse CPF.");
         } 
-        // else {
-        //     new ProdutoView(encomendaAtual);
-        // }
+        else {
+            new ProdutoView(encomendaAtual);
+            encomendaAtual.setVisible(false);
+        }
     }
 }

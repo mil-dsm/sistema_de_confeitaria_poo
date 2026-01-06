@@ -7,12 +7,18 @@ import java.util.ArrayList;
  * Estrutura esperada: cpf;status(ABERTA ou FECHADA);codigo1,codigo2,codigo3,...
  */
 public class ManipulaArquivosEncomenda {
-    public String diretorio = "dados/";
+    public String diretorio;
+    public String nomeArquivo;
+    public File arq;
+
+    public ManipulaArquivosEncomenda() {
+        diretorio = "dados/";
+        nomeArquivo = "encomendas.txt";
+        arq = new File(diretorio+nomeArquivo);
+    }
 
     // Método que escreve em uma linha do arquivo
-    public boolean escreverArquivo(String nomeArquivo, String texto) {
-        File arq = new File(diretorio + nomeArquivo);
-
+    public boolean escreverArquivo(String texto) {
         try(BufferedWriter gravadorBuff = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arq, true)))) {
             gravadorBuff.write(texto);
             gravadorBuff.newLine();
@@ -25,7 +31,7 @@ public class ManipulaArquivosEncomenda {
 
     // Método que retorna um ArrayList com todo o conteudo do arquivo
     public ArrayList<String> retornarConteudoArquivo(String nomeArquivo) {
-        File arq = new File(diretorio + nomeArquivo);
+        
         ArrayList<String> alArquivo = new ArrayList<>();
 
         if(arq.isFile() && arq.canRead()) {
@@ -45,13 +51,13 @@ public class ManipulaArquivosEncomenda {
     }
     
     // Remove uma linha inteira do arquivo e retorna um boolean como confirmação
-    public boolean removerElementoArquivo(String nomeArquivo, String valorRemocao) {
+    public boolean removerElementoArquivo(String valorRemocao) {
         ArrayList<String> alArquivo = retornarConteudoArquivo(nomeArquivo);
         
         boolean confirmacao = alArquivo.remove(valorRemocao);
         
         if(confirmacao) {
-            File arq = new File(diretorio + nomeArquivo);
+            
             try(BufferedWriter gravadorBuff = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arq)))) {
                 for (String valor : alArquivo) {
                     gravadorBuff.write(valor);
@@ -79,7 +85,7 @@ public class ManipulaArquivosEncomenda {
     }
 
     // Método para buscar se um elemento existe no arquivo
-    public boolean buscarElementoArquivo(String nomeArquivo, String valorBusca) {
+    public boolean buscarElementoArquivo(String valorBusca) {
         ArrayList<String> alArquivo = retornarConteudoArquivo(nomeArquivo);
         for(String linha : alArquivo) {
             if(linha.startsWith(valorBusca + ";")) {
@@ -92,7 +98,7 @@ public class ManipulaArquivosEncomenda {
     /* ========== Métodos extras para a manipulação do arquivo encomendas.txt ==========*/
 
     // Metodo para buscar uma linha específica por CPF e ver se já existe um encomenda naquele CPF
-    public String buscaLinhaPorCpf(String nomeArquivo, String cpf) {
+    public String buscaLinhaPorCpf(String cpf) {
         ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
         for(String linha : linhas) {
             if(linha.startsWith(cpf + ";")) {
@@ -103,7 +109,7 @@ public class ManipulaArquivosEncomenda {
     }
     
     // Método para verificar se existe uma encomenda aberta para um determinado CPF
-    public boolean existeEncomendaAberta(String nomeArquivo, String cpf) {
+    public boolean existeEncomendaAberta(String cpf) {
         ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
     
         for (String linha : linhas) {
@@ -116,7 +122,7 @@ public class ManipulaArquivosEncomenda {
     }
     
     // Busca todos os produtos adicionados a uma encomenda e retorna um ArrayList com os produtos
-    public ArrayList<String> getProdutosEncomenda(String nomeArquivo, String cpf) {
+    public ArrayList<String> getProdutosEncomenda(String cpf) {
         ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
         ArrayList<String> produtos = new ArrayList<>();
 
@@ -136,10 +142,10 @@ public class ManipulaArquivosEncomenda {
     }
 
     // Adiciona um produto na encomenda a partir do nome do arquivo, cpf do cliente e código do produto criado
-    public boolean adicionaProdutoEncomenda(String nomeArquivo, String cpf, int codigoProduto) {
+    public boolean adicionaProdutoEncomenda(String cpf, int codigoProduto) {
         
         // Verifica se existe alguma encomenda aberta naquele CPF
-        if(!existeEncomendaAberta(nomeArquivo, cpf)) {
+        if(!existeEncomendaAberta(cpf)) {
             return false;
         }
 
@@ -165,7 +171,7 @@ public class ManipulaArquivosEncomenda {
         }
 
         // Reescreve o arquivo
-        File arq = new File(diretorio + nomeArquivo);
+        
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
             for (String l : linhas) {
                 bw.write(l);
@@ -180,13 +186,15 @@ public class ManipulaArquivosEncomenda {
     }
 
     // Adiciona um produto na encomenda a partir do nome do arquivo, cpf do cliente e código do produto criado
-    public boolean removeProdutoEncomenda(String nomeArquivo, String cpf, int codigo);
+    public boolean removeProdutoEncomenda(String cpf, int codigo) {
+        return false;
+    }
 
     // Método que recebe o cpf do cliente, produra sua encomenda no arquivo e pega os códigos dos produtos
     // dentro da encomenda. Com isso, é passar para procurar o valor de cada produto ao método do arquivos
     // de produtos e somar a uma variável externa.
     public double calcularTotalProdutos(String cpf) {
-        ArrayList<String> codigos = getProdutosEncomenda("encomendas.txt", cpf);
+        ArrayList<String> codigos = getProdutosEncomenda(cpf);
         ManipulaArquivosProduto arqProduto = new ManipulaArquivosProduto();
 
         double total = 0.0;

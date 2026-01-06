@@ -61,6 +61,9 @@ public abstract class ProdutoTO {
     //Método ABSTRATO  que calcula o preço final de cada produto a partir da personalização e atributos de cada um.
     public abstract double calcularPrecoFinal();
 
+    // Método ABSTRATO que formata como os atributos de cada produto aparecera no arquivo produtos.txt
+    public abstract String gerarLinhaArquivo();
+
     // Método base toString para exibir informações do produto
     @Override
     public String toString() {

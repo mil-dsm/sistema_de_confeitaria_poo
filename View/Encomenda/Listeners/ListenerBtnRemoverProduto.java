@@ -15,16 +15,17 @@ import View.Encomenda.EncomendaView;
 public class ListenerBtnRemoverProduto implements ActionListener {
     private EncomendaView componentePai;
     private ManipulaArquivosEncomenda encomendaArq;
-    //private ManipulaArquivosProdutos produtoArq;
+    private ManipulaArquivosProdutos produtoArq;
 
     public ListenerBtnRemoverProduto(EncomendaView componentePai) {
         this.componentePai = componentePai;
         encomendaArq = new ManipulaArquivosEncomenda();
-        //produtoArq = new ManipulaArquivosProdutos();
+        produtoArq = new ManipulaArquivosProdutos();
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         // Implementação
+        
     }
 }
