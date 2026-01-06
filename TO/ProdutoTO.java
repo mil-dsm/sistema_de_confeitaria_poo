@@ -13,6 +13,8 @@ public abstract class ProdutoTO {
     public ProdutoTO(String nome, double precoBase) {
         this.nome = nome;
         this.precoBase = precoBase;
+        codigoUnico = proximoCodigo;
+        proximoCodigo++;
     }
 
     //gets e setters
