@@ -36,9 +36,9 @@ public class DonutTO extends ProdutoTO {
     @Override
     public double calcularPrecoFinal() {
         double preco = precoBase;
-        if(recheio != null) preco += 3;
-        if(recheio != null) preco += 2;
-        if(recheio != null) preco += 1.5;
+        if(recheio == "Nenhuma") preco += 0;
+        if(recheio == "Nutella") preco += 2;
+        if(recheio != "Ninho") preco += 1.5;
 
         return preco * quantidade;
     }
