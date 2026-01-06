@@ -39,4 +39,9 @@ public class DoceTO extends ProdutoTO {
     public String toString() {
         return "Doce: " + tipo + "\n" + super.toString();
     }
+     @Override
+    public String gerarLinhaArquivo() {
+        return codigoUnico + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + tipo;
+    }
+
 }
