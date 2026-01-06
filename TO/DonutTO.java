@@ -53,8 +53,4 @@ public class DonutTO extends ProdutoTO {
     public String toString() {
         return "Donut: recheio=" + recheio + ", cobertura=" + cobertura + ", confete=" + confete + "\n" + super.toString();
     }
-     @Override
-    public String gerarLinhaArquivo() {
-        return codigoUnico + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + recheio + ";" + cobertura + ";" + confete;
-    }
 }
