@@ -17,12 +17,12 @@ import View.Encomenda.EncomendaView;
 public class ListenerBtnFinalizarEncomenda implements ActionListener {
     private EncomendaView componentePai;
     private JTextField tfCpf;
-    private ManipulaArquivosEncomenda arq;
+    private ManipulaArquivosEncomenda encomendaArq;
 
     public ListenerBtnFinalizarEncomenda(EncomendaView componentePai, JTextField tfCpf) {
         this.componentePai = componentePai;
         this.tfCpf = tfCpf;
-        this.arq = new ManipulaArquivosEncomenda();
+        this.encomendaArq = new ManipulaArquivosEncomenda();
     }
 
     @Override
@@ -33,8 +33,7 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
             return;
         }
 
-        String nomeArquivo = "encomendas.txt";
-        String linha = arq.buscaLinhaPorCpf(nomeArquivo, cpf);
+        String linha = encomendaArq.buscaLinhaPorCpf(cpf);
 
         if(linha == null) {
             JOptionPane.showMessageDialog(componentePai, "Encomenda não encontrada para este CPF.");
@@ -54,12 +53,12 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
         }
 
         // Remove linha antiga
-        arq.removerElementoArquivo(nomeArquivo, linha);
+        encomendaArq.removerElementoArquivo(linha);
 
         // Escreve nova linha com Status finalizado
         String novaLinha = cpf + ";FINALIZADA";
         
-        arq.escreverArquivo(nomeArquivo, novaLinha);
+        encomendaArq.escreverArquivo(novaLinha);
         componentePai.desabilitarBotoesEncomenda();
         JOptionPane.showMessageDialog(componentePai, "Encomenda finalizada com sucesso.");
     }

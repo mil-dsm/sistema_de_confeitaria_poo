@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
 import View.Encomenda.EncomendaView;
-// import View.Produto.ProdutoView; // Adicionar
+import View.Produto.ProdutoView; // Adicionar
 
 /**
  * Listener do Botão "Adicionar Produto", que procura pelo CPF do cliente que está editando a encomenda,
@@ -25,11 +25,10 @@ public class ListenerBtnAdicionarProduto implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        String nomeArquivo = "encomendas.txt";
         String cpf = encomendaAtual.getCpfCliente();
 
         // Verifica se tem encomenda aberta no CPF do cliente que está editando sua encomenda
-        String linha = encomendaArq.buscaLinhaPorCpf(nomeArquivo, cpf);
+        String linha = encomendaArq.buscaLinhaPorCpf(cpf);
         if(linha == null || linha.contains(";ABERTA") == false) {
             JOptionPane.showMessageDialog(encomendaAtual, "Não existe encomenda aberta nesse CPF.");
         } 

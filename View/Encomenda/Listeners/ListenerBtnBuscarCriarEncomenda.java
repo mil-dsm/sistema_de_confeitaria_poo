@@ -40,7 +40,7 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
         }
 
         // Verificação se o cliente está cadastrado
-        if(!arqCliente.clienteExiste(cpf)) {
+        if(!arqCliente.verificarCPF(cpf)) {
             JOptionPane.showMessageDialog(componentePai, "Cliente não cadastrado.");
             return;
         }
