@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
 import View.Encomenda.EncomendaView;
-import View.Produto.ProdutoView; // Adicionar
+import View.Produto.ProdutoView;
 
 /**
  * Listener do Botão "Adicionar Produto", que procura pelo CPF do cliente que está editando a encomenda,
@@ -25,7 +25,7 @@ public class ListenerBtnAdicionarProduto implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        String cpf = encomendaAtual.getCpfCliente();
+        String cpf = encomendaAtual.getCpf();
 
         // Verifica se tem encomenda aberta no CPF do cliente que está editando sua encomenda
         String linha = encomendaArq.buscaLinhaPorCpf(cpf);

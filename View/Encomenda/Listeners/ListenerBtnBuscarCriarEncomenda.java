@@ -27,7 +27,7 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
         this.tfCpf = tfCpf;
         arqEncomenda = new ManipulaArquivosEncomenda();
         arqCliente = new ManipulaArquivosCliente();
-        clienteAtual = new ClienteTO();
+        clienteAtual = new ClienteTO(); // Talvez não seja necessário
     }
 
     @Override
@@ -45,6 +45,7 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
             return;
         }
 
+        // Talvez não seja necessário
         // Diz qual o cliente criado
         clienteAtual.setNome(arqCliente.getNome(cpf));
         clienteAtual.setEndereco(arqCliente.getEndereco(cpf));

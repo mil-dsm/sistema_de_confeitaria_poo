@@ -126,6 +126,10 @@ public class EncomendaView extends JFrame {
 
         add(panel);
         setVisible(true);
+
+        clienteAtual.setNome(arqCliente.getNome(getCpf()));
+        clienteAtual.setEndereco(arqCliente.getEndereco(getCpf()));
+        clienteAtual.setCpf(getCpf());
     }
 
     public EncomendaTO getEncomendaAtual() {
@@ -136,7 +140,7 @@ public class EncomendaView extends JFrame {
         this.encomendaAtual = encomendaAtual;
     }
 
-    public String getCpfCliente() {
+    public String getCpf() {
         return tfCpf.getText();
     }
 
@@ -163,9 +167,7 @@ public class EncomendaView extends JFrame {
     // Cria uma variável temporária que gerencia o frete a partir do endereço do cliente.
     public void atualizarFrete() {
         tfValorFrete.setText("");
-        clienteAtual.setNome(arqCliente.getNome(getCpfCliente()));
-        clienteAtual.setCpf(getCpfCliente());
-        clienteAtual.setEndereco(arqCliente.getEndereco(getCpfCliente()));
+        clienteAtual.setNome(arqCliente.getNome(getCpf()));
         tfValorFrete.setText(String.valueOf(clienteAtual.estimarDistancia()));
     }
     
@@ -179,7 +181,7 @@ public class EncomendaView extends JFrame {
     // Utiliza método de adicionar o elemento a encomenda aberta, e o método de
     // atualizar a página inicial da encomenda.
     public void adicionarProduto(int codigoProduto) {
-        String cpf = getCpfCliente();
+        String cpf = getCpf();
         arqEncomenda.adicionaProdutoEncomenda(cpf, codigoProduto);
         ArrayList<String> produtos = arqEncomenda.getProdutosEncomenda(cpf);
         atualizarAreaProdutos(produtos);
