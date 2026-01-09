@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
-import Arq.ManipulaArquivosProduto; // Adicionar implementação
+import Arq.ManipulaArquivosProduto;
 import TO.EncomendaTO;
 import View.Encomenda.EncomendaView;
 
