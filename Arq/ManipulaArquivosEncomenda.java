@@ -173,7 +173,6 @@ public class ManipulaArquivosEncomenda {
         }
 
         // Reescreve o arquivo
-        
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
             for (String l : linhas) {
                 bw.write(l);
@@ -200,8 +199,8 @@ public class ManipulaArquivosEncomenda {
         double total = 0.0;
 
         for (String cod : codigos) {
-            double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
-            total += preco;
+            // double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
+            // total += preco;
         }
 
         return total;

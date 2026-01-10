@@ -137,15 +137,15 @@ public class ManipulaArquivosProdutos {
 		return(confirmacao);				
 	}
 
-	// Método que recebe o produto criado e adiciona ao arquivo produtos.txt
+	// TODO: Método que recebe o produto criado e adiciona ao arquivo produtos.txt
     public boolean salvarProduto(ProdutoTO produto);
 
-    // Método que recebe o produto que quer remover e remove sua linha no arquivo produtos.txt
+    // TODO: Método que recebe o produto que quer remover e remove sua linha no arquivo produtos.txt
     public boolean removerProduto(int codigo);
 
-    // Método que retorna a linha inteira do produto a partir do código
-    public String getProdutoPorCodigo(int codigo);
+    // TODO: Método que retorna o produto a partir do código
+    public ProdutoTO getProdutoPorCodigo(int codigo);
 
-    // Método que retorna apenas o preço do produto a partir do código
+    // TODO: Método que retorna apenas o preço do produto a partir do código
     public double getPrecoProdutoPorCodigo(int codigo);
 }

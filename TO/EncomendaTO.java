@@ -16,14 +16,22 @@ public class EncomendaTO implements EntregavelTO {
         this.itens = new HashMap<>();
     }
     
+    // Método que retorna o cliente vinculado a encomenda
     public ClienteTO getCliente() {
         return cliente;
     }
     
+    // Método que define o cliente vinculado a encomenda
+    public void setCliente(ClienteTO cliente) {
+        this.cliente = cliente;
+    }
+
+    // Método que retorna o tipo da entrega
     public String getTipoEntrega() {
         return tipoEntrega;
     }
 
+    // Método que define o tipo da entrega
     public void setTipoEntrega(String tipo) {
         this.tipoEntrega = tipo;
     }
@@ -31,6 +39,7 @@ public class EncomendaTO implements EntregavelTO {
     public Map<ProdutoTO, Integer> getItens() {
         return itens;
     }
+
 
     // Método sobrecarregado que adiciona uma determinada quantidade ao produto selecionado
     // Parametros: Produto p como a key dentro de um HashMap
@@ -84,6 +93,7 @@ public class EncomendaTO implements EntregavelTO {
         removerProduto(p, 1);
     }
 
+    // Método implementado da interface que calcula o valor do frete de acordo com o tipo de entrega
     @Override
     public double calcularFrete() {
         if(getTipoEntrega().equals("delivery")) {

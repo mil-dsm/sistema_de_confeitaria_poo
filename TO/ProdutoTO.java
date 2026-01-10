@@ -7,7 +7,7 @@ public abstract class ProdutoTO {
     protected String validade;
     protected int quantidade;
     static int proximoCodigo = 0;
-    int codigoUnico;
+    private int codigoUnico;
 
     //método construtor
     public ProdutoTO(String nome, double precoBase) {
@@ -68,5 +68,18 @@ public abstract class ProdutoTO {
     @Override
     public String toString() {
         return "Nome: " + nome + "\nPreço Base: " + precoBase + "\nValidade: " + validade + "\nQuantidade: " + quantidade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProdutoTO)) return false;
+        ProdutoTO p = (ProdutoTO) o;
+        return this.codigoUnico == p.codigoUnico;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(codigoUnico);
     }
 }
