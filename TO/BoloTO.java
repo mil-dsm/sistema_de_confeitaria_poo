@@ -53,7 +53,7 @@ public class BoloTO extends ProdutoTO {
             precoFinal += 5.0;
         }
 
-        return (precoFinal);
+        return (precoFinal) * quantidade;
     }
 
     @Override

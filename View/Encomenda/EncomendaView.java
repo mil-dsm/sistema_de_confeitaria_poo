@@ -25,8 +25,8 @@ public class EncomendaView extends JFrame {
     private JRadioButton rbDelivery;
     private JRadioButton rbRetirada;
     // Área de mostrar os produtos da encomenda
-    private JList<String> listaProdutos;
-    private DefaultListModel<String> modelProdutos;
+    private JList<ProdutoTO> listaProdutos;
+    private DefaultListModel<ProdutoTO> modelProdutos;
     // Informações sobre o frete
     private JLabel lbValorFrete;
     private JTextField tfValorFrete;
@@ -39,12 +39,19 @@ public class EncomendaView extends JFrame {
     private JButton btnAdicionarProduto;
     private JButton btnRemoverProduto;
     private JButton btnFinalizarEncomenda;
-
+    
     public EncomendaView() {
         setTitle("Encomenda");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 500);
         setLocationRelativeTo(null);
+        
+        /* Inicialização dos atributos */
+        arqCliente = new ManipulaArquivosCliente();
+        arqEncomenda = new ManipulaArquivosEncomenda();
+        arqProduto = new ManipulaArquivosProdutos();
+        clienteAtual = null;
+        encomendaAtual = null;
         
         /* Painel CPF + Buscar */
         // Inicializa labels e TextField
@@ -82,6 +89,9 @@ public class EncomendaView extends JFrame {
         painelEntrega.add(lbTipoEntrega);
         painelEntrega.add(rbDelivery);
         painelEntrega.add(rbRetirada);
+        // Atualiza o tipo de entrega toda vez que seleciona algo diferente
+        rbDelivery.addActionListener(e -> atualizarTipoEntrega());
+        rbRetirada.addActionListener(e -> atualizarTipoEntrega());
 
         /* Painel de visualização dos produtos */
         modelProdutos = new DefaultListModel<>();
@@ -129,13 +139,6 @@ public class EncomendaView extends JFrame {
         painelBotoes.add(btnRemoverProduto);
         painelBotoes.add(btnFinalizarEncomenda);
 
-        /* Inicialização dos atributos */
-        arqCliente = new ManipulaArquivosCliente();
-        arqEncomenda = new ManipulaArquivosEncomenda();
-        arqProduto = new ManipulaArquivosProdutos();
-        clienteAtual = new ClienteTO(getCpf(), arqCliente.getNome(getCpf()), arqCliente.getEndereco(getCpf()));
-        encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
-
         /* Montagem */
         panelPrincipal.add(painelTopo, BorderLayout.NORTH);
         panelPrincipal.add(painelEntrega, BorderLayout.WEST);
@@ -147,6 +150,72 @@ public class EncomendaView extends JFrame {
         setVisible(true);
     }
 
+    // Busca / criação de uma encomenda
+    public void buscarOuCriarEncomenda(String cpf) {
+        // 1. Atualiza o cliente
+        clienteAtual = new ClienteTO(cpf, arqCliente.getNome(cpf), arqCliente.getEndereco(cpf));
+
+        // 2. Verifica o arquivo encomendas.txt
+        if(arqEncomenda.existeEncomendaAberta(cpf)) {
+            JOptionPane.showMessageDialog(this, "Encomenda aberta encontrada.");
+            encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
+
+            ArrayList<String> codigos = arqEncomenda.getProdutosEncomenda(cpf);
+            for(String cod : codigos) {
+                int codigo = Integer.parseInt(cod);
+                ProdutoTO produto = arqProduto.getProdutoPorCodigo(codigo);
+                encomendaAtual.adicionarProduto(produto, produto.getQuantidade());
+            }
+
+            atualizarListaProdutos(arqEncomenda.getProdutosEncomenda(cpf));
+        } else {
+            arqEncomenda.escreverArquivo(cpf + ";ABERTA");
+            encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
+            JOptionPane.showMessageDialog(this, "Encomenda criada com sucesso.");
+            this.habilitarBotoesEncomenda();
+        }
+
+        habilitarBotoesEncomenda();
+        atualizarFrete();
+        atualizarValorTotal();
+    }
+
+    // Método que adiciona um produto à encomenda a partir do seu código único
+    // Utiliza método de adicionar o elemento a encomenda aberta, e o método de
+    // atualizar a página inicial da encomenda.
+    public void adicionarProduto(ProdutoTO produto) {
+        if(produto == null || encomendaAtual == null) return;
+        // Adiciona no TO da encomendaAtual
+        encomendaAtual.adicionarProduto(produto, produto.getQuantidade());
+        // Adiciona no arquivo encomendas.txt
+        arqEncomenda.adicionaProdutoEncomenda(getCpf(), produto.getCodigo());
+        atualizarListaProdutos();
+        atualizarValorTotal();
+    }
+
+    // Remoção de um produto
+    public void removerProdutoSelecionado() {
+        ProdutoTO produto = listaProdutos.getSelectedValue();
+        if(produto == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um pedido da encomenda que você deseja remover.", JOptionPane.ERROR_MESSAGE);
+        }
+        // Recupera o código do produto selecionado
+        int codigo = produto.getCodigo();
+        // Remove o produto por objeto e nos arquivos
+        encomendaAtual.removerProduto(produto, produto.getQuantidade());
+        arqEncomenda.removeProdutoEncomenda(getCpf(), codigo);
+        arqProduto.removerProduto(codigo);
+        modelProdutos.removeElement(produto);
+        // Atualiza áreas de produtos e valores
+        atualizarListaProdutos();
+        atualizarValorTotal();
+    }
+
+    // Finalização de uma encomenda
+    public void finalizarEncomenda();
+
+    /* Métodos auxiliares */
+
     // Metodo que retorna a encomenda que está sendo trabalhada
     public EncomendaTO getEncomendaAtual() {
         return encomendaAtual;
@@ -155,25 +224,6 @@ public class EncomendaView extends JFrame {
     // Metodo que define a encomenda que será trabalhada
     public void setEncomendaAtual(EncomendaTO encomenda) {
         this.encomendaAtual = encomenda;
-    }
-    
-    // Método que atualiza os dados da encomenda
-    public void atualizarDadosEncomenda() {
-        encomendaAtual.setCliente(getCliente());
-        encomendaAtual.setTipoEntrega(getTipoEntrega());
-    }
-
-    // Métpodo que retorna o cliente da encomenda
-    public ClienteTO getCliente() {
-        clienteAtual.setNome(arqCliente.getNome(getCpf()));
-        clienteAtual.setEndereco(arqCliente.getEndereco(getCpf()));
-        clienteAtual.setCpf(getCpf());
-        return clienteAtual;
-    }
-
-    // Método que define o cliente da encomenda
-    public void setClientePorCpf(String cpf) {
-        clienteAtual = new ClienteTO(cpf, arqCliente.getNome(cpf),arqCliente.getEndereco(cpf));
     }
 
     // Método que retorna o CPF digitado
@@ -185,52 +235,38 @@ public class EncomendaView extends JFrame {
     public String getTipoEntrega() {
         return rbDelivery.isSelected() ? "delivery" : "retirada";
     }
-    
+
     // Método que atualiza a área que mostra os produtos da encomenda
     // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
-    public void atualizarListaProdutos(ArrayList<String> codigos) {
+    public void atualizarListaProdutos() {
         modelProdutos.clear();
-        for(String cod : codigos) {
-            int codigo = Integer.parseInt(cod);
-            String produto = arqProduto.getProdutoPorCodigo(codigo);
-            modelProdutos.addElement(produto);
+        for(ProdutoTO p : encomendaAtual.getListaProdutos()) {
+            modelProdutos.addElement(p);
         }
     }
-
+    
     // Método que atualiza o valor do frete a partir da opção escolhida
     // Cria uma variável temporária que gerencia o frete a partir do endereço do cliente
     public void atualizarFrete() {
-        tfValorFrete.setText("");
+        if(encomendaAtual == null) return;
         tfValorFrete.setText(String.valueOf(encomendaAtual.calcularFrete()));
+    }
+    
+    // Método que atualiza o tipo de entrega
+    public void atualizarTipoEntrega() {
+        if(encomendaAtual != null) {
+            encomendaAtual.setTipoEntrega(getTipoEntrega());
+            atualizarFrete();
+            atualizarValorTotal();
+        }
     }
     
     // Método que atualiza o valor do total da compra
     // Acontece a chamada do método que calcula o novo valor total e soma do frete
     public void atualizarValorTotal() {
-        tfTotal.setText("");
         tfTotal.setText(String.valueOf(encomendaAtual.calcularValorTotal(true)));
     }
-    
-    // Método que adiciona um produto à encomenda a partir do seu código único
-    // Utiliza método de adicionar o elemento a encomenda aberta, e o método de
-    // atualizar a página inicial da encomenda.
-    public void adicionarProduto(int codigoProduto) {
-        String cpf = getCpf();
-        arqEncomenda.adicionaProdutoEncomenda(cpf, codigoProduto);
-        ArrayList<String> produtos = arqEncomenda.getProdutosEncomenda(cpf);
-        atualizarListaProdutos(produtos);
-        atualizarValorTotal();
-    }
-    public void adicionarProduto(int codigoProduto) {
-        ProdutoTO produto = arqProduto.getProdutoPorCodigo(codigoProduto);
-        encomendaAtual.adicionarProduto(produto);
-        arqEncomenda.adicionaProdutoEncomenda(getCpf(), codigoProduto);
 
-        atualizarListaProdutos(arqEncomenda.getProdutosEncomenda(getCpf()));
-        atualizarValorTotal();
-    }
-
-    
     // Método que habilita botões de adicionar, remover ou finalizar compra
     public void habilitarBotoesEncomenda() {
         btnAdicionarProduto.setEnabled(true);

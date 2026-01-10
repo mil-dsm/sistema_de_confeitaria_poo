@@ -100,7 +100,7 @@ public class ManipulaArquivosEncomenda {
     /* ========== Métodos extras para a manipulação do arquivo encomendas.txt ==========*/
 
     // Metodo para buscar uma linha específica por CPF e ver se já existe um encomenda naquele CPF
-    public String buscaLinhaPorCpf(String cpf) {
+    public String buscaEncomendaPorCpf(String cpf) {
         ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
         for(String linha : linhas) {
             if(linha.startsWith(cpf + ";")) {
@@ -197,12 +197,10 @@ public class ManipulaArquivosEncomenda {
     public double calcularTotalProdutos(String cpf) {
         ArrayList<String> codigos = getProdutosEncomenda(cpf);
         double total = 0.0;
-
-        for (String cod : codigos) {
-            // double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
-            // total += preco;
+        for(String cod : codigos) {
+            double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
+            total += preco;
         }
-
         return total;
     }
 

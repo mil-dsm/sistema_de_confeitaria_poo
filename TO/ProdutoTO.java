@@ -69,17 +69,4 @@ public abstract class ProdutoTO {
     public String toString() {
         return "Nome: " + nome + "\nPreço Base: " + precoBase + "\nValidade: " + validade + "\nQuantidade: " + quantidade;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProdutoTO)) return false;
-        ProdutoTO p = (ProdutoTO) o;
-        return this.codigoUnico == p.codigoUnico;
-    }
-
-    @Override
-    public int hashCode() {
-        return Integer.hashCode(codigoUnico);
-    }
 }

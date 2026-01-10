@@ -1,11 +1,10 @@
 package TO;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class EncomendaTO implements EntregavelTO {
     private ClienteTO cliente;
     private String tipoEntrega; // "retirada" ou "delivery"
-    private HashMap<ProdutoTO, Integer> itens; // chave = produto, valor = quantidade
+    private ArrayList<ProdutoTO> produtos;
     
     public EncomendaTO(ClienteTO cliente, String tipoEntrega) {
         if(cliente == null) {
@@ -13,7 +12,7 @@ public class EncomendaTO implements EntregavelTO {
         }
         this.cliente = cliente;
         this.tipoEntrega = tipoEntrega;
-        this.itens = new HashMap<>();
+        this.produtos = new ArrayList<>();
     }
     
     // Método que retorna o cliente vinculado a encomenda
@@ -36,10 +35,9 @@ public class EncomendaTO implements EntregavelTO {
         this.tipoEntrega = tipo;
     }
     
-    public Map<ProdutoTO, Integer> getItens() {
-        return itens;
+    public ArrayList<ProdutoTO> getListaProdutos() {
+        return produtos;
     }
-
 
     // Método sobrecarregado que adiciona uma determinada quantidade ao produto selecionado
     // Parametros: Produto p como a key dentro de um HashMap
@@ -50,7 +48,14 @@ public class EncomendaTO implements EntregavelTO {
         if(qtd <= 0) {
             throw new IllegalArgumentException("Quantidade inválida.");
         }
-        itens.put(p, itens.getOrDefault(p, 0) + qtd);
+        for(ProdutoTO prod : produtos) {
+            if(p.getCodigo() == prod.getCodigo()) {
+                prod.setQuantidade(prod.getQuantidade() + qtd);
+                return;
+            }
+        }
+        p.setQuantidade(qtd);
+        produtos.add(p);
     }
 
     // Método sobrecarregado que adiciona mais um de quantidade ao produto selecionado
@@ -67,25 +72,29 @@ public class EncomendaTO implements EntregavelTO {
             throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
         }
 
-        if(itens.containsKey(p) == false) {
-            throw new IllegalArgumentException("Item não existe na encomenda.");
+        for(ProdutoTO prod : produtos) {
+            if(p.getCodigo() == prod.getCodigo()) {
+                prod.setQuantidade(novaQtd);
+                return;
+            }
         }
-        itens.put(p, novaQtd);
+
+        throw new IllegalArgumentException("Item não existe na encomenda.");
     }
 
     // Método sobrecarregado que remove uma determidada qtd total de um determinado item
     public void removerProduto(ProdutoTO p, int qtd) {
-        if(!itens.containsKey(p)) { // Returns true if this map maps one or more keys to the specified value.
-            throw new IllegalArgumentException("Produto não está na encomenda.");
+        if(p == null || qtd <= 0) {
+            throw new IllegalArgumentException("Dados inválidos.");
         }
-        if(qtd <= 0) {
-            throw new IllegalArgumentException("Quantidade inválida.");
+        for(ProdutoTO prod : produtos) {
+            if(p.getCodigo() == prod.getCodigo()) {
+                if(prod.getQuantidade() - qtd <= 0) produtos.remove(prod);
+                else prod.setQuantidade(prod.getQuantidade() - qtd);
+                return;
+            }
         }
-        if(itens.get(p) - qtd <= 0) {
-            itens.remove(p);
-        } else {
-            itens.put(p, itens.get(p) - qtd);
-        }
+        throw new IllegalArgumentException("Produto não está na encomenda.");
     }
 
     // Método sobrecarregado que remove um da quantidade total de um determinado item
@@ -106,8 +115,8 @@ public class EncomendaTO implements EntregavelTO {
     // Método atribui o resultado ao atributo valorTotal
     public double calcularValorTotal(boolean incluirFrete) {
         double total = 0;
-        for (ProdutoTO p : itens.keySet()) {
-            total += p.calcularPrecoFinal() * itens.get(p);
+        for(ProdutoTO p : produtos) {
+            total += p.calcularPrecoFinal();
         }
         if(incluirFrete && getTipoEntrega().equals("delivery")) {
             total += calcularFrete();
@@ -119,10 +128,10 @@ public class EncomendaTO implements EntregavelTO {
         return calcularValorTotal(false);
     }
 
-    // Método que lista os itens da encomenda atualmente
-    public void listarItens() {
-        for(ProdutoTO p : itens.keySet()) {
-            System.out.println("Produto: " + p.getNome() + ", Quantidade: " + itens.get(p));
+    // Método que lista os produtos da encomenda atualmente
+    public void listarprodutos() {
+        for(ProdutoTO p : produtos) {
+            System.out.println("Produto: " + p.getNome() + ", Quantidade: " + p.getQuantidade());
         }
     }
 }

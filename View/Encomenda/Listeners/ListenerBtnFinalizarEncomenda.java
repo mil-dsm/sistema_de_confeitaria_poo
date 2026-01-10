@@ -33,7 +33,7 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
             return;
         }
 
-        String linha = encomendaArq.buscaLinhaPorCpf(cpf);
+        String linha = encomendaArq.buscaEncomendaPorCpf(cpf);
 
         if(linha == null) {
             JOptionPane.showMessageDialog(componentePai, "Encomenda não encontrada para este CPF.");

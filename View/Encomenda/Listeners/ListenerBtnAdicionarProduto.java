@@ -28,7 +28,7 @@ public class ListenerBtnAdicionarProduto implements ActionListener {
         String cpf = encomendaAtual.getCpf();
 
         // Verifica se tem encomenda aberta no CPF do cliente que está editando sua encomenda
-        String linha = encomendaArq.buscaLinhaPorCpf(cpf);
+        String linha = encomendaArq.buscaEncomendaPorCpf(cpf);
         if(linha == null || linha.contains(";ABERTA") == false) {
             JOptionPane.showMessageDialog(encomendaAtual, "Não existe encomenda aberta nesse CPF.");
         } 

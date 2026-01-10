@@ -3,8 +3,7 @@ package View.Encomenda.Listeners;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import Arq.*;
-import TO.ClienteTO;
+import Arq.ManipulaArquivosCliente;
 import View.Encomenda.EncomendaView;
 
 /**
@@ -20,46 +19,30 @@ public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
     private JTextField tfCpf;
     private ManipulaArquivosEncomenda arqEncomenda;
     private ManipulaArquivosCliente arqCliente;
-    private ClienteTO clienteAtual;
 
     public ListenerBtnBuscarCriarEncomenda(EncomendaView componentePai, JTextField tfCpf) {
         this.componentePai = componentePai;
         this.tfCpf = tfCpf;
-        arqEncomenda = new ManipulaArquivosEncomenda();
         arqCliente = new ManipulaArquivosCliente();
-        clienteAtual = new ClienteTO(); // Talvez não seja necessário
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String cpf = tfCpf.getText().trim();
 
+        // 1. Verificar campos preenchidos
         if(cpf.isEmpty()) {
             JOptionPane.showMessageDialog(componentePai, "Informe o CPF.");
             return;
         }
 
-        // Verificação se o cliente está cadastrado
+        // 2. Verificar se o cliente está cadastrado
         if(!arqCliente.verificarCPF(cpf)) {
             JOptionPane.showMessageDialog(componentePai, "Cliente não cadastrado.");
             return;
         }
 
-        // Talvez não seja necessário
-        // Diz qual o cliente criado
-        clienteAtual.setNome(arqCliente.getNome(cpf));
-        clienteAtual.setEndereco(arqCliente.getEndereco(cpf));
-        clienteAtual.setCpf(cpf);
-
-        // Verifica o arquivo encomendas.txt
-        if(arqEncomenda.existeEncomendaAberta(cpf)) {
-            JOptionPane.showMessageDialog(componentePai, "Já existe uma encomenda em aberto para este CPF.");
-            componentePai.habilitarBotoesEncomenda();
-        } else {
-            String novaLinha = cpf + ";ABERTA";
-            arqEncomenda.escreverArquivo(novaLinha);
-            JOptionPane.showMessageDialog(componentePai, "Encomenda criada com sucesso.");
-            componentePai.habilitarBotoesEncomenda();
-        }
+        // 3. Criar encomenda
+        componentePai.buscarOuCriarEncomenda(cpf);
     }
 }
