@@ -51,6 +51,6 @@ public class DonutTO extends ProdutoTO {
 
     @Override
     public String toString() {
-        return "Donut: recheio=" + recheio + ", cobertura=" + cobertura + ", confete=" + confete + "\n" + super.toString();
+        return super.toString() + " | Recheio: " + recheio + " | Cobertura: " + cobertura + " | Confete: " + confete;
     }
 }

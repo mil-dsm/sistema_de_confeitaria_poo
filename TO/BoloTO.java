@@ -64,6 +64,6 @@ public class BoloTO extends ProdutoTO {
     
     @Override
     public String toString() {
-        return ("Bolo: [Recheio: " + recheio + ", Cobertura: " + cobertura + ", Tamanho: " + tamanho + "]\n" + super.toString());
+        return (super.toString() + " | Recheio: " + recheio + " | Cobertura: " + cobertura + " | Tamanho: " + tamanho);
     }
 }

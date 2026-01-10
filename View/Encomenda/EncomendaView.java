@@ -164,7 +164,7 @@ public class EncomendaView extends JFrame {
             for(String cod : codigos) {
                 int codigo = Integer.parseInt(cod);
                 ProdutoTO produto = arqProduto.getProdutoPorCodigo(codigo);
-                encomendaAtual.adicionarProduto(produto, produto.getQuantidade());
+                encomendaAtual.adicionarProduto(produto, 0);
             }
 
             atualizarListaProdutos(arqEncomenda.getProdutosEncomenda(cpf));
@@ -186,7 +186,7 @@ public class EncomendaView extends JFrame {
     public void adicionarProduto(ProdutoTO produto) {
         if(produto == null || encomendaAtual == null) return;
         // Adiciona no TO da encomendaAtual
-        encomendaAtual.adicionarProduto(produto, produto.getQuantidade());
+        encomendaAtual.adicionarProduto(produto);
         // Adiciona no arquivo encomendas.txt
         arqEncomenda.adicionaProdutoEncomenda(getCpf(), produto.getCodigo());
         atualizarListaProdutos();
@@ -198,14 +198,14 @@ public class EncomendaView extends JFrame {
         ProdutoTO produto = listaProdutos.getSelectedValue();
         if(produto == null) {
             JOptionPane.showMessageDialog(this, "Selecione um pedido da encomenda que você deseja remover.", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         // Recupera o código do produto selecionado
         int codigo = produto.getCodigo();
         // Remove o produto por objeto e nos arquivos
-        encomendaAtual.removerProduto(produto, produto.getQuantidade());
+        encomendaAtual.removerProduto(produto);
         arqEncomenda.removeProdutoEncomenda(getCpf(), codigo);
         arqProduto.removerProduto(codigo);
-        modelProdutos.removeElement(produto);
         // Atualiza áreas de produtos e valores
         atualizarListaProdutos();
         atualizarValorTotal();
@@ -240,6 +240,7 @@ public class EncomendaView extends JFrame {
     // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
     public void atualizarListaProdutos() {
         modelProdutos.clear();
+        if(encomendaAtual == null) return;
         for(ProdutoTO p : encomendaAtual.getListaProdutos()) {
             modelProdutos.addElement(p);
         }

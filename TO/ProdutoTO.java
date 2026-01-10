@@ -67,6 +67,6 @@ public abstract class ProdutoTO {
     // Método base toString para exibir informações do produto
     @Override
     public String toString() {
-        return "Nome: " + nome + "\nPreço Base: " + precoBase + "\nValidade: " + validade + "\nQuantidade: " + quantidade;
+        return nome + " | Qtd: " + quantidade + " | Unit: R$ " + precoBase + " | Total: R$ " + calcularPrecoFinal();
     }
 }

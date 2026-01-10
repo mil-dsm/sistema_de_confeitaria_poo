@@ -37,6 +37,6 @@ public class DoceTO extends ProdutoTO {
     //Sobrescrita de toString: seu toString() + super.toString()
     @Override
     public String toString() {
-        return "Doce: " + tipo + "\n" + super.toString();
+        return (super.toString() + " | Tipo: " + tipo);
     }
 }
