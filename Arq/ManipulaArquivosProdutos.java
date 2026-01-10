@@ -10,6 +10,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+import TO.BoloTO;
+import TO.DoceTO;
+import TO.DonutTO;
 import TO.ProdutoTO;
 
 public class ManipulaArquivosProdutos {
@@ -142,9 +145,6 @@ public class ManipulaArquivosProdutos {
 
     // TODO: Método que recebe o produto que quer remover e remove sua linha no arquivo produtos.txt
     public boolean removerProduto(int codigo);
-
-    // TODO: Método que retorna o produto a partir do código
-    public ProdutoTO getProdutoPorCodigo(int codigo);
 
     // TODO: Método que retorna apenas o preço do produto a partir do código
     public double getPrecoProdutoPorCodigo(int codigo);

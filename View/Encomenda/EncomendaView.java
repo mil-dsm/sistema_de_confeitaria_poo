@@ -197,7 +197,7 @@ public class EncomendaView extends JFrame {
     public void removerProdutoSelecionado() {
         ProdutoTO produto = listaProdutos.getSelectedValue();
         if(produto == null) {
-            JOptionPane.showMessageDialog(this, "Selecione um pedido da encomenda que você deseja remover.", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Selecione um pedido da encomenda que você deseja remover.");
             return;
         }
         // Recupera o código do produto selecionado

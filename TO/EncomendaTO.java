@@ -78,7 +78,7 @@ public class EncomendaTO implements EntregavelTO {
         throw new IllegalArgumentException("Item não existe na encomenda.");
     }
 
-    // Método sobrecarregado que remove um da quantidade total de um determinado item
+    // Método sobrecarregado que remove um item inteiro da encomenda
     public void removerProduto(ProdutoTO p) {
         if(p == null) 
             throw new IllegalArgumentException("Produto inválido");
