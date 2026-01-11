@@ -14,9 +14,9 @@ public class EncomendaView extends JFrame {
     private ClienteTO clienteAtual;
     private EncomendaTO encomendaAtual;
     // Arquivos
-    private ManipulaArquivosCliente arqCliente;
+    private SistemaCliente arqCliente;
     private ManipulaArquivosEncomenda arqEncomenda;
-    private ManipulaArquivosProdutos arqProduto;
+    private ManipulaArquivosProduto arqProduto;
     // Adicionar o CPF do cliente CADASTRADO
     private JLabel lbCpf;
     private JTextField tfCpf;
@@ -47,9 +47,9 @@ public class EncomendaView extends JFrame {
         setLocationRelativeTo(null);
         
         /* Inicialização dos atributos */
-        arqCliente = new ManipulaArquivosCliente();
+        arqCliente = new SistemaCliente();
         arqEncomenda = new ManipulaArquivosEncomenda();
-        arqProduto = new ManipulaArquivosProdutos();
+        arqProduto = new ManipulaArquivosProduto();
         clienteAtual = null;
         encomendaAtual = null;
         
@@ -153,6 +153,10 @@ public class EncomendaView extends JFrame {
     // Busca / criação de uma encomenda
     public void buscarOuCriarEncomenda(String cpf) {
         // 1. Atualiza o cliente
+        if (!arqCliente.existeCliente(cpf)) {
+            JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+            return;
+        }
         clienteAtual = new ClienteTO(cpf, arqCliente.getNome(cpf), arqCliente.getEndereco(cpf));
 
         // 2. Verifica o arquivo encomendas.txt
@@ -166,12 +170,11 @@ public class EncomendaView extends JFrame {
                 ProdutoTO produto = arqProduto.getProdutoPorCodigo(codigo);
                 encomendaAtual.adicionarProduto(produto);
             }
-            atualizarListaProdutos(arqEncomenda.getProdutosEncomenda(cpf));
+            atualizarListaProdutos();
         } else {
             arqEncomenda.escreverArquivo(cpf + ";ABERTA");
             encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
             JOptionPane.showMessageDialog(this, "Encomenda criada com sucesso.");
-            this.habilitarBotoesEncomenda();
         }
 
         habilitarBotoesEncomenda();
@@ -199,19 +202,36 @@ public class EncomendaView extends JFrame {
             JOptionPane.showMessageDialog(this, "Selecione um pedido da encomenda que você deseja remover.");
             return;
         }
-        // Recupera o código do produto selecionado
+
         int codigo = produto.getCodigo();
-        // Remove o produto por objeto e nos arquivos
+
+        // Remove da encomenda e do arquivo
         encomendaAtual.removerProduto(produto);
         arqEncomenda.removeProdutoEncomenda(getCpf(), codigo);
-        // Atualiza áreas de produtos e valores
+
+        // Atualiza UI
         atualizarListaProdutos();
         atualizarValorTotal();
+
+        if(encomendaAtual.getListaProdutos().isEmpty()) {
+            btnRemoverProduto.setEnabled(false);
+            btnFinalizarEncomenda.setEnabled(false);
+        }
     }
 
     // Finalização de uma encomenda
-    public void finalizarEncomenda();
-
+    public void finalizarEncomenda() {
+        if(encomendaAtual == null) return;
+        boolean sucesso = arqEncomenda.finalizarEncomenda(getCpf());
+        if(sucesso) {
+            JOptionPane.showMessageDialog(this, "Encomenda finalizada com sucesso!");
+            encomendaAtual = null;
+            modelProdutos.clear();
+            desabilitarBotoesEncomenda();
+        } else {
+            JOptionPane.showMessageDialog(this, "Não foi possível finalizar a encomenda.");
+        }
+    }
     /* Métodos auxiliares */
 
     // Metodo que retorna a encomenda que está sendo trabalhada

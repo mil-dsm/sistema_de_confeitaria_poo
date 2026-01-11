@@ -16,12 +16,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-public class ManipulaArquivosProdutos {
+public class ManipulaArquivosProduto {
 	public String diretorio;
 	public String nomeArquivo;
     public File arq;
 
-	public ManipulaArquivosProdutos() {
+	public ManipulaArquivosProduto() {
 		diretorio = "dados/";
 		nomeArquivo = "produtos.txt";
 		arq = new File(diretorio+nomeArquivo);
@@ -166,12 +166,13 @@ public class ManipulaArquivosProdutos {
 	// 	Primeiro passo, identificar o produto pelo código que foi pensado, primeiro método: Se encontrar, chama o próximo método
 	// Segundo passo, esse método vai receber do anterior o vetor de String, que vai ter a divisão de acordo com o split(";") das variáveis do produto. Ele vai pegar o indice da String que fala dos atributos em específico e define qual o tipo de produto: se começar com o atributo "tamanho=", é bolo, se "tipo=" é doce, se "recheio=" é donut (OU pode fazer pelo nome, como "BOLO", "DONUT", "DOCE", por exemplo)
 	// Terceiro passo, quando identifica o tipo de produto, chama o método específico daquele produto e passa o vetor de string que foi criado pela divisão do split(";")
-		public ProdutoTO getProdutoPorCodigo(int codigo) {
+	public ProdutoTO getProdutoPorCodigo(int codigo) {
     	ArrayList<String> alArquivo = retornarConteudoArquivo();
 
     	for (String linha : alArquivo) {
         	String[] dados = linha.split(";");	// divide em ";"
         	int codArquivo = Integer.parseInt(dados[0]);	// Pega o código do arquivo
+			String tipoProduto = dados[1];
 
             // doce
             if (TipoProduto.equals("Doce")) {	

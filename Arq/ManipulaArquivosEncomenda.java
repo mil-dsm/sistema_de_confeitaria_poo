@@ -215,7 +215,7 @@ public class ManipulaArquivosEncomenda {
                 break;
             }
         }
-        
+
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
             for (String l : linhas) {
                 bw.write(l);
@@ -242,4 +242,43 @@ public class ManipulaArquivosEncomenda {
         return total;
     }
 
+    public boolean finalizarEncomenda(String cpf) {
+        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
+        boolean encontrada = false;
+
+        for(int i = 0; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+            String[] partes = linha.split(";");
+
+            if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
+                String novaLinha;
+
+                // Mantém os produtos, se existirem
+                if(partes.length > 2) {
+                    novaLinha = partes[0] + ";FECHADA;" + partes[2];
+                } else {
+                    novaLinha = partes[0] + ";FECHADA";
+                }
+
+                linhas.set(i, novaLinha);
+                encontrada = true;
+                break;
+            }
+        }
+
+        if(!encontrada) return false;
+
+        // Reescreve o arquivo
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
+            for(String l : linhas) {
+                bw.write(l);
+                bw.newLine();
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
 }
