@@ -2,7 +2,7 @@ package View.MenuInicial.Listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-// import View.Cliente.ClienteView;
+import View.Cliente.ClienteView;
 import View.MenuInicial.MenuInicialView;
 
 /**
@@ -18,6 +18,6 @@ public class ListenerBtnCadastrar implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // new ClienteView();
+        new ClienteView();
     }
 }
