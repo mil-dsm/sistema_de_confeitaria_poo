@@ -293,19 +293,19 @@ public class ManipulaArquivosEncomenda {
         for(String linha : linhas) {
             String[] partes = linha.split(";");
             if(partes[0].equals(cpf) && partes[1].equals("FECHADA")) {
-            ClienteTO cliente = new ClienteTO(arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf), cpf);
-            String tipo = partes[2];
-            String data = partes[3];
-            double valor = Double.parseDouble(partes[4]);
-            EncomendaTO encomenda = new EncomendaTO(cliente, tipo);
-            if(partes.length > 5) {
-                for(String cod : partes[5].split(",")) {
-                    ProdutoTO p = arqProduto.getProdutoPorCodigo(Integer.parseInt(cod));
-                    if(p != null) encomenda.adicionarProduto(p);
+                ClienteTO cliente = new ClienteTO(arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf), cpf);
+                String tipo = partes[2];
+                String data = partes[3];
+                double valor = Double.parseDouble(partes[4]);
+                EncomendaTO encomenda = new EncomendaTO(cliente, tipo);
+                if(partes.length > 5) {
+                    for(String cod : partes[5].split(",")) {
+                        ProdutoTO p = arqProduto.getProdutoPorCodigo(Integer.parseInt(cod));
+                        if(p != null) encomenda.adicionarProduto(p);
+                    }
                 }
+                historico.add(encomenda);
             }
-            historico.add(encomenda);
-        }
         }
         return historico;
     }
