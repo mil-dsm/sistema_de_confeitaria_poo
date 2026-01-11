@@ -114,9 +114,9 @@ public class ManipulaArquivosEncomenda {
     public boolean existeEncomendaAberta(String cpf) {
         ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
     
-        for (String linha : linhas) {
+        for(String linha : linhas) {
             String[] partes = linha.split(";");
-            if (partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
+            if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
                 return true;
             }
         }
@@ -236,8 +236,8 @@ public class ManipulaArquivosEncomenda {
         ArrayList<String> codigos = getProdutosEncomenda(cpf);
         double total = 0.0;
         for(String cod : codigos) {
-            double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
-            total += preco;
+            // double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
+            // total += preco;
         }
         return total;
     }

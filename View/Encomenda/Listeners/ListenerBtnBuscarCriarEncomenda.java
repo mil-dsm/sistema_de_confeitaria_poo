@@ -3,7 +3,11 @@ package View.Encomenda.Listeners;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import Arq.ManipulaArquivosCliente;
+import java.util.ArrayList;
+
+import Arq.SistemaCliente;
+import TO.ClienteTO;
+import TO.EncomendaTO;
 import View.Encomenda.EncomendaView;
 
 /**
@@ -17,32 +21,28 @@ import View.Encomenda.EncomendaView;
 public class ListenerBtnBuscarCriarEncomenda implements ActionListener {
     private EncomendaView componentePai;
     private JTextField tfCpf;
-    private ManipulaArquivosEncomenda arqEncomenda;
-    private ManipulaArquivosCliente arqCliente;
+    private SistemaCliente arqCliente;
 
     public ListenerBtnBuscarCriarEncomenda(EncomendaView componentePai, JTextField tfCpf) {
         this.componentePai = componentePai;
         this.tfCpf = tfCpf;
-        arqCliente = new ManipulaArquivosCliente();
+        arqCliente = new SistemaCliente();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String cpf = tfCpf.getText().trim();
 
-        // 1. Verificar campos preenchidos
-        if(cpf.isEmpty()) {
+        if (cpf.isEmpty()) {
             JOptionPane.showMessageDialog(componentePai, "Informe o CPF.");
             return;
         }
 
-        // 2. Verificar se o cliente está cadastrado
-        if(!arqCliente.verificarCPF(cpf)) {
+        if (!arqCliente.CPFcadastrado(cpf)) {
             JOptionPane.showMessageDialog(componentePai, "Cliente não cadastrado.");
             return;
         }
 
-        // 3. Criar encomenda
         componentePai.buscarOuCriarEncomenda(cpf);
     }
 }

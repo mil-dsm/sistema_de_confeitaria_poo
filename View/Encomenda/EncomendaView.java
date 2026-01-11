@@ -152,34 +152,47 @@ public class EncomendaView extends JFrame {
 
     // Busca / criação de uma encomenda
     public void buscarOuCriarEncomenda(String cpf) {
-        // 1. Atualiza o cliente
-        if (!arqCliente.existeCliente(cpf)) {
+        // Limpa se houver encomenda anterior
+        modelProdutos.clear();
+        encomendaAtual = null;
+        clienteAtual = null;
+
+        // Atualiza o cliente
+        if(!arqCliente.CPFcadastrado(cpf)) {
             JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
             return;
         }
         clienteAtual = new ClienteTO(cpf, arqCliente.getNome(cpf), arqCliente.getEndereco(cpf));
 
-        // 2. Verifica o arquivo encomendas.txt
-        if(arqEncomenda.existeEncomendaAberta(cpf)) {
+        boolean confirmacao = arqEncomenda.existeEncomendaAberta(cpf);
+        // Verifica o arquivo encomendas.txt
+        if(!confirmacao) {
+            arqEncomenda.escreverArquivo(cpf + ";ABERTA");
+            JOptionPane.showMessageDialog(this, "Encomenda criada com sucesso.");
+        } else {
             JOptionPane.showMessageDialog(this, "Encomenda aberta encontrada.");
-            encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
+        }
+        encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
 
-            ArrayList<String> codigos = arqEncomenda.getProdutosEncomenda(cpf);
-            for(String cod : codigos) {
-                int codigo = Integer.parseInt(cod);
-                ProdutoTO produto = arqProduto.getProdutoPorCodigo(codigo);
+        // Carrega produtos existentes
+        ArrayList<String> codigos = arqEncomenda.getProdutosEncomenda(cpf);
+        for(String cod : codigos) {
+            int codigo = Integer.parseInt(cod);
+            ProdutoTO produto = arqProduto.getProdutoPorCodigo(codigo);
+            if(produto != null) {
                 encomendaAtual.adicionarProduto(produto);
             }
-            atualizarListaProdutos();
-        } else {
-            arqEncomenda.escreverArquivo(cpf + ";ABERTA");
-            encomendaAtual = new EncomendaTO(clienteAtual, getTipoEntrega());
-            JOptionPane.showMessageDialog(this, "Encomenda criada com sucesso.");
         }
 
-        habilitarBotoesEncomenda();
+        atualizarListaProdutos();
         atualizarFrete();
         atualizarValorTotal();
+        
+        if(encomendaAtual.getListaProdutos().size() == 0) {
+            btnAdicionarProduto.setEnabled(true);
+        } else {
+            habilitarBotoesEncomenda();
+        }
     }
 
     // Método que adiciona um produto à encomenda a partir do seu código único
@@ -283,6 +296,7 @@ public class EncomendaView extends JFrame {
     // Método que atualiza o valor do total da compra
     // Acontece a chamada do método que calcula o novo valor total e soma do frete
     public void atualizarValorTotal() {
+        if(encomendaAtual == null) return;
         tfTotal.setText(String.valueOf(encomendaAtual.calcularValorTotal(true)));
     }
 

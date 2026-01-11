@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
 import View.Encomenda.EncomendaView;
-import View.Produto.ProdutoView;
+// import View.Produto.ProdutoView;
 
 /**
  * Listener do Botão "Adicionar Produto", que procura pelo CPF do cliente que está editando a encomenda,
@@ -33,7 +33,7 @@ public class ListenerBtnAdicionarProduto implements ActionListener {
             JOptionPane.showMessageDialog(encomendaAtual, "Não existe encomenda aberta nesse CPF.");
         } 
         else {
-            new ProdutoView(encomendaAtual);
+            // new ProdutoView(encomendaAtual);
             encomendaAtual.setVisible(false);
         }
     }
