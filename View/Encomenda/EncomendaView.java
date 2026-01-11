@@ -1,7 +1,6 @@
 package View.Encomenda;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import Arq.*;
@@ -43,7 +42,7 @@ public class EncomendaView extends JFrame {
     
     public EncomendaView() {
         setTitle("Encomenda");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
         setLocationRelativeTo(null);
         
@@ -59,22 +58,22 @@ public class EncomendaView extends JFrame {
 
         /* Painel CPF + Buscar */
         JPanel painelTopo = new JPanel();
-        // Inicializa labels e TextField
-        lbCpf = new JLabel("CPF");
-        tfCpf = new JTextField(15);
         // Adiciona retorno        
         btnVoltar = new JButton("Voltar");
         ListenerBtnVoltar l1 = new ListenerBtnVoltar(this);
         btnVoltar.addActionListener(l1);
+        // Inicializa labels e TextField
+        lbCpf = new JLabel("CPF");
+        tfCpf = new JTextField(15);
         // Adiciona pesquisa
         btnBuscarCriarEncomenda = new JButton("Buscar / Criar Encomenda");
         ListenerBtnBuscarCriarEncomenda l2 = new ListenerBtnBuscarCriarEncomenda(this, tfCpf);
         btnBuscarCriarEncomenda.addActionListener(l2);
         // Agrupa em um painel
+        painelTopo.add(btnVoltar);
         painelTopo.add(lbCpf);
         painelTopo.add(tfCpf);
         painelTopo.add(btnBuscarCriarEncomenda);
-        painelTopo.add(btnVoltar);
         
         /* Painel tipo entrega */
         // Inicializa os labels e radio butons
@@ -103,7 +102,7 @@ public class EncomendaView extends JFrame {
         // TODO: Ajustar tamanho da área
         JScrollPane scrollProdutos = new JScrollPane(listaProdutos);
         scrollProdutos.setBorder(BorderFactory.createTitledBorder("Produtos na encomenda"));
-        scrollProdutos.setPreferredSize(new Dimension(150, 150));
+        scrollProdutos.setPreferredSize(new Dimension(400, 200));
 
         /* Painel de valores */
         // Mostrar o valor total do frete
@@ -142,21 +141,31 @@ public class EncomendaView extends JFrame {
         painelBotoes.add(btnAdicionarProduto);
         painelBotoes.add(btnRemoverProduto);
         painelBotoes.add(btnFinalizarEncomenda);
+        painelBotoes.setLayout(new GridLayout(3, 1, 0, 10));
 
         /* Montagem */
+        //Painel da direita (Valores + botões)
+        JPanel painelDireita = new JPanel(new BorderLayout(5, 15));
+        painelDireita.add(painelValores, BorderLayout.NORTH);
+        painelDireita.add(painelBotoes, BorderLayout.CENTER);
+        //Painel da esquerda (Tipo de entrega + lista)
+        JPanel painelCentro = new JPanel(new BorderLayout(5, 5));
+        painelCentro.add(painelEntrega, BorderLayout.NORTH);
+        painelCentro.add(scrollProdutos, BorderLayout.CENTER);
+        // Montagem final
         panelPrincipal.add(painelTopo, BorderLayout.NORTH);
-        panelPrincipal.add(painelEntrega, BorderLayout.WEST);
-        panelPrincipal.add(scrollProdutos, BorderLayout.CENTER);
-        panelPrincipal.add(painelValores, BorderLayout.SOUTH);
-        panelPrincipal.add(painelBotoes, BorderLayout.EAST);
+        panelPrincipal.add(painelCentro, BorderLayout.CENTER);
+        panelPrincipal.add(painelDireita, BorderLayout.EAST);
         
         add(panelPrincipal);
         setVisible(true);
     }
 
+    /* Métodos de funcionamento */
+    
     // Busca / criação de uma encomenda
     public void buscarOuCriarEncomenda(String cpf) {
-        // Limpa se houver encomenda anterior
+        // Limpa os estados anteriores para evitar lixo de memória
         modelProdutos.clear();
         encomendaAtual = null;
         clienteAtual = null;
@@ -168,9 +177,7 @@ public class EncomendaView extends JFrame {
         }
 
         // Cria cliente
-        clienteAtual.setNome(arqCliente.buscarNomePorCpf(cpf));
-        clienteAtual.setEndereco(arqCliente.buscarEnderecoPorCpf(cpf));
-        clienteAtual.setCpf(cpf);
+        clienteAtual = new ClienteTO(arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf), cpf);
 
         // Verifica a existência do cliente novamente
         if(clienteAtual == null) {
@@ -227,17 +234,13 @@ public class EncomendaView extends JFrame {
             JOptionPane.showMessageDialog(this, "Selecione um pedido da encomenda que você deseja remover.");
             return;
         }
-
         int codigo = produto.getCodigo();
-
         // Remove da encomenda e do arquivo
         encomendaAtual.removerProduto(produto);
         arqEncomenda.removeProdutoEncomenda(getCpf(), codigo);
-
         // Atualiza UI
         atualizarListaProdutos();
         atualizarValorTotal();
-
         if(encomendaAtual.getListaProdutos().isEmpty()) {
             btnRemoverProduto.setEnabled(false);
             btnFinalizarEncomenda.setEnabled(false);
@@ -252,7 +255,7 @@ public class EncomendaView extends JFrame {
             JOptionPane.showMessageDialog(this, "Encomenda finalizada com sucesso!");
             encomendaAtual = null;
             modelProdutos.clear();
-            desabilitarBotoesEncomenda();
+            atualizaEstadoBotoes();
         } else {
             JOptionPane.showMessageDialog(this, "Não foi possível finalizar a encomenda.");
         }
@@ -293,26 +296,18 @@ public class EncomendaView extends JFrame {
         tfTotal.setText(String.valueOf(encomendaAtual.calcularValorTotal(true)));
     }
 
-    // TODO: Método que atualiza o estado dos botões da encomenda de acordo com seu estado atual
+    // Método que atualiza o estado dos botões da encomenda de acordo com seu estado atual
     public void atualizaEstadoBotoes() {
-        // btnAdicionarProduto.setEnabled(true);
-        btnRemoverProduto.setEnabled(!encomendaAtual.getListaProdutos().isEmpty());
-        btnFinalizarEncomenda.setEnabled(!encomendaAtual.getListaProdutos().isEmpty());
-    }
-
-    // Método que habilita botões de adicionar, remover ou finalizar compra
-    public void habilitarBotoesEncomenda() {
-        btnAdicionarProduto.setEnabled(true);
-        btnRemoverProduto.setEnabled(true);
-        btnFinalizarEncomenda.setEnabled(true);
-    }
-
-    // Método que habilita os botões relacionados à encomenda quando há uma encomenda ativa
-    // e desabilita caso o contrário
-    public void desabilitarBotoesEncomenda() {
-        btnAdicionarProduto.setEnabled(false);
-        btnRemoverProduto.setEnabled(false);
-        btnFinalizarEncomenda.setEnabled(false);
+        // Verifica se existe uma encomenda ativa e carregada na memória
+        boolean temEncomenda = (encomendaAtual != null);
+        // Verifica se a lista de produtos da encomenda NÃO está vazia
+        boolean temItens = temEncomenda && !encomendaAtual.getListaProdutos().isEmpty();
+        // Verifica se o usuário selecionou algum item na JList (necessário para remover)
+        boolean itemSelecionado = listaProdutos.getSelectedIndex() != -1;
+        // Aplicação dos estados
+        btnAdicionarProduto.setEnabled(temEncomenda);
+        btnRemoverProduto.setEnabled(temItens && itemSelecionado);
+        btnFinalizarEncomenda.setEnabled(temItens);
     }
 
     /* Métodos auxiliares */
