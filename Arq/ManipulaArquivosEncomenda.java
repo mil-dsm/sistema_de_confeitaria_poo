@@ -188,7 +188,45 @@ public class ManipulaArquivosEncomenda {
 
     // Adiciona um produto na encomenda a partir do nome do arquivo, cpf do cliente e código do produto criado
     public boolean removeProdutoEncomenda(String cpf, int codigo) {
-        return false;
+        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
+
+        for(int i = 0; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+            String[] partes = linha.split(";");
+
+            if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
+                if(partes.length < 3) return false;
+
+                String[] itens = partes[2].split(",");
+                ArrayList<String> novosItens = new ArrayList<>();
+
+                for(String item : itens) {
+                    if(!item.equals(String.valueOf(codigo))) {
+                        novosItens.add(item);
+                    }
+                }
+
+                String novaLinha = partes[0] + ";" + partes[1];
+                if(!novosItens.isEmpty()) {
+                    novaLinha += ";" + String.join(",", novosItens);
+                }
+
+                linhas.set(i, novaLinha);
+                break;
+            }
+        }
+        
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
+            for (String l : linhas) {
+                bw.write(l);
+                bw.newLine();
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     // Método que recebe o cpf do cliente, produra sua encomenda no arquivo e pega os códigos dos produtos

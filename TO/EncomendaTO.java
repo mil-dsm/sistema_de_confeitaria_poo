@@ -39,20 +39,11 @@ public class EncomendaTO implements EntregavelTO {
         return produtos;
     }
 
-    public void carregarProduto(ProdutoTO p) {
-        if(p == null) {
-            throw new IllegalArgumentException("Dados inválidos.");
-        }
-        produtos.add(p);
-    }
-
-    // Método que adiciona um produto a encomenda
     public void adicionarProduto(ProdutoTO p) {
-        if(p == null) {
-            throw new IllegalArgumentException("Produto inválido.");
-        }
-        for(ProdutoTO prod : produtos) {
-            if(p.getCodigo() == prod.getCodigo()) {
+        if (p == null) throw new IllegalArgumentException("Produto inválido");
+
+        for (ProdutoTO prod : produtos) {
+            if (prod.getCodigo() == p.getCodigo()) {
                 prod.setQuantidade(prod.getQuantidade() + p.getQuantidade());
                 return;
             }
@@ -60,6 +51,18 @@ public class EncomendaTO implements EntregavelTO {
         produtos.add(p);
     }
 
+    public void removerProduto(ProdutoTO p) {
+        if (p == null)
+            throw new IllegalArgumentException("Produto inválido");
+
+        boolean removido = produtos.removeIf(
+            prod -> prod.getCodigo() == p.getCodigo()
+        );
+
+        if (!removido)
+            throw new IllegalArgumentException("Produto não está na encomenda");
+    }
+    
     public void alterarQuantidade(ProdutoTO p, int novaQtd) {
         if(p == null) {
             throw new IllegalArgumentException("Produto inválido.");
@@ -78,32 +81,46 @@ public class EncomendaTO implements EntregavelTO {
         throw new IllegalArgumentException("Item não existe na encomenda.");
     }
 
-    // Método sobrecarregado que remove um item inteiro da encomenda
-    public void removerProduto(ProdutoTO p) {
-        if(p == null) 
-            throw new IllegalArgumentException("Produto inválido");
+    // // Método que adiciona um produto a encomenda
+    // public void adicionarProduto(ProdutoTO p) {
+    //     if(p == null) {
+    //         throw new IllegalArgumentException("Produto inválido.");
+    //     }
+    //     for(ProdutoTO prod : produtos) {
+    //         if(p.getCodigo() == prod.getCodigo()) {
+    //             prod.setQuantidade(prod.getQuantidade() + p.getQuantidade());
+    //             return;
+    //         }
+    //     }
+    //     produtos.add(p);
+    // }
+
+    // // Método sobrecarregado que remove um item inteiro da encomenda
+    // public void removerProduto(ProdutoTO p) {
+        //     if(p == null) 
+        //         throw new IllegalArgumentException("Produto inválido");
         
-        boolean flag = produtos.removeIf(prod -> prod.getCodigo() == p.getCodigo());
-        if(flag == false)
-            throw new IllegalArgumentException("Produto não está na encomenda");
-    }
+    //     boolean flag = produtos.removeIf(prod -> prod.getCodigo() == p.getCodigo());
+    //     if(flag == false)
+    //         throw new IllegalArgumentException("Produto não está na encomenda");
+    // }
 
-    // Método sobrecarregado que remove uma determidada qtd total de um determinado item
-    public void removerProduto(ProdutoTO p, int qtd) {
-        if(p == null || qtd <= 0) {
-            throw new IllegalArgumentException("Dados inválidos.");
-        }
+    // // Método sobrecarregado que remove uma determidada qtd total de um determinado item
+    // public void removerProduto(ProdutoTO p, int qtd) {
+    //     if(p == null || qtd <= 0) {
+    //         throw new IllegalArgumentException("Dados inválidos.");
+    //     }
 
-        for(ProdutoTO prod : produtos) {
-            if(p.getCodigo() == prod.getCodigo()) {
-                int novaQtd = prod.getCodigo() - qtd;
-                if(novaQtd <= 0) produtos.remove(prod);
-                else prod.setQuantidade(novaQtd);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Produto não está na encomenda.");
-    }
+    //     for(ProdutoTO prod : produtos) {
+    //         if(p.getCodigo() == prod.getCodigo()) {
+    //             int novaQtd = prod.getQuantidade() - qtd;
+    //             if(novaQtd <= 0) produtos.remove(prod);
+    //             else prod.setQuantidade(novaQtd);
+    //             return;
+    //         }
+    //     }
+    //     throw new IllegalArgumentException("Produto não está na encomenda.");
+    // }
 
     // Método implementado da interface que calcula o valor do frete de acordo com o tipo de entrega
     @Override

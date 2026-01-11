@@ -164,9 +164,8 @@ public class EncomendaView extends JFrame {
             for(String cod : codigos) {
                 int codigo = Integer.parseInt(cod);
                 ProdutoTO produto = arqProduto.getProdutoPorCodigo(codigo);
-                encomendaAtual.adicionarProduto(produto, 0);
+                encomendaAtual.adicionarProduto(produto);
             }
-
             atualizarListaProdutos(arqEncomenda.getProdutosEncomenda(cpf));
         } else {
             arqEncomenda.escreverArquivo(cpf + ";ABERTA");
@@ -205,7 +204,6 @@ public class EncomendaView extends JFrame {
         // Remove o produto por objeto e nos arquivos
         encomendaAtual.removerProduto(produto);
         arqEncomenda.removeProdutoEncomenda(getCpf(), codigo);
-        arqProduto.removerProduto(codigo);
         // Atualiza áreas de produtos e valores
         atualizarListaProdutos();
         atualizarValorTotal();
