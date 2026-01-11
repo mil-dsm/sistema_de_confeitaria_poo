@@ -1,6 +1,7 @@
 package View.Encomenda;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.*;
 import Arq.*;
@@ -14,7 +15,7 @@ public class EncomendaView extends JFrame {
     private ClienteTO clienteAtual;
     private EncomendaTO encomendaAtual;
     // Arquivos
-    private SistemaCliente arqCliente;
+    private ManipulaArquivosCliente arqCliente;
     private ManipulaArquivosEncomenda arqEncomenda;
     private ManipulaArquivosProduto arqProduto;
     // Adicionar o CPF do cliente CADASTRADO
@@ -47,18 +48,20 @@ public class EncomendaView extends JFrame {
         setLocationRelativeTo(null);
         
         /* Inicialização dos atributos */
-        arqCliente = new SistemaCliente();
+        arqCliente = new ManipulaArquivosCliente();
         arqEncomenda = new ManipulaArquivosEncomenda();
         arqProduto = new ManipulaArquivosProduto();
         clienteAtual = null;
         encomendaAtual = null;
         
+        /* Cria o painel  */
+        JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
+
         /* Painel CPF + Buscar */
+        JPanel painelTopo = new JPanel();
         // Inicializa labels e TextField
         lbCpf = new JLabel("CPF");
         tfCpf = new JTextField(15);
-        //Cria painel
-        JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
         // Adiciona retorno        
         btnVoltar = new JButton("Voltar");
         ListenerBtnVoltar l1 = new ListenerBtnVoltar(this);
@@ -68,7 +71,6 @@ public class EncomendaView extends JFrame {
         ListenerBtnBuscarCriarEncomenda l2 = new ListenerBtnBuscarCriarEncomenda(this, tfCpf);
         btnBuscarCriarEncomenda.addActionListener(l2);
         // Agrupa em um painel
-        JPanel painelTopo = new JPanel();
         painelTopo.add(lbCpf);
         painelTopo.add(tfCpf);
         painelTopo.add(btnBuscarCriarEncomenda);
@@ -98,8 +100,10 @@ public class EncomendaView extends JFrame {
         listaProdutos = new JList<>(modelProdutos);
         listaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // Cria Scroll
+        // TODO: Ajustar tamanho da área
         JScrollPane scrollProdutos = new JScrollPane(listaProdutos);
         scrollProdutos.setBorder(BorderFactory.createTitledBorder("Produtos na encomenda"));
+        scrollProdutos.setPreferredSize(new Dimension(150, 150));
 
         /* Painel de valores */
         // Mostrar o valor total do frete
@@ -158,11 +162,17 @@ public class EncomendaView extends JFrame {
         clienteAtual = null;
 
         // Atualiza o cliente
-        if(!arqCliente.CPFcadastrado(cpf)) {
+        if(!arqCliente.cpfCadastrado(cpf)) {
             JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
             return;
         }
-        clienteAtual = arqCliente.buscaClientePorCpf(cpf);
+
+        // Cria cliente
+        clienteAtual.setNome(arqCliente.buscarNomePorCpf(cpf));
+        clienteAtual.setEndereco(arqCliente.buscarEnderecoPorCpf(cpf));
+        clienteAtual.setCpf(cpf);
+
+        // Verifica a existência do cliente novamente
         if(clienteAtual == null) {
             JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
             return;
@@ -237,7 +247,7 @@ public class EncomendaView extends JFrame {
     // Finalização de uma encomenda
     public void finalizarEncomenda() {
         if(encomendaAtual == null) return;
-        boolean sucesso = arqEncomenda.finalizarEncomenda(getCpf());
+        boolean sucesso = arqEncomenda.finalizarEncomenda(getCpf(), encomendaAtual);
         if(sucesso) {
             JOptionPane.showMessageDialog(this, "Encomenda finalizada com sucesso!");
             encomendaAtual = null;
@@ -247,6 +257,64 @@ public class EncomendaView extends JFrame {
             JOptionPane.showMessageDialog(this, "Não foi possível finalizar a encomenda.");
         }
     }
+
+    /* Métodos para atualização */
+
+    // Método que atualiza a área que mostra os produtos da encomenda
+    // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
+    public void atualizarListaProdutos() {
+        modelProdutos.clear();
+        if(encomendaAtual == null) return;
+        for(ProdutoTO p : encomendaAtual.getListaProdutos()) {
+            modelProdutos.addElement(p);
+        }
+    }
+    
+    // Método que atualiza o tipo de entrega
+    public void atualizarTipoEntrega() {
+        if(encomendaAtual != null) {
+            encomendaAtual.setTipoEntrega(getTipoEntrega());
+            atualizarFrete();
+            atualizarValorTotal();
+        }
+    }
+    
+    // Método que atualiza o valor do frete a partir da opção escolhida
+    // Cria uma variável temporária que gerencia o frete a partir do endereço do cliente
+    public void atualizarFrete() {
+        if(encomendaAtual == null) return;
+        tfValorFrete.setText(String.valueOf(encomendaAtual.calcularFrete()));
+    }
+    
+    // Método que atualiza o valor do total da compra
+    // Acontece a chamada do método que calcula o novo valor total e soma do frete
+    public void atualizarValorTotal() {
+        if(encomendaAtual == null) return;
+        tfTotal.setText(String.valueOf(encomendaAtual.calcularValorTotal(true)));
+    }
+
+    // TODO: Método que atualiza o estado dos botões da encomenda de acordo com seu estado atual
+    public void atualizaEstadoBotoes() {
+        // btnAdicionarProduto.setEnabled(true);
+        btnRemoverProduto.setEnabled(!encomendaAtual.getListaProdutos().isEmpty());
+        btnFinalizarEncomenda.setEnabled(!encomendaAtual.getListaProdutos().isEmpty());
+    }
+
+    // Método que habilita botões de adicionar, remover ou finalizar compra
+    public void habilitarBotoesEncomenda() {
+        btnAdicionarProduto.setEnabled(true);
+        btnRemoverProduto.setEnabled(true);
+        btnFinalizarEncomenda.setEnabled(true);
+    }
+
+    // Método que habilita os botões relacionados à encomenda quando há uma encomenda ativa
+    // e desabilita caso o contrário
+    public void desabilitarBotoesEncomenda() {
+        btnAdicionarProduto.setEnabled(false);
+        btnRemoverProduto.setEnabled(false);
+        btnFinalizarEncomenda.setEnabled(false);
+    }
+
     /* Métodos auxiliares */
 
     // Metodo que retorna a encomenda que está sendo trabalhada
@@ -267,53 +335,5 @@ public class EncomendaView extends JFrame {
     // Método que retorna qual o tipo de entrega selecionado
     public String getTipoEntrega() {
         return rbDelivery.isSelected() ? "delivery" : "retirada";
-    }
-
-    // Método que atualiza a área que mostra os produtos da encomenda
-    // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
-    public void atualizarListaProdutos() {
-        modelProdutos.clear();
-        if(encomendaAtual == null) return;
-        for(ProdutoTO p : encomendaAtual.getListaProdutos()) {
-            modelProdutos.addElement(p);
-        }
-    }
-    
-    // Método que atualiza o valor do frete a partir da opção escolhida
-    // Cria uma variável temporária que gerencia o frete a partir do endereço do cliente
-    public void atualizarFrete() {
-        if(encomendaAtual == null) return;
-        tfValorFrete.setText(String.valueOf(encomendaAtual.calcularFrete()));
-    }
-    
-    // Método que atualiza o tipo de entrega
-    public void atualizarTipoEntrega() {
-        if(encomendaAtual != null) {
-            encomendaAtual.setTipoEntrega(getTipoEntrega());
-            atualizarFrete();
-            atualizarValorTotal();
-        }
-    }
-    
-    // Método que atualiza o valor do total da compra
-    // Acontece a chamada do método que calcula o novo valor total e soma do frete
-    public void atualizarValorTotal() {
-        if(encomendaAtual == null) return;
-        tfTotal.setText(String.valueOf(encomendaAtual.calcularValorTotal(true)));
-    }
-
-    // Método que habilita botões de adicionar, remover ou finalizar compra
-    public void habilitarBotoesEncomenda() {
-        btnAdicionarProduto.setEnabled(true);
-        btnRemoverProduto.setEnabled(true);
-        btnFinalizarEncomenda.setEnabled(true);
-    }
-
-    // Método que habilita os botões relacionados à encomenda quando há uma encomenda ativa
-    // e desabilita caso o contrário
-    public void desabilitarBotoesEncomenda() {
-        btnAdicionarProduto.setEnabled(false);
-        btnRemoverProduto.setEnabled(false);
-        btnFinalizarEncomenda.setEnabled(false);
     }
 }

@@ -2,14 +2,17 @@ package Arq;
 
 import java.io.*;
 import java.util.ArrayList;
+import TO.*;
 
 /**
- * Estrutura esperada: cpf;status(ABERTA ou FECHADA);codigo1,codigo2,codigo3,...
+ * Estrutura esperada: cpf;status;entrega;data;codigos
+ * EX: 12345678900;FECHADA;delivery;2026-01-10;85.50;1,3,5,...
  */
 public class ManipulaArquivosEncomenda {
     public String diretorio;
     public String nomeArquivo;
     public File arq;
+    public ManipulaArquivosCliente arqCliente;
     public ManipulaArquivosProduto arqProduto;
 
     public ManipulaArquivosEncomenda() {
@@ -32,7 +35,7 @@ public class ManipulaArquivosEncomenda {
     }
 
     // Método que retorna um ArrayList com todo o conteudo do arquivo
-    public ArrayList<String> retornarConteudoArquivo(String nomeArquivo) {
+    public ArrayList<String> retornarConteudoArquivo() {
         
         ArrayList<String> alArquivo = new ArrayList<>();
 
@@ -54,7 +57,7 @@ public class ManipulaArquivosEncomenda {
     
     // Remove uma linha inteira do arquivo e retorna um boolean como confirmação
     public boolean removerElementoArquivo(String valorRemocao) {
-        ArrayList<String> alArquivo = retornarConteudoArquivo(nomeArquivo);
+        ArrayList<String> alArquivo = retornarConteudoArquivo();
         
         boolean confirmacao = alArquivo.remove(valorRemocao);
         
@@ -74,8 +77,8 @@ public class ManipulaArquivosEncomenda {
     }
     
     // Imprime todos os elementos do arquivo e retorna true. Caso não seja possível, retorna false
-    public boolean imprimirArquivo(String nomeArquivo) {
-        ArrayList<String> alArquivo = retornarConteudoArquivo(nomeArquivo);
+    public boolean imprimirArquivo() {
+        ArrayList<String> alArquivo = retornarConteudoArquivo();
         if(alArquivo.isEmpty()) {
             System.out.println("O arquivo está vazio");
             return false;
@@ -88,7 +91,7 @@ public class ManipulaArquivosEncomenda {
 
     // Método para buscar se um elemento existe no arquivo
     public boolean buscarElementoArquivo(String valorBusca) {
-        ArrayList<String> alArquivo = retornarConteudoArquivo(nomeArquivo);
+        ArrayList<String> alArquivo = retornarConteudoArquivo();
         for(String linha : alArquivo) {
             if(linha.startsWith(valorBusca + ";")) {
                 return true;
@@ -101,7 +104,7 @@ public class ManipulaArquivosEncomenda {
 
     // Metodo para buscar uma linha específica por CPF e ver se já existe um encomenda naquele CPF
     public String buscaEncomendaPorCpf(String cpf) {
-        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
+        ArrayList<String> linhas = retornarConteudoArquivo();
         for(String linha : linhas) {
             if(linha.startsWith(cpf + ";")) {
                 return linha;
@@ -112,7 +115,7 @@ public class ManipulaArquivosEncomenda {
     
     // Método para verificar se existe uma encomenda aberta para um determinado CPF
     public boolean existeEncomendaAberta(String cpf) {
-        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
+        ArrayList<String> linhas = retornarConteudoArquivo();
     
         for(String linha : linhas) {
             String[] partes = linha.split(";");
@@ -125,14 +128,15 @@ public class ManipulaArquivosEncomenda {
     
     // Busca todos os produtos adicionados a uma encomenda e retorna um ArrayList com os produtos
     public ArrayList<String> getProdutosEncomenda(String cpf) {
-        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
+        ArrayList<String> linhas = retornarConteudoArquivo();
         ArrayList<String> produtos = new ArrayList<>();
 
         for(String linha : linhas) {
             String[] partes = linha.split(";");
+
             if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
-                if(partes.length > 2) {
-                    String[] itens = partes[2].split(",");
+                if(partes.length > 5) {
+                    String[] itens = partes[5].split(",");
                     for(String p : itens) {
                         produtos.add(p);
                     }
@@ -151,24 +155,26 @@ public class ManipulaArquivosEncomenda {
             return false;
         }
 
-        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
+        ArrayList<String> linhas = retornarConteudoArquivo();
 
         for(int i = 0; i < linhas.size(); i++) {
             String linha = linhas.get(i);
             String[] partes = linha.split(";");
 
             if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
-                String novaLinha;
-                // Já tem produtos
-                if (partes.length > 2 && !partes[2].isEmpty()) {
-                    novaLinha = partes[0] + ";" + partes[1] + ";" + partes[2] + "," + codigoProduto;
-                }
-                // Primeiro produto
-                else {
-                    novaLinha = partes[0] + ";" + partes[1] + ";" + codigoProduto;
-                }
+                String produtos = (partes.length > 5) ? partes[5] : "";
+                if(!produtos.isEmpty())
+                    produtos += "," + codigoProduto;
+                else
+                    produtos = String.valueOf(codigoProduto);
+                String novaLinha =
+                    partes[0] + ";" + // cpf
+                    partes[1] + ";" + // status
+                    partes[2] + ";" + // tipoEntrega
+                    partes[3] + ";" + // data (vazia)
+                    partes[4] + ";" + // valor (vazio)
+                    produtos;
                 linhas.set(i, novaLinha);
-                break;
             }
         }
 
@@ -188,7 +194,7 @@ public class ManipulaArquivosEncomenda {
 
     // Adiciona um produto na encomenda a partir do nome do arquivo, cpf do cliente e código do produto criado
     public boolean removeProdutoEncomenda(String cpf, int codigo) {
-        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
+        ArrayList<String> linhas = retornarConteudoArquivo();
 
         for(int i = 0; i < linhas.size(); i++) {
             String linha = linhas.get(i);
@@ -236,39 +242,36 @@ public class ManipulaArquivosEncomenda {
         ArrayList<String> codigos = getProdutosEncomenda(cpf);
         double total = 0.0;
         for(String cod : codigos) {
-            // double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
-            // total += preco;
+            double preco = arqProduto.getPrecoProdutoPorCodigo(Integer.parseInt(cod));
+            total += preco;
         }
         return total;
     }
 
-    public boolean finalizarEncomenda(String cpf) {
-        ArrayList<String> linhas = retornarConteudoArquivo(nomeArquivo);
-        boolean encontrada = false;
+    public boolean finalizarEncomenda(String cpf, EncomendaTO encomenda) {
+        ArrayList<String> linhas = retornarConteudoArquivo();
 
         for(int i = 0; i < linhas.size(); i++) {
-            String linha = linhas.get(i);
-            String[] partes = linha.split(";");
+            String[] partes = linhas.get(i).split(";");
 
             if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
-                String novaLinha;
 
-                // Mantém os produtos, se existirem
-                if(partes.length > 2) {
-                    novaLinha = partes[0] + ";FECHADA;" + partes[2];
-                } else {
-                    novaLinha = partes[0] + ";FECHADA";
-                }
+                String data = java.time.LocalDate.now().toString();
+                double valorFinal = encomenda.calcularValorTotal(true);
+                String produtos = (partes.length > 5) ? partes[5] : "";
+
+                String novaLinha =
+                    cpf + ";FECHADA;" +
+                    encomenda.getTipoEntrega() + ";" +
+                    data + ";" +
+                    valorFinal + ";" +
+                    produtos;
 
                 linhas.set(i, novaLinha);
-                encontrada = true;
                 break;
             }
         }
 
-        if(!encontrada) return false;
-
-        // Reescreve o arquivo
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
             for(String l : linhas) {
                 bw.write(l);
@@ -280,5 +283,30 @@ public class ManipulaArquivosEncomenda {
         }
 
         return true;
+    }
+
+    // Retorna todas as encomendas FECHADAS de um CPF
+    public ArrayList<EncomendaTO> getHistoricoPorCpf(String cpf) {
+        ArrayList<EncomendaTO> historico = new ArrayList<>();
+        ArrayList<String> linhas = retornarConteudoArquivo();
+
+        for(String linha : linhas) {
+            String[] partes = linha.split(";");
+            if(partes[0].equals(cpf) && partes[1].equals("FECHADA")) {
+            ClienteTO cliente = new ClienteTO(arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf), cpf);
+            String tipo = partes[2];
+            String data = partes[3];
+            double valor = Double.parseDouble(partes[4]);
+            EncomendaTO encomenda = new EncomendaTO(cliente, tipo);
+            if(partes.length > 5) {
+                for(String cod : partes[5].split(",")) {
+                    ProdutoTO p = arqProduto.getProdutoPorCodigo(Integer.parseInt(cod));
+                    if(p != null) encomenda.adicionarProduto(p);
+                }
+            }
+            historico.add(encomenda);
+        }
+        }
+        return historico;
     }
 }
