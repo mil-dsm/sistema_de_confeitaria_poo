@@ -162,10 +162,14 @@ public class EncomendaView extends JFrame {
             JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
             return;
         }
-        clienteAtual = new ClienteTO(cpf, arqCliente.getNome(cpf), arqCliente.getEndereco(cpf));
+        clienteAtual = arqCliente.buscaClientePorCpf(cpf);
+        if(clienteAtual == null) {
+            JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+            return;
+        }
 
-        boolean confirmacao = arqEncomenda.existeEncomendaAberta(cpf);
         // Verifica o arquivo encomendas.txt
+        boolean confirmacao = arqEncomenda.existeEncomendaAberta(cpf);
         if(!confirmacao) {
             arqEncomenda.escreverArquivo(cpf + ";ABERTA");
             JOptionPane.showMessageDialog(this, "Encomenda criada com sucesso.");
@@ -188,11 +192,9 @@ public class EncomendaView extends JFrame {
         atualizarFrete();
         atualizarValorTotal();
         
-        if(encomendaAtual.getListaProdutos().size() == 0) {
-            btnAdicionarProduto.setEnabled(true);
-        } else {
-            habilitarBotoesEncomenda();
-        }
+        btnAdicionarProduto.setEnabled(true);
+        btnRemoverProduto.setEnabled(!encomendaAtual.getListaProdutos().isEmpty());
+        btnFinalizarEncomenda.setEnabled(!encomendaAtual.getListaProdutos().isEmpty());
     }
 
     // Método que adiciona um produto à encomenda a partir do seu código único
