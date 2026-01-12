@@ -45,8 +45,8 @@ public class DonutTO extends ProdutoTO {
 
     @Override
     public String gerarLinhaArquivo() {
-        return getCodigo() + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + 
-        "recheio=" + recheio + "|cobertura=" + cobertura + "|confete=" + ((confete == true) ? "sim" : "nao");
+        return getCodigo() + ";DONUT;" + nome + ";" + precoBase + ";" + quantidade + ";" +
+            recheio + ";" + cobertura + ";" + confete;
     }
 
     @Override

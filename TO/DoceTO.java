@@ -11,7 +11,7 @@ public class DoceTO extends ProdutoTO {
     public double calcularPrecoFinal() {
 
         double precoFinal = super.precoBase;
-        switch(tipo) {
+        switch (tipo) {
             case "brigadeiro":
                 precoFinal += 1;
                 break;
@@ -38,8 +38,7 @@ public class DoceTO extends ProdutoTO {
 
     @Override
     public String gerarLinhaArquivo() {
-        return getCodigo() + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + 
-        "tipo=" + tipo;
+        return getCodigo() + ";DOCE;" + nome + ";" + precoBase + ";" + quantidade + ";" + tipo;
     }
 
     //Sobrescrita de toString: seu toString() + super.toString()

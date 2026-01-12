@@ -41,10 +41,14 @@ public class EncomendaTO implements EntregavelTO {
         return produtos;
     }
 
+    // Método que adiciona um produto personalizado à encomenda
     public void adicionarProduto(ProdutoTO p) {
-        if (p == null) throw new IllegalArgumentException("Produto inválido");
-
-        for (ProdutoTO prod : produtos) {
+        // Verifica erros
+        if (p == null) {
+            throw new IllegalArgumentException("Produto inválido");
+        }
+        // Verifica se o produto já existe
+        for(ProdutoTO prod : produtos) {
             if (prod.getCodigo() == p.getCodigo()) {
                 prod.setQuantidade(prod.getQuantidade() + p.getQuantidade());
                 return;
@@ -53,59 +57,76 @@ public class EncomendaTO implements EntregavelTO {
         produtos.add(p);
     }
 
+    // Método sobrecarregado que adiciona um quantidade específica para aumentar em determinado
+    // produto da encomenda aplicável apenas a produtos que já existem na encomenda.
+    public void adicionarProduto(ProdutoTO p, int sum) {
+        // Verifica erros
+        if(p == null) {
+            throw new IllegalArgumentException("Produto inválido.");
+        }
+        // Verifica existência e aplica
+        for(ProdutoTO prod : produtos) {
+            if(p.getCodigo() == prod.getCodigo()) {
+                prod.setQuantidade(prod.getQuantidade() + p.getQuantidade());
+                return;
+            }
+        }
+    }
+
+    // Método que remove um produto inteiro da encomenda
     public void removerProduto(ProdutoTO p) {
-        if (p == null)
+        // Verifica erros
+        if(p == null) {
             throw new IllegalArgumentException("Produto inválido");
-
-        boolean removido = produtos.removeIf(
-            prod -> prod.getCodigo() == p.getCodigo()
-        );
-
-        if (!removido)
+        }
+        // Verifica se existe e apaga
+        for(ProdutoTO prod : produtos) {
+            if(prod.getCodigo() == p.getCodigo()) {
+                produtos.remove(p);
+                return;
+            }
+        }
+        // Se não existir
+        throw new IllegalArgumentException("Produto não está na encomenda");
+    }
+    
+    // Método sobrecarregado que remove uma quantidade específica de item da encomenda
+    public void removerProduto(ProdutoTO p, int qtdDif) {
+        // Verifica erros
+        if(p == null) {
+            throw new IllegalArgumentException("Produto inválido");
+        }
+        // Verifica e remove
+        for(ProdutoTO prod : produtos) {
+            if(prod.getCodigo() == p.getCodigo()) {
+                prod.setQuantidade(prod.getQuantidade() - qtdDif);
+            }
+        }
+        boolean flag = produtos.removeIf(prod -> prod.getCodigo() == p.getCodigo());
+        if(flag == false)
             throw new IllegalArgumentException("Produto não está na encomenda");
     }
     
+    // Método que altera a quantidade de determinado produto
     public void alterarQuantidade(ProdutoTO p, int novaQtd) {
+        // Verifica erros
         if(p == null) {
             throw new IllegalArgumentException("Produto inválido.");
         }
         if(novaQtd <= 0) {
             throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
         }
-
+        // Verifica existência e aplica
         for(ProdutoTO prod : produtos) {
             if(p.getCodigo() == prod.getCodigo()) {
                 prod.setQuantidade(novaQtd);
                 return;
             }
         }
-
+        // Lança erro
         throw new IllegalArgumentException("Item não existe na encomenda.");
     }
 
-    // // Método que adiciona um produto a encomenda
-    // public void adicionarProduto(ProdutoTO p) {
-    //     if(p == null) {
-    //         throw new IllegalArgumentException("Produto inválido.");
-    //     }
-    //     for(ProdutoTO prod : produtos) {
-    //         if(p.getCodigo() == prod.getCodigo()) {
-    //             prod.setQuantidade(prod.getQuantidade() + p.getQuantidade());
-    //             return;
-    //         }
-    //     }
-    //     produtos.add(p);
-    // }
-
-    // // Método sobrecarregado que remove um item inteiro da encomenda
-    // public void removerProduto(ProdutoTO p) {
-        //     if(p == null) 
-        //         throw new IllegalArgumentException("Produto inválido");
-        
-    //     boolean flag = produtos.removeIf(prod -> prod.getCodigo() == p.getCodigo());
-    //     if(flag == false)
-    //         throw new IllegalArgumentException("Produto não está na encomenda");
-    // }
 
     // // Método sobrecarregado que remove uma determidada qtd total de um determinado item
     // public void removerProduto(ProdutoTO p, int qtd) {

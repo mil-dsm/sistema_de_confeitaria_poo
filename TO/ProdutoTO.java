@@ -4,7 +4,6 @@ package TO;
 public abstract class ProdutoTO {
     protected String nome;
     protected double precoBase;
-    protected String validade;
     protected int quantidade;
     static int proximoCodigo = 0;
     private int codigoUnico;
@@ -26,10 +25,6 @@ public abstract class ProdutoTO {
         return precoBase;
     }
 
-    public String getValidade() {
-        return validade;
-    }
-
     public int getQuantidade() {
         return quantidade;
     }
@@ -40,10 +35,6 @@ public abstract class ProdutoTO {
 
     public void setPrecoBase(double precoBase) {
         this.precoBase = precoBase;
-    }
-
-    public void setValidade(String validade) {
-        this.validade = validade;
     }
 
     public void setQuantidade(int quantidade) {
