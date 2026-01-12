@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import TO.*;
 
 /**
- * Estrutura esperada: cpf;status;entrega;data;codigos
+ * Estrutura esperada: cpf;status;entrega;data;valorTotal;codigos
  * EX: 12345678900;FECHADA;delivery;2026-01-10;85.50;1,3,5,...
  */
 public class ManipulaArquivosEncomenda {
@@ -19,6 +19,7 @@ public class ManipulaArquivosEncomenda {
         diretorio = "dados/";
         nomeArquivo = "encomendas.txt";
         arq = new File(diretorio+nomeArquivo);
+        arqCliente = new ManipulaArquivosCliente();
         arqProduto = new ManipulaArquivosProduto();
     }
 
@@ -203,7 +204,7 @@ public class ManipulaArquivosEncomenda {
             if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
                 if(partes.length < 3) return false;
 
-                String[] itens = partes[2].split(",");
+                String[] itens = partes[5].split(",");
                 ArrayList<String> novosItens = new ArrayList<>();
 
                 for(String item : itens) {

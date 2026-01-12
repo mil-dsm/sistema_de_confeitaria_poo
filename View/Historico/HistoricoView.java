@@ -23,6 +23,8 @@ public class HistoricoView extends JFrame {
     public HistoricoView() {
         setTitle("Menu Inicial");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(700, 700);
+        setLocationRelativeTo(null);
 
         /* Inicialização de variáveis */
         arqCliente = new ManipulaArquivosCliente();
@@ -79,6 +81,7 @@ public class HistoricoView extends JFrame {
         }
         if(!arqCliente.cpfCadastrado(cpf)) {
             JOptionPane.showMessageDialog(this, "Cliente não cadastrado.");
+            return;
         }
 
         modelEncomendas.clear();

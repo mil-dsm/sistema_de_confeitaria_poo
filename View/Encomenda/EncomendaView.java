@@ -43,7 +43,7 @@ public class EncomendaView extends JFrame {
     public EncomendaView() {
         setTitle("Encomenda");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(500, 500);
+        setSize(700, 700);
         setLocationRelativeTo(null);
         
         /* Inicialização dos atributos */
@@ -145,9 +145,17 @@ public class EncomendaView extends JFrame {
 
         /* Montagem */
         //Painel da direita (Valores + botões)
-        JPanel painelDireita = new JPanel(new BorderLayout(5, 15));
+        /* Painel da Direita (Valores + Botões) */
+        JPanel painelDireita = new JPanel(new BorderLayout(5, 10));
+        painelDireita.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelDireita.add(painelValores, BorderLayout.NORTH);
-        painelDireita.add(painelBotoes, BorderLayout.CENTER);
+        JPanel conteinerBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel gridBotoes = new JPanel(new GridLayout(3, 1, 0, 10));
+        gridBotoes.add(btnAdicionarProduto);
+        gridBotoes.add(btnRemoverProduto);
+        gridBotoes.add(btnFinalizarEncomenda);
+        conteinerBotoes.add(gridBotoes);
+        painelDireita.add(conteinerBotoes, BorderLayout.CENTER);
         //Painel da esquerda (Tipo de entrega + lista)
         JPanel painelCentro = new JPanel(new BorderLayout(5, 5));
         painelCentro.add(painelEntrega, BorderLayout.NORTH);
@@ -234,13 +242,17 @@ public class EncomendaView extends JFrame {
             JOptionPane.showMessageDialog(this, "Selecione um pedido da encomenda que você deseja remover.");
             return;
         }
+
         int codigo = produto.getCodigo();
+
         // Remove da encomenda e do arquivo
         encomendaAtual.removerProduto(produto);
         arqEncomenda.removeProdutoEncomenda(getCpf(), codigo);
+
         // Atualiza UI
         atualizarListaProdutos();
         atualizarValorTotal();
+
         if(encomendaAtual.getListaProdutos().isEmpty()) {
             btnRemoverProduto.setEnabled(false);
             btnFinalizarEncomenda.setEnabled(false);
@@ -261,7 +273,7 @@ public class EncomendaView extends JFrame {
         }
     }
 
-    /* Métodos para atualização */
+    /* Métodos de atualização */
 
     // Método que atualiza a área que mostra os produtos da encomenda
     // A cada vez que adiciona ou remove um produto, essa área deve ser atualizada
