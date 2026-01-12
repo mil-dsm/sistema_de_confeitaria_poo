@@ -11,7 +11,7 @@ public class DoceTO extends ProdutoTO {
     public double calcularPrecoFinal() {
 
         double precoFinal = super.precoBase;
-        switch (tipo) {
+        switch(tipo) {
             case "brigadeiro":
                 precoFinal += 1;
                 break;
@@ -26,6 +26,14 @@ public class DoceTO extends ProdutoTO {
         }
 
         return precoFinal * quantidade;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override

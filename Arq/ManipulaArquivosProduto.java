@@ -1,6 +1,4 @@
-//precisa testar os métodos
 package Arq;
-
 
 import TO.BoloTO;
 import TO.DoceTO;
@@ -48,7 +46,7 @@ public class ManipulaArquivosProduto {
 		return(false);		    
 	}
 
-	public ArrayList retornarConteudoArquivo() {
+	public ArrayList<String> retornarConteudoArquivo() {
 		ArrayList<String> alArquivo = new ArrayList<String>();
 
 		if (arq.isFile() && arq.canRead()) {
@@ -74,7 +72,6 @@ public class ManipulaArquivosProduto {
 		}
 
 		return(alArquivo);
-
 	}
 
 	public boolean imprimirArquivo() {
@@ -141,12 +138,12 @@ public class ManipulaArquivosProduto {
 		return(confirmacao);				
 	}
 
-	// TODO: Método que recebe o produto criado e adiciona ao arquivo produtos.txt
+	// Método que recebe o produto criado e adiciona ao arquivo produtos.txt
     public boolean salvarProduto(ProdutoTO produto) {
 		return escreverArquivo(produto.gerarLinhaArquivo());
 	}
 
-    // TODO: Método que recebe o produto que quer remover e remove sua linha no arquivo produtos.txt
+    // Método que recebe o produto que quer remover e remove sua linha no arquivo produtos.txt
     public boolean removerProduto(int codigo) {
 		ArrayList<String> alArquivo = retornarConteudoArquivo();
 		boolean removido = false;
@@ -162,95 +159,54 @@ public class ManipulaArquivosProduto {
 		return removido;
 	}
 
-    // TODO: Método que retorna o produto a partir do código
+    // Método que retorna o produto a partir do código
 	// 	Primeiro passo, identificar o produto pelo código que foi pensado, primeiro método: Se encontrar, chama o próximo método
 	// Segundo passo, esse método vai receber do anterior o vetor de String, que vai ter a divisão de acordo com o split(";") das variáveis do produto. Ele vai pegar o indice da String que fala dos atributos em específico e define qual o tipo de produto: se começar com o atributo "tamanho=", é bolo, se "tipo=" é doce, se "recheio=" é donut (OU pode fazer pelo nome, como "BOLO", "DONUT", "DOCE", por exemplo)
 	// Terceiro passo, quando identifica o tipo de produto, chama o método específico daquele produto e passa o vetor de string que foi criado pela divisão do split(";")
 	public ProdutoTO getProdutoPorCodigo(int codigo) {
     	ArrayList<String> alArquivo = retornarConteudoArquivo();
 
-    	for (String linha : alArquivo) {
+    	for(String linha : alArquivo) {
         	String[] dados = linha.split(";");	// divide em ";"
         	int codArquivo = Integer.parseInt(dados[0]);	// Pega o código do arquivo
 			String tipoProduto = dados[1];
 
-            // doce
-            if (TipoProduto.equals("Doce")) {	
-                String nome = dados[1];	
-                double precoBase = Double.parseDouble(dados[2]);
-                int quantidade = Integer.parseInt(dados[3]);
-
-                DoceTO doce = new DoceTO(nome, precoBase);
-                doce.setQuantidade(quantidade);
-        
-                doce.setCodigo(codArquivo);
-
-                return doce;
-            }
-
-            // donut
-            else if (codArquivo == codigo) {
-                String nome = dados[1];
-                double precoBase = Double.parseDouble(dados[2]);
-                int quantidade = Integer.parseInt(dados[3]);
-                String recheio = dados[4];
-                String cobertura = dados[5];
-                boolean confete = Boolean.parseBoolean(dados[6]);
-
-                DonutTO donut = new DonutTO(nome, precoBase);
-                donut.setQuantidade(quantidade);
-                donut.setRecheio(recheio);
-                donut.setCobertura(cobertura);
-                donut.setConfete(confete);
-                donut.setCodigo(codArquivo);
-
-                return donut;
-            }
-
-            // bolo
-            else if (codArquivo == codigo) {
-                String nome = dados[1];
-                double precoBase = Double.parseDouble(dados[2]);
-                int quantidade = Integer.parseInt(dados[3]);
-                String recheio = dados[4];
-                String cobertura = dados[5];
-                char tamanho = dados[6].charAt(0);
-
-                BoloTO bolo = new BoloTO(nome, precoBase);
-                bolo.setQuantidade(quantidade);
-                bolo.setRecheio(recheio);
-                bolo.setCobertura(cobertura);
-                bolo.setTamanho(tamanho);
-                bolo.setCodigo(codArquivo);
-
-                return bolo;
-            }
-    	}
-		return null; 
-	}
-
-	//TO DO: retorna Donut de acordo com o código
-	DonutTO getDonutPorCodigo(int codigo) {
-		//implementar
-		return null;
-	}
-
-	//TO DO: retorna Bolo de acordo com o código
-	BoloTO getBoloPorCodigo(int codigo) {
-		//implementar
-		return null;
-	}
-
-	//TO DO: retorna Doce de acordo com o código
-	DoceTO getDocePorCodigo(int codigo) {
-		//implementar
+			if(codArquivo == codigo) {
+				switch(tipoProduto) {
+					case "BOLO":
+						BoloTO bolo = new BoloTO(dados[2], Double.parseDouble(dados[3]));
+						bolo.setCodigo(Integer.parseInt(dados[0]));
+						bolo.setQuantidade(Integer.parseInt(dados[4]));
+						bolo.setRecheio(dados[5]);
+						bolo.setCobertura(dados[6]);
+						bolo.setTamanho(dados[7].charAt(0));
+						return bolo;
+					case "DONUT":
+						DonutTO donut = new DonutTO(dados[2], Double.parseDouble(dados[3]));
+						donut.setCodigo(Integer.parseInt(dados[0]));
+						donut.setQuantidade(Integer.parseInt(dados[4]));
+						donut.setRecheio(dados[5]);
+						donut.setCobertura(dados[6]);
+						donut.setConfete(Boolean.parseBoolean(dados[7]));
+						return donut;
+					case "DOCE":
+						DoceTO doce = new DoceTO(dados[2], Double.parseDouble(dados[3]));
+						doce.setCodigo(Integer.parseInt(dados[0]));
+						doce.setQuantidade(Integer.parseInt(dados[4]));
+						doce.setTipo(dados[5]);
+						return doce;
+					default:
+						return null;
+				}
+			}
+		}
 		return null;
 	}
 	
-    // TODO: Método que retorna apenas o preço do produto a partir do código
+    // Método que retorna apenas o preço do produto a partir do código
     public double getPrecoProdutoPorCodigo(int codigo) {
 		ProdutoTO produto = getProdutoPorCodigo(codigo);
-		if (produto != null) {
+		if(produto != null) {
 			return produto.calcularPrecoFinal();
 		}
 			return -1.0;
