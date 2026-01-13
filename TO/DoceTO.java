@@ -38,7 +38,7 @@ public class DoceTO extends ProdutoTO {
 
     @Override
     public String gerarLinhaArquivo() {
-        return getCodigo() + ";DOCE;" + nome + ";" + precoBase + ";" + quantidade + ";" + tipo;
+        return getCodigo() + ";" + tipoProduto + ";" + quantidade + ";" + tipo;
     }
 
     //Sobrescrita de toString: seu toString() + super.toString()

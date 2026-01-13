@@ -48,8 +48,8 @@ public class ProdutoView extends JFrame {
         // Botões
         ListenerBtnDoce l2 = new ListenerBtnDoce(this);
         btnDoce.addActionListener(l2);
-        // ListenerBtnBolo l3 = new ListenerBtnBolo(this);
-        // btnBolo.addActionListener(l3);
+        ListenerBtnBolo l3 = new ListenerBtnBolo(this);
+        btnBolo.addActionListener(l3);
         // ListenerBtnDonut l4 = new ListenerBtnDonut(this);
         // btnDonut.addActionListener(l4);
         

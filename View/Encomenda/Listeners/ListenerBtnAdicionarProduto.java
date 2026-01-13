@@ -29,17 +29,14 @@ public class ListenerBtnAdicionarProduto implements ActionListener {
             JOptionPane.showMessageDialog(componentePai, "Crie ou busque uma encomenda primeiro.");
             return;
         }
-
         String cpf = componentePai.getCpf();
-
         // Verifica se tem encomenda aberta no CPF do cliente que está editando sua encomenda
-        String linha = encomendaArq.buscaEncomendaPorCpf(cpf);
-        if(linha == null || linha.contains(";ABERTA") == false) {
+        String linha = encomendaArq.buscaEncomendaAbertaPorCpf(cpf);
+        if(linha == null) {
             JOptionPane.showMessageDialog(componentePai, "Não existe encomenda aberta nesse CPF.");
-        } 
-        else {
-            new ProdutoView(componentePai);
-            componentePai.setVisible(false);
+            return;
         }
+        new ProdutoView(componentePai);
+        componentePai.setVisible(false);
     }
 }

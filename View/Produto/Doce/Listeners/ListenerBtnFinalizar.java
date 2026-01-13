@@ -30,10 +30,7 @@ public class ListenerBtnFinalizar implements ActionListener {
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(
-                    componentePai,
-                    "Informe uma quantidade válida (número inteiro positivo).",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
+                    componentePai, "Informe uma quantidade válida", "Erro", JOptionPane.ERROR_MESSAGE
                 );
                 return;
             }

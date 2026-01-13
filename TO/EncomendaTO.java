@@ -85,18 +85,14 @@ public class EncomendaTO implements EntregavelTO {
 
     // Método que remove um produto inteiro da encomenda
     public void removerProduto(ProdutoTO p) {
-        // Verifica erros
         if(p == null) {
             throw new IllegalArgumentException("Produto inválido");
         }
-        // Verifica se existe e apaga
-        for(ProdutoTO prod : produtos) {
-            if(prod.getCodigo() == p.getCodigo()) {
-                produtos.remove(prod);
-                return;
+        for(int i = 0; i < produtos.size(); i++) {
+            if(produtos.get(i).getCodigo() == p.getCodigo()) {
+                produtos.remove(i);
             }
         }
-        // Se não existir
         throw new IllegalArgumentException("Produto não está na encomenda");
     }
     
@@ -105,7 +101,6 @@ public class EncomendaTO implements EntregavelTO {
         if(p == null || qtdDif<= 0) {
             throw new IllegalArgumentException("Dados inválidos");
         }
-
         for(ProdutoTO prod : produtos) {
             if(prod.getCodigo() == p.getCodigo()) {
                 int novaQtd = prod.getQuantidade() - qtdDif;
@@ -122,21 +117,18 @@ public class EncomendaTO implements EntregavelTO {
     
     // Método que altera a quantidade de determinado produto
     public void alterarQuantidade(ProdutoTO p, int novaQtd) {
-        // Verifica erros
         if(p == null) {
             throw new IllegalArgumentException("Produto inválido.");
         }
         if(novaQtd <= 0) {
             throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
         }
-        // Verifica existência e aplica
         for(ProdutoTO prod : produtos) {
             if(p.getCodigo() == prod.getCodigo()) {
                 prod.setQuantidade(novaQtd);
                 return;
             }
         }
-        // Lança erro
         throw new IllegalArgumentException("Item não existe na encomenda.");
     }
 
@@ -169,7 +161,7 @@ public class EncomendaTO implements EntregavelTO {
     // Método que lista os produtos da encomenda atualmente
     public void listarprodutos() {
         for(ProdutoTO p : produtos) {
-            System.out.println("Produto: " + p.getNome() + " | Quantidade: " + p.getQuantidade());
+            System.out.println("Produto: " + p.getTipoProduto() + " | Quantidade: " + p.getQuantidade());
         }
     }
 

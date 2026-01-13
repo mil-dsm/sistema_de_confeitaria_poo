@@ -1,24 +1,24 @@
 package TO;
-//classe abstrata pai que extende todos os produtos da confeitaria
+/* Classe abstrata pai que extende todos os produtos da confeitaria */
 
 public abstract class ProdutoTO {
-    protected String nome;
+    protected String tipoProduto;
     protected double precoBase;
     protected int quantidade;
     public static int proximoCodigo = 0;
     private int codigoUnico;
 
     //método construtor
-    public ProdutoTO(String nome, double precoBase) {
-        this.nome = nome;
+    public ProdutoTO(String tipoProduto, double precoBase) {
+        this.tipoProduto = tipoProduto;
         this.precoBase = precoBase;
         codigoUnico = proximoCodigo;
         proximoCodigo++;
     }
 
     //gets e setters
-    public String getNome() {
-        return nome;
+    public String getTipoProduto() {
+        return tipoProduto;
     }
 
     public double getPrecoBase() {
@@ -29,8 +29,8 @@ public abstract class ProdutoTO {
         return quantidade;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setTipoProduto(String tipoProduto) {
+        this.tipoProduto = tipoProduto;
     }
 
     public void setPrecoBase(double precoBase) {
@@ -58,6 +58,6 @@ public abstract class ProdutoTO {
     // Método base toString para exibir informações do produto
     @Override
     public String toString() {
-        return nome + " | Qtd: " + quantidade + " | Unit: R$ " + precoBase + " | Total: R$ " + calcularPrecoFinal();
+        return tipoProduto + " | Qtd: " + quantidade + " | Unit: R$ " + precoBase + " | Total: R$ " + calcularPrecoFinal();
     }
 }

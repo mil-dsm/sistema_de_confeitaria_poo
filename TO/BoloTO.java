@@ -57,14 +57,14 @@ public class BoloTO extends ProdutoTO {
 
         return (precoFinal);
     }
-
-    @Override
-    public String toString() {
-        return ("Bolo: [Recheio: " + recheio + ", Cobertura: " + cobertura + ", Tamanho: " + tamanho + "]\n" + super.toString());
-    }
-
+    
     @Override
     public String gerarLinhaArquivo() {
-        return codigoUnico + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + recheio + ";" + cobertura + ";" + tamanho;
+        return getCodigo() + ";" + tipoProduto + ";" + quantidade + ";" + recheio + ";" + cobertura + ";" + tamanho;
+    }
+    
+    @Override
+    public String toString() {
+        return (super.toString() + " | Recheio: " + (recheio == true ? "sim" : "não") + " | Cobertura: " + cobertura + " | Tamanho: " + tamanho);
     }
 }

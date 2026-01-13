@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import TO.*;
 
 /**
- * Estrutura esperada: cpf;status;entrega;data;valorTotal;codigos
+ * Estrutura: cpf;status;entrega;data;valorTotal;codigos
  * EX: 12345678900;FECHADA;delivery;2026-01-10;85.50;1,3,5,...
  */
 public class ManipulaArquivosEncomenda {
@@ -104,14 +104,17 @@ public class ManipulaArquivosEncomenda {
     /* ========== Métodos extras para a manipulação do arquivo encomendas.txt ==========*/
 
     // Metodo para buscar uma linha específica por CPF e ver se já existe um encomenda naquele CPF
-    public String buscaEncomendaPorCpf(String cpf) {
+    public String buscaEncomendaAbertaPorCpf(String cpf) {
         ArrayList<String> linhas = retornarConteudoArquivo();
         for(String linha : linhas) {
-            if(linha.startsWith(cpf + ";")) {
+            String[] partes = linha.split(";");
+            if(partes.length > 1 &&
+            partes[0].equals(cpf) &&
+            partes[1].equals("ABERTA")) {
                 return linha;
             }
         }
-        return null;
+            return null;
     }
     
     // Método para verificar se existe uma encomenda aberta para um determinado CPF

@@ -32,10 +32,11 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
             JOptionPane.showMessageDialog(componentePai, "Informe o CPF.");
             return;
         }
-        String linha = encomendaArq.buscaEncomendaPorCpf(cpf);
+        String linha = encomendaArq.buscaEncomendaAbertaPorCpf(cpf);
         // Verifica a existência da encomenda
         if(linha == null) {
             JOptionPane.showMessageDialog(componentePai, "Encomenda não encontrada para este CPF.");
+            return;
         }
         // Verifica a repetição
         String[] partes = linha.split(";");

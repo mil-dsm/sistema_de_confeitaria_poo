@@ -14,6 +14,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+/* Estrutura:
+ * codigo;tipoProduto;quantidade;atributo1;atributo2;atributo3;...
+ */
+
 public class ManipulaArquivosProduto {
 	public String diretorio;
 	public String nomeArquivo;
@@ -57,7 +61,7 @@ public class ManipulaArquivosProduto {
 				BufferedReader leitorBuff = new BufferedReader(conversor);
 
 				String conteudo = leitorBuff.readLine();
-				while (conteudo != null) {
+				while(conteudo != null) {
 					alArquivo.add(conteudo); 
 					conteudo = leitorBuff.readLine();
 				}
@@ -84,7 +88,7 @@ public class ManipulaArquivosProduto {
 
 				String conteudo = leitorBuff.readLine();
 				if(conteudo==null) System.out.println("O arquivo está vazio");
-				while (conteudo != null) {
+				while(conteudo != null) {
 					System.out.println(conteudo); 
 					conteudo = leitorBuff.readLine();
 				}
@@ -160,40 +164,44 @@ public class ManipulaArquivosProduto {
 	}
 
     // Método que retorna o produto a partir do código
-	// 	Primeiro passo, identificar o produto pelo código que foi pensado, primeiro método: Se encontrar, chama o próximo método
-	// Segundo passo, esse método vai receber do anterior o vetor de String, que vai ter a divisão de acordo com o split(";") das variáveis do produto. Ele vai pegar o indice da String que fala dos atributos em específico e define qual o tipo de produto: se começar com o atributo "tamanho=", é bolo, se "tipo=" é doce, se "recheio=" é donut (OU pode fazer pelo nome, como "BOLO", "DONUT", "DOCE", por exemplo)
-	// Terceiro passo, quando identifica o tipo de produto, chama o método específico daquele produto e passa o vetor de string que foi criado pela divisão do split(";")
 	public ProdutoTO getProdutoPorCodigo(int codigo) {
     	ArrayList<String> alArquivo = retornarConteudoArquivo();
 
     	for(String linha : alArquivo) {
-        	String[] dados = linha.split(";");	// divide em ";"
-        	int codArquivo = Integer.parseInt(dados[0]);	// Pega o código do arquivo
+        	String[] dados = linha.split(";");
+        	int codArquivo = Integer.parseInt(dados[0]);
 			String tipoProduto = dados[1];
+			if (dados.length < 4) return null;
 
 			if(codArquivo == codigo) {
 				switch(tipoProduto) {
 					case "BOLO":
-						BoloTO bolo = new BoloTO();
+						/* codigo;tipoProduto;quantidade;recheio;cobertura;tamanho */
+						BoloTO bolo = new BoloTO(); // Define tipoProduto e preço automticamente
 						bolo.setCodigo(Integer.parseInt(dados[0]));
-						bolo.setQuantidade(Integer.parseInt(dados[4]));
-						bolo.setRecheio(dados[5]);
-						bolo.setCobertura(dados[6]);
-						bolo.setTamanho(dados[7].charAt(0));
+						ProdutoTO.proximoCodigo = Math.max(ProdutoTO.proximoCodigo, bolo.getCodigo() + 1);
+						bolo.setQuantidade(Integer.parseInt(dados[2]));
+						bolo.setRecheio(Boolean.parseBoolean(dados[3]));
+						bolo.setCobertura(dados[4]);
+						bolo.setTamanho(dados[5].charAt(0));
 						return bolo;
 					case "DONUT":
-						DonutTO donut = new DonutTO();
+						/* codigo;tipoProduto;quantidade;recheio;cobertura;confete */
+						DonutTO donut = new DonutTO(); // Define tipoProduto e preço automticamente
 						donut.setCodigo(Integer.parseInt(dados[0]));
-						donut.setQuantidade(Integer.parseInt(dados[4]));
-						donut.setRecheio(dados[5]);
-						donut.setCobertura(dados[6]);
-						donut.setConfete(Boolean.parseBoolean(dados[7]));
+						ProdutoTO.proximoCodigo = Math.max(ProdutoTO.proximoCodigo, donut.getCodigo() + 1);
+						donut.setQuantidade(Integer.parseInt(dados[2]));
+						// donut.setRecheio(Boolean.parseBoolean(dados[3])); //TODO
+						donut.setCobertura(dados[4]);
+						donut.setConfete(Boolean.parseBoolean(dados[5]));
 						return donut;
 					case "DOCE":
-						DoceTO doce = new DoceTO();
+						/* codigo;tipoProduto;quantidade;tipo */
+						DoceTO doce = new DoceTO(); // Define tipoProduto e preço automticamente
 						doce.setCodigo(Integer.parseInt(dados[0]));
-						doce.setQuantidade(Integer.parseInt(dados[4]));
-						doce.setTipo(dados[5]);
+						ProdutoTO.proximoCodigo = Math.max(ProdutoTO.proximoCodigo, doce.getCodigo() + 1);
+						doce.setQuantidade(Integer.parseInt(dados[2]));
+						doce.setTipo(dados[3]);
 						return doce;
 					default:
 						return null;
