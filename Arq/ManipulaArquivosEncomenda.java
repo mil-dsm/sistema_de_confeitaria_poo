@@ -65,7 +65,7 @@ public class ManipulaArquivosEncomenda {
         if(confirmacao) {
             
             try(BufferedWriter gravadorBuff = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arq)))) {
-                for (String valor : alArquivo) {
+                for(String valor : alArquivo) {
                     gravadorBuff.write(valor);
                     gravadorBuff.newLine();
                 }
@@ -181,7 +181,7 @@ public class ManipulaArquivosEncomenda {
 
         // Reescreve o arquivo
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
-            for (String l : linhas) {
+            for(String l : linhas) {
                 bw.write(l);
                 bw.newLine();
             }
@@ -202,7 +202,8 @@ public class ManipulaArquivosEncomenda {
             String[] partes = linha.split(";");
 
             if(partes[0].equals(cpf) && partes[1].equals("ABERTA")) {
-                if(partes.length < 3) return false;
+
+                if(partes.length < 6) return false;
 
                 String[] itens = partes[5].split(",");
                 ArrayList<String> novosItens = new ArrayList<>();
@@ -213,7 +214,14 @@ public class ManipulaArquivosEncomenda {
                     }
                 }
 
-                String novaLinha = partes[0] + ";" + partes[1];
+                // Reconstrói a linha corretamente
+                String novaLinha =
+                    partes[0] + ";" + // cpf
+                    partes[1] + ";" + // status
+                    partes[2] + ";" + // tipoEntrega
+                    partes[3] + ";" + // data
+                    partes[4];        // valor
+
                 if(!novosItens.isEmpty()) {
                     novaLinha += ";" + String.join(",", novosItens);
                 }
@@ -223,12 +231,12 @@ public class ManipulaArquivosEncomenda {
             }
         }
 
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
-            for (String l : linhas) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(arq))) {
+            for(String l : linhas) {
                 bw.write(l);
                 bw.newLine();
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -294,11 +302,12 @@ public class ManipulaArquivosEncomenda {
         for(String linha : linhas) {
             String[] partes = linha.split(";");
             if(partes[0].equals(cpf) && partes[1].equals("FECHADA")) {
-                ClienteTO cliente = new ClienteTO(arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf), cpf);
+                ClienteTO cliente = new ClienteTO(cpf, arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf));
                 String tipo = partes[2];
                 String data = partes[3];
                 double valor = Double.parseDouble(partes[4]);
                 EncomendaTO encomenda = new EncomendaTO(cliente, tipo);
+                encomenda.setData(data);
                 if(partes.length > 5) {
                     for(String cod : partes[5].split(",")) {
                         ProdutoTO p = arqProduto.getProdutoPorCodigo(Integer.parseInt(cod));

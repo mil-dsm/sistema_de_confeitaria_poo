@@ -5,8 +5,8 @@ public class BoloTO extends ProdutoTO {
     private String cobertura;
     private char tamanho;
 
-    public BoloTO(String nome, double precoBase) {
-        super(nome, precoBase);
+    public BoloTO() {
+        super("BOLO", 30);
     }
 
     public String getRecheio() {

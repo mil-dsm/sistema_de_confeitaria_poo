@@ -5,8 +5,8 @@ public class DonutTO extends ProdutoTO {
     private String cobertura;
     private boolean confete;
 
-    public DonutTO(String nome, double precoBase) {
-        super(nome, precoBase);
+    public DonutTO() {
+        super("DONUT", 5);
     }
 
     public String getRecheio() {
@@ -36,9 +36,9 @@ public class DonutTO extends ProdutoTO {
     @Override
     public double calcularPrecoFinal() {
         double preco = precoBase;
-        if(recheio == "Nenhuma") preco += 0;
-        if(recheio == "Nutella") preco += 2;
-        if(recheio != "Ninho") preco += 1.5;
+        if("Nutella".equals(recheio)) preco += 2;
+        else if("Nenhuma".equals(recheio)) preco += 0;
+        else if("Ninho".equals(recheio)) preco += 1.5;
 
         return preco * quantidade;
     }

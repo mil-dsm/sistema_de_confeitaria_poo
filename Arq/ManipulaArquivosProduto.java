@@ -49,7 +49,7 @@ public class ManipulaArquivosProduto {
 	public ArrayList<String> retornarConteudoArquivo() {
 		ArrayList<String> alArquivo = new ArrayList<String>();
 
-		if (arq.isFile() && arq.canRead()) {
+		if(arq.isFile() && arq.canRead()) {
 			try {
 				FileInputStream leitor = new FileInputStream(arq);
 
@@ -75,7 +75,7 @@ public class ManipulaArquivosProduto {
 	}
 
 	public boolean imprimirArquivo() {
-		if (arq.isFile() && arq.canRead()) {
+		if(arq.isFile() && arq.canRead()) {
 			try {
 				FileInputStream leitor = new FileInputStream(arq);
 
@@ -147,10 +147,10 @@ public class ManipulaArquivosProduto {
     public boolean removerProduto(int codigo) {
 		ArrayList<String> alArquivo = retornarConteudoArquivo();
 		boolean removido = false;
-		for (String linha : alArquivo) {
+		for(String linha : alArquivo) {
 			String[] dados = linha.split(";");
 			int codArquivo = Integer.parseInt(dados[0]);
-			if (codArquivo == codigo) {
+			if(codArquivo == codigo) {
 				removerElementoArquivo(linha);
 				removido = true;
 				break;
@@ -174,7 +174,7 @@ public class ManipulaArquivosProduto {
 			if(codArquivo == codigo) {
 				switch(tipoProduto) {
 					case "BOLO":
-						BoloTO bolo = new BoloTO(dados[2], Double.parseDouble(dados[3]));
+						BoloTO bolo = new BoloTO();
 						bolo.setCodigo(Integer.parseInt(dados[0]));
 						bolo.setQuantidade(Integer.parseInt(dados[4]));
 						bolo.setRecheio(dados[5]);
@@ -182,7 +182,7 @@ public class ManipulaArquivosProduto {
 						bolo.setTamanho(dados[7].charAt(0));
 						return bolo;
 					case "DONUT":
-						DonutTO donut = new DonutTO(dados[2], Double.parseDouble(dados[3]));
+						DonutTO donut = new DonutTO();
 						donut.setCodigo(Integer.parseInt(dados[0]));
 						donut.setQuantidade(Integer.parseInt(dados[4]));
 						donut.setRecheio(dados[5]);
@@ -190,7 +190,7 @@ public class ManipulaArquivosProduto {
 						donut.setConfete(Boolean.parseBoolean(dados[7]));
 						return donut;
 					case "DOCE":
-						DoceTO doce = new DoceTO(dados[2], Double.parseDouble(dados[3]));
+						DoceTO doce = new DoceTO();
 						doce.setCodigo(Integer.parseInt(dados[0]));
 						doce.setQuantidade(Integer.parseInt(dados[4]));
 						doce.setTipo(dados[5]);
@@ -210,5 +210,23 @@ public class ManipulaArquivosProduto {
 			return produto.calcularPrecoFinal();
 		}
 			return -1.0;
+	}
+
+	public int getMaiorCodigo() {
+		int maior = 0;
+		ArrayList<String> linhas = retornarConteudoArquivo();
+
+		for(String linha : linhas) {
+			String[] partes = linha.split(";");
+
+			if(partes.length > 0) {
+				int codigo = Integer.parseInt(partes[0]);
+				if(codigo > maior) {
+					maior = codigo;
+				}
+			}
+		}
+
+		return maior;
 	}
 }

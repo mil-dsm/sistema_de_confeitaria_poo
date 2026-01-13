@@ -99,7 +99,6 @@ public class EncomendaView extends JFrame {
         listaProdutos = new JList<>(modelProdutos);
         listaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // Cria Scroll
-        // TODO: Ajustar tamanho da área
         JScrollPane scrollProdutos = new JScrollPane(listaProdutos);
         scrollProdutos.setBorder(BorderFactory.createTitledBorder("Produtos na encomenda"));
         scrollProdutos.setPreferredSize(new Dimension(400, 200));
@@ -185,7 +184,7 @@ public class EncomendaView extends JFrame {
         }
 
         // Cria cliente
-        clienteAtual = new ClienteTO(arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf), cpf);
+        clienteAtual = new ClienteTO(cpf, arqCliente.buscarNomePorCpf(cpf), arqCliente.buscarEnderecoPorCpf(cpf));
 
         // Verifica a existência do cliente novamente
         if(clienteAtual == null) {
@@ -196,7 +195,7 @@ public class EncomendaView extends JFrame {
         // Verifica o arquivo encomendas.txt
         boolean confirmacao = arqEncomenda.existeEncomendaAberta(cpf);
         if(!confirmacao) {
-            arqEncomenda.escreverArquivo(cpf + ";ABERTA");
+            arqEncomenda.escreverArquivo(cpf + ";ABERTA;retirada;;0.0;");
             JOptionPane.showMessageDialog(this, "Encomenda criada com sucesso.");
         } else {
             JOptionPane.showMessageDialog(this, "Encomenda aberta encontrada.");
@@ -298,15 +297,20 @@ public class EncomendaView extends JFrame {
     // Cria uma variável temporária que gerencia o frete a partir do endereço do cliente
     public void atualizarFrete() {
         if(encomendaAtual == null) return;
-        tfValorFrete.setText(String.valueOf(encomendaAtual.calcularFrete()));
+        tfValorFrete.setText(
+            String.format("R$ %.2f", encomendaAtual.calcularFrete())
+        );
     }
     
     // Método que atualiza o valor do total da compra
     // Acontece a chamada do método que calcula o novo valor total e soma do frete
     public void atualizarValorTotal() {
         if(encomendaAtual == null) return;
-        tfTotal.setText(String.valueOf(encomendaAtual.calcularValorTotal(true)));
+        tfTotal.setText(
+            String.format("R$ %.2f", encomendaAtual.calcularValorTotal(true))
+        );
     }
+
 
     // Método que atualiza o estado dos botões da encomenda de acordo com seu estado atual
     public void atualizaEstadoBotoes() {

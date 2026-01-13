@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Arq.ManipulaArquivosEncomenda;
 import View.Encomenda.EncomendaView;
-// import View.Produto.ProdutoView;
+import View.Produto.ProdutoView;
 
 /**
  * Listener do Botão "Adicionar Produto", que procura pelo CPF do cliente que está editando a encomenda,
@@ -15,26 +15,31 @@ import View.Encomenda.EncomendaView;
  * para ser adicionado a encomenda.
  */
 public class ListenerBtnAdicionarProduto implements ActionListener {
-    private EncomendaView encomendaAtual;
+    private EncomendaView componentePai;
     private ManipulaArquivosEncomenda encomendaArq;
 
-    public ListenerBtnAdicionarProduto(EncomendaView encomendaAtual) {
-        this.encomendaAtual = encomendaAtual;
+    public ListenerBtnAdicionarProduto(EncomendaView componentePai) {
+        this.componentePai = componentePai;
         encomendaArq = new ManipulaArquivosEncomenda();
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        String cpf = encomendaAtual.getCpf();
+        if(componentePai.getEncomendaAtual() == null) {
+            JOptionPane.showMessageDialog(componentePai, "Crie ou busque uma encomenda primeiro.");
+            return;
+        }
+
+        String cpf = componentePai.getCpf();
 
         // Verifica se tem encomenda aberta no CPF do cliente que está editando sua encomenda
         String linha = encomendaArq.buscaEncomendaPorCpf(cpf);
         if(linha == null || linha.contains(";ABERTA") == false) {
-            JOptionPane.showMessageDialog(encomendaAtual, "Não existe encomenda aberta nesse CPF.");
+            JOptionPane.showMessageDialog(componentePai, "Não existe encomenda aberta nesse CPF.");
         } 
         else {
-            // new ProdutoView(encomendaAtual);
-            encomendaAtual.setVisible(false);
+            new ProdutoView(componentePai);
+            componentePai.setVisible(false);
         }
     }
 }

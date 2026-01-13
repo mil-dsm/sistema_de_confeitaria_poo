@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class EncomendaTO implements EntregavelTO {
     private ClienteTO cliente;
     private String tipoEntrega; // "retirada" ou "delivery"
+    private String data;
     private ArrayList<ProdutoTO> produtos;
     
     public EncomendaTO(ClienteTO cliente, String tipoEntrega) {
@@ -13,6 +14,7 @@ public class EncomendaTO implements EntregavelTO {
         }
         this.cliente = cliente;
         this.tipoEntrega = tipoEntrega;
+        data = "";
         this.produtos = new ArrayList<>();
     }
     
@@ -36,6 +38,14 @@ public class EncomendaTO implements EntregavelTO {
         this.tipoEntrega = tipo;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
     // Método que retorna o produto
     public ArrayList<ProdutoTO> getListaProdutos() {
         return produtos;
@@ -44,12 +54,12 @@ public class EncomendaTO implements EntregavelTO {
     // Método que adiciona um produto personalizado à encomenda
     public void adicionarProduto(ProdutoTO p) {
         // Verifica erros
-        if (p == null) {
+        if(p == null) {
             throw new IllegalArgumentException("Produto inválido");
         }
         // Verifica se o produto já existe
         for(ProdutoTO prod : produtos) {
-            if (prod.getCodigo() == p.getCodigo()) {
+            if(prod.getCodigo() == p.getCodigo()) {
                 prod.setQuantidade(prod.getQuantidade() + p.getQuantidade());
                 return;
             }
@@ -67,7 +77,7 @@ public class EncomendaTO implements EntregavelTO {
         // Verifica existência e aplica
         for(ProdutoTO prod : produtos) {
             if(p.getCodigo() == prod.getCodigo()) {
-                prod.setQuantidade(prod.getQuantidade() + p.getQuantidade());
+                prod.setQuantidade(prod.getQuantidade() + sum);
                 return;
             }
         }
@@ -82,7 +92,7 @@ public class EncomendaTO implements EntregavelTO {
         // Verifica se existe e apaga
         for(ProdutoTO prod : produtos) {
             if(prod.getCodigo() == p.getCodigo()) {
-                produtos.remove(p);
+                produtos.remove(prod);
                 return;
             }
         }
@@ -92,19 +102,22 @@ public class EncomendaTO implements EntregavelTO {
     
     // Método sobrecarregado que remove uma quantidade específica de item da encomenda
     public void removerProduto(ProdutoTO p, int qtdDif) {
-        // Verifica erros
-        if(p == null) {
-            throw new IllegalArgumentException("Produto inválido");
+        if(p == null || qtdDif<= 0) {
+            throw new IllegalArgumentException("Dados inválidos");
         }
-        // Verifica e remove
+
         for(ProdutoTO prod : produtos) {
             if(prod.getCodigo() == p.getCodigo()) {
-                prod.setQuantidade(prod.getQuantidade() - qtdDif);
+                int novaQtd = prod.getQuantidade() - qtdDif;
+                if(novaQtd <= 0) {
+                    produtos.remove(prod);
+                } else {
+                    prod.setQuantidade(novaQtd);
+                }
+                return;
             }
         }
-        boolean flag = produtos.removeIf(prod -> prod.getCodigo() == p.getCodigo());
-        if(flag == false)
-            throw new IllegalArgumentException("Produto não está na encomenda");
+        throw new IllegalArgumentException("Produto não está na encomenda");
     }
     
     // Método que altera a quantidade de determinado produto
@@ -126,24 +139,6 @@ public class EncomendaTO implements EntregavelTO {
         // Lança erro
         throw new IllegalArgumentException("Item não existe na encomenda.");
     }
-
-
-    // // Método sobrecarregado que remove uma determidada qtd total de um determinado item
-    // public void removerProduto(ProdutoTO p, int qtd) {
-    //     if(p == null || qtd <= 0) {
-    //         throw new IllegalArgumentException("Dados inválidos.");
-    //     }
-
-    //     for(ProdutoTO prod : produtos) {
-    //         if(p.getCodigo() == prod.getCodigo()) {
-    //             int novaQtd = prod.getQuantidade() - qtd;
-    //             if(novaQtd <= 0) produtos.remove(prod);
-    //             else prod.setQuantidade(novaQtd);
-    //             return;
-    //         }
-    //     }
-    //     throw new IllegalArgumentException("Produto não está na encomenda.");
-    // }
 
     // Método implementado da interface que calcula o valor do frete de acordo com o tipo de entrega
     @Override
@@ -176,5 +171,10 @@ public class EncomendaTO implements EntregavelTO {
         for(ProdutoTO p : produtos) {
             System.out.println("Produto: " + p.getNome() + " | Quantidade: " + p.getQuantidade());
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Data: " + data + " | Entrega: " + tipoEntrega + " | Itens: " + produtos.size() + " | Total: R$ " + String.format("%.2f", calcularValorTotal(true));
     }
 }

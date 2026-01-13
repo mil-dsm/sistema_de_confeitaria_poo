@@ -5,7 +5,7 @@ public abstract class ProdutoTO {
     protected String nome;
     protected double precoBase;
     protected int quantidade;
-    static int proximoCodigo = 0;
+    public static int proximoCodigo = 0;
     private int codigoUnico;
 
     //método construtor

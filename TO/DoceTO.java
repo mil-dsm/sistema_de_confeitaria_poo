@@ -3,8 +3,8 @@ package TO;
 public class DoceTO extends ProdutoTO {
     String tipo;
 
-    public DoceTO(String nome, double precoBase) {
-        super(nome, precoBase);
+    public DoceTO() {
+        super("DOCE", 1.50);
     }
 
     @Override

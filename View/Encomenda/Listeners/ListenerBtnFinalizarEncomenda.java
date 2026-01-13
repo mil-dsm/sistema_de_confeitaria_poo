@@ -38,11 +38,13 @@ public class ListenerBtnFinalizarEncomenda implements ActionListener {
             JOptionPane.showMessageDialog(componentePai, "Encomenda não encontrada para este CPF.");
         }
         // Verifica a repetição
-        if(linha.endsWith("FECHADA")) {
+        String[] partes = linha.split(";");
+        if(partes.length > 1 && partes[1].equals("FECHADA")) {
             JOptionPane.showMessageDialog(componentePai, "Encomenda já foi FECHADA.");
             componentePai.atualizaEstadoBotoes();
             return;
         }
+
         // Confirmação de finalização
         int opc = JOptionPane.showConfirmDialog(componentePai, "Deseja finalizar a encomenda?", "Confirmação", JOptionPane.YES_NO_OPTION);
         if(opc == JOptionPane.NO_OPTION) {
