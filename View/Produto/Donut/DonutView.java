@@ -1,8 +1,11 @@
 package View.Produto.Donut;
 
-import javax.swing.*;
-import View.Produto.ProdutoView;
 import View.Produto.Donut.Listeners.*;
+import View.Produto.ProdutoView;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.*;
 
 public class DonutView extends JFrame {
     // Atributo de vinculo
@@ -26,31 +29,63 @@ public class DonutView extends JFrame {
         setSize(350, 450);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-
-        setLayout(null);
+        setLayout(new BorderLayout(10, 10));
 
         // Atributo para vinculo
         this.telaProduto = telaProduto;
+
+        JPanel painelInferior = new JPanel(new BorderLayout());
         
         // Botão Voltar
+        
+        JPanel painelVoltar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        
         btnVoltar = new JButton("Voltar");
         btnVoltar.setBounds(20, 400, 100, 30);
-        add(btnVoltar);
         ListenerBtnVoltarDonut l1 = new ListenerBtnVoltarDonut(this);
         btnVoltar.addActionListener(l1);
+        painelVoltar.add(btnVoltar);
+        painelInferior.add(painelVoltar, BorderLayout.WEST);
 
         //botão finalizar
+        JPanel painelFinalizar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnFinalizar = new JButton("Finalizar");
         btnFinalizar.setBounds(200, 400, 100, 30);
-        add(btnFinalizar);
+       
 
         btnFinalizar.addActionListener(new ListenerBtnFinalizar(this));
+        painelFinalizar.add(btnFinalizar);
+        painelInferior.add(painelFinalizar, BorderLayout.EAST);
+
+        add(painelInferior, BorderLayout.SOUTH);
 
         // Botões de personalização
+        JPanel painelOpcoes = new JPanel();
+        painelOpcoes.setLayout(new BoxLayout(painelOpcoes, BoxLayout.Y_AXIS));
+        painelOpcoes.setBorder(BorderFactory.createEmptyBorder(40, 20, 20, 20));
+
         popupCobertura = new JPopupMenu();
         popupConfete = new JPopupMenu();
         btnCobertura = new JButton("Cobertura ▼");
         btnConfete = new JButton("Confete ▼");
+
+        Dimension ConfeteBotao = new Dimension(120, 28);
+        Dimension CoberturaBotao = new Dimension(120, 28);
+
+        btnCobertura.setPreferredSize(CoberturaBotao);
+        btnCobertura.setMaximumSize(CoberturaBotao);
+        btnCobertura.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+        btnConfete.setPreferredSize(ConfeteBotao);
+       btnConfete.setMaximumSize(ConfeteBotao);
+        btnConfete.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+        painelOpcoes.add(btnCobertura);
+        painelOpcoes.add(Box.createVerticalStrut(10));
+        painelOpcoes.add(btnConfete);
+
+        add(painelOpcoes, BorderLayout.CENTER);
+        
 
         //popup cobertura
         ListenerPopupCobertura lp1 = new ListenerPopupCobertura(btnCobertura, popupCobertura);
@@ -70,16 +105,16 @@ public class DonutView extends JFrame {
         sim.addActionListener(new ListenerBtnConfete(this, true));
         nao.addActionListener(new ListenerBtnConfete(this, false));
 
-        btnCobertura.setBounds(30, 100, 120, 30);
-        btnConfete.setBounds(30, 150, 120, 30);
-        add(btnCobertura);
-        add(btnConfete);
+    
+       
 
         popupCobertura.add(chocolate);
         popupCobertura.add(morango);
 
         popupConfete.add(sim);
         popupConfete.add(nao);
+
+
 
         setVisible(true);
     }
