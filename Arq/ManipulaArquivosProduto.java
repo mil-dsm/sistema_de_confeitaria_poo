@@ -186,14 +186,13 @@ public class ManipulaArquivosProduto {
 						bolo.setTamanho(dados[5].charAt(0));
 						return bolo;
 					case "DONUT":
-						/* codigo;tipoProduto;quantidade;recheio;cobertura;confete */
+						/* codigo;tipoProduto;quantidade;cobertura;confete */
 						DonutTO donut = new DonutTO(); // Define tipoProduto e preço automticamente
 						donut.setCodigo(Integer.parseInt(dados[0]));
 						ProdutoTO.proximoCodigo = Math.max(ProdutoTO.proximoCodigo, donut.getCodigo() + 1);
 						donut.setQuantidade(Integer.parseInt(dados[2]));
-						// donut.setRecheio(Boolean.parseBoolean(dados[3])); //TODO
-						donut.setCobertura(dados[4]);
-						donut.setConfete(Boolean.parseBoolean(dados[5]));
+						donut.setCobertura(dados[3]);
+						donut.setConfete(Boolean.parseBoolean(dados[4]));
 						return donut;
 					case "DOCE":
 						/* codigo;tipoProduto;quantidade;tipo */

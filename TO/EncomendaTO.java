@@ -91,6 +91,7 @@ public class EncomendaTO implements EntregavelTO {
         for(int i = 0; i < produtos.size(); i++) {
             if(produtos.get(i).getCodigo() == p.getCodigo()) {
                 produtos.remove(i);
+                return; // ← IMPORTANTE
             }
         }
         throw new IllegalArgumentException("Produto não está na encomenda");
@@ -98,14 +99,15 @@ public class EncomendaTO implements EntregavelTO {
     
     // Método sobrecarregado que remove uma quantidade específica de item da encomenda
     public void removerProduto(ProdutoTO p, int qtdDif) {
-        if(p == null || qtdDif<= 0) {
+        if(p == null || qtdDif <= 0) {
             throw new IllegalArgumentException("Dados inválidos");
         }
-        for(ProdutoTO prod : produtos) {
+        for(int i = 0; i < produtos.size(); i++) {
+            ProdutoTO prod = produtos.get(i);
             if(prod.getCodigo() == p.getCodigo()) {
                 int novaQtd = prod.getQuantidade() - qtdDif;
                 if(novaQtd <= 0) {
-                    produtos.remove(prod);
+                    produtos.remove(i);
                 } else {
                     prod.setQuantidade(novaQtd);
                 }

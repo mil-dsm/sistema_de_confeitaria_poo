@@ -18,7 +18,7 @@ public class ProdutoView extends JFrame {
     JMenuItem btnBolo;
     JMenuItem btnDonut;
 
-    public ProdutoView(EncomendaView encomendaAtual) { //EncomendaView colocar quando tiver hj :)
+    public ProdutoView(EncomendaView encomendaAtual) {
         setTitle("Menu de Produtos");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -50,8 +50,8 @@ public class ProdutoView extends JFrame {
         btnDoce.addActionListener(l2);
         ListenerBtnBolo l3 = new ListenerBtnBolo(this);
         btnBolo.addActionListener(l3);
-        // ListenerBtnDonut l4 = new ListenerBtnDonut(this);
-        // btnDonut.addActionListener(l4);
+        ListenerBtnDonut l4 = new ListenerBtnDonut(this);
+        btnDonut.addActionListener(l4);
         
         // Painel central
         JPanel painelCentral = new JPanel(new GridBagLayout());

@@ -43,7 +43,7 @@ public class EncomendaView extends JFrame {
     public EncomendaView() {
         setTitle("Encomenda");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(700, 700);
+        setSize(700, 500);
         setLocationRelativeTo(null);
         
         /* Inicialização dos atributos */
@@ -98,6 +98,7 @@ public class EncomendaView extends JFrame {
         modelProdutos = new DefaultListModel<>();
         listaProdutos = new JList<>(modelProdutos);
         listaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listaProdutos.addListSelectionListener(e -> atualizaEstadoBotoes());
         // Cria Scroll
         JScrollPane scrollProdutos = new JScrollPane(listaProdutos);
         scrollProdutos.setBorder(BorderFactory.createTitledBorder("Produtos na encomenda"));

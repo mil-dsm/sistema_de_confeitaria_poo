@@ -60,11 +60,11 @@ public class BoloTO extends ProdutoTO {
     
     @Override
     public String gerarLinhaArquivo() {
-        return getCodigo() + ";" + tipoProduto + ";" + quantidade + ";" + recheio + ";" + cobertura + ";" + tamanho;
+        return getCodigo() + ";" + getTipoProduto() + ";" + quantidade + ";" + recheio + ";" + cobertura + ";" + tamanho;
     }
     
     @Override
     public String toString() {
-        return (super.toString() + " | Recheio: " + (recheio == true ? "sim" : "não") + " | Cobertura: " + cobertura + " | Tamanho: " + tamanho);
+        return (getTipoProduto() + super.toString() + " | Recheio: " + (recheio == true ? "sim" : "não") + " | Cobertura: " + cobertura + " | Tamanho: " + tamanho + " | Total: R$" + calcularPrecoFinal());
     }
 }

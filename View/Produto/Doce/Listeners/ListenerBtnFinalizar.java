@@ -42,9 +42,6 @@ public class ListenerBtnFinalizar implements ActionListener {
             arqProduto.salvarProduto(doce);
             componentePai.getProdutoView().getEncomendaView().adicionarProduto(doce);
             JOptionPane.showMessageDialog(componentePai, "Doce adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-
-            componentePai.dispose();
-            componentePai.getProdutoView().setVisible(true);
         }
     }
 }

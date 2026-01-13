@@ -1,20 +1,11 @@
 package TO;
 
 public class DonutTO extends ProdutoTO {
-    private String recheio;
     private String cobertura;
     private boolean confete;
 
     public DonutTO() {
-        super("DONUT", 5);
-    }
-
-    public String getRecheio() {
-        return recheio;
-    }
-
-    public void setRecheio(String recheio) {
-        this.recheio = recheio;
+        super("DONUT", 5.0);
     }
 
     public String getCobertura() {
@@ -36,20 +27,25 @@ public class DonutTO extends ProdutoTO {
     @Override
     public double calcularPrecoFinal() {
         double preco = precoBase;
-        if("Nutella".equals(recheio)) preco += 2;
-        else if("Nenhuma".equals(recheio)) preco += 0;
-        else if("Ninho".equals(recheio)) preco += 1.5;
-
+        if(confete) {
+            preco += 0.50;
+        }
+        if("Chocolate".equals(cobertura)) {
+            preco += 1.0;
+        } 
+        else if("Morango".equals(cobertura)) {
+            preco += 1.50;
+        }
         return preco * quantidade;
     }
 
     @Override
     public String gerarLinhaArquivo() {
-        return getCodigo() +  ";" + tipoProduto + ";" + quantidade + ";" + recheio + ";" + cobertura + ";" + confete;
+        return getCodigo() +  ";" + getTipoProduto() + ";" + quantidade + ";" + cobertura + ";" + confete;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " | Recheio: " + recheio + " | Cobertura: " + cobertura + " | Confete: " + confete;
+        return (getTipoProduto() + super.toString() + " | Cobertura: " + cobertura + " | Confete: " + confete + " | Total: " + calcularPrecoFinal());
     }
 }

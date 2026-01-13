@@ -23,7 +23,7 @@ public class HistoricoView extends JFrame {
     public HistoricoView() {
         setTitle("Menu Inicial");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(700, 700);
+        setSize(700, 500);
         setLocationRelativeTo(null);
 
         /* Inicialização de variáveis */

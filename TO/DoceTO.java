@@ -38,12 +38,12 @@ public class DoceTO extends ProdutoTO {
 
     @Override
     public String gerarLinhaArquivo() {
-        return getCodigo() + ";" + tipoProduto + ";" + quantidade + ";" + tipo;
+        return getCodigo() + ";" + getTipoProduto() + ";" + quantidade + ";" + tipo;
     }
 
     //Sobrescrita de toString: seu toString() + super.toString()
     @Override
     public String toString() {
-        return (super.toString() + " | Tipo: " + tipo);
+        return (getTipoProduto() + super.toString() + " | Tipo: " + tipo + " | Total: R$" + calcularPrecoFinal());
     }
 }
