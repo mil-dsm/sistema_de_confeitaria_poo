@@ -1,26 +1,27 @@
 package TO;
 
 public class BoloTO extends ProdutoTO {
-    private String recheio;
+
+    private boolean  recheio;
     private String cobertura;
     private char tamanho;
 
     public BoloTO() {
-        super("BOLO", 30);
+        super("BOLO", 30.0);
     }
 
-    public String getRecheio() {
+    public boolean  getRecheio() {
         return recheio;
     }
 
-    public void setRecheio(String recheio) {
+    public void setRecheio(boolean recheio) {
         this.recheio = recheio;
     }
 
     public String getCobertura() {
         return cobertura;
     }
-    
+
     public void setCobertura(String cobertura) {
         this.cobertura = cobertura;
     }
@@ -28,7 +29,7 @@ public class BoloTO extends ProdutoTO {
     public char getTamanho() {
         return tamanho;
     }
-    
+
     public void setTamanho(char tamanho) {
         this.tamanho = tamanho;
     }
@@ -39,7 +40,7 @@ public class BoloTO extends ProdutoTO {
 
         switch (tamanho) {
             case 'P':
-                precoFinal += 0; 
+                precoFinal += 0;
                 break;
             case 'M':
                 precoFinal += 15;
@@ -49,21 +50,21 @@ public class BoloTO extends ProdutoTO {
                 break;
         }
 
-        if(cobertura != null) {
-            precoFinal += 5.0;
+        //personalizavel
+        if (recheio == true) {
+            precoFinal += 10.0;
         }
 
-        return (precoFinal) * quantidade;
+        return (precoFinal);
+    }
+
+    @Override
+    public String toString() {
+        return ("Bolo: [Recheio: " + recheio + ", Cobertura: " + cobertura + ", Tamanho: " + tamanho + "]\n" + super.toString());
     }
 
     @Override
     public String gerarLinhaArquivo() {
-        return getCodigo() + ";BOLO;" + nome + ";" + precoBase + ";" + quantidade + ";" +
-            recheio + ";" + cobertura + ";" + tamanho;
-    }
-    
-    @Override
-    public String toString() {
-        return (super.toString() + " | Recheio: " + recheio + " | Cobertura: " + cobertura + " | Tamanho: " + tamanho);
+        return codigoUnico + ";" + nome + ";" + calcularPrecoFinal() + ";" + quantidade + ";" + recheio + ";" + cobertura + ";" + tamanho;
     }
 }
