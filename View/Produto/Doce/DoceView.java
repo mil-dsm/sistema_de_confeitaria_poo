@@ -1,8 +1,11 @@
 package View.Produto.Doce;
 
-import javax.swing.*;
-import View.Produto.ProdutoView;
 import View.Produto.Doce.Listeners.*;
+import View.Produto.ProdutoView;
+import java.awt.BorderLayout;
+import  java.awt.FlowLayout;
+import java.awt.GridLayout;
+import javax.swing.*;
 
 public class DoceView extends JFrame {
     // Variáveis importantes
@@ -19,39 +22,50 @@ public class DoceView extends JFrame {
     JMenuItem itemTrufa = new JMenuItem("Trufa");
     JMenuItem itemBeijinho = new JMenuItem("Beijinho");
 
+    private JPanel painelCentro;
+    private JPanel painelFinalizar;
     //quantidade de doce
     JTextField txtNumero = new JTextField(10);
 
     public DoceView(ProdutoView paginaProduto) {
         setTitle("Personalização de Doces");
-        setSize(350, 450);
+        setSize(350, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         //Layout
-        setLayout(null);
+        setLayout(new BorderLayout());
 
         // Inicializa a página anterior
         this.paginaProduto = paginaProduto;
 
         // Botão Voltar
+        JPanel painelVoltar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnVoltar = new JButton("Voltar");
-        //ajeitar tamanho
         btnVoltar.setBounds(20, 400, 100, 30);
         ListenerBtnVoltarDoce l1 = new ListenerBtnVoltarDoce(this);
         btnVoltar.addActionListener(l1);
-        add(btnVoltar);
+        painelVoltar.add(btnVoltar);
+        add(painelVoltar, BorderLayout.SOUTH);
 
         // Menu Escolher Tipo do Doce
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(menuOpcoes);
+        setJMenuBar(menuBar);
 
         //itens do menu
         menuOpcoes.add(itemBrigadeiro);
         menuOpcoes.add(itemTrufa);
         menuOpcoes.add(itemBeijinho);
 
+        //Painel Central
+        JPanel painelCentro = new JPanel(new GridLayout(3, 1, 10, 10));
+
+
         // Campo de texto para quantidade do doce
-        txtNumero.setBounds(150, 50, 100, 30);
+        JPanel painelQtd = new JPanel();
+        painelQtd.add(new JLabel("Quantidade:"));
+        painelQtd.add(txtNumero);
+       // txtNumero.setBounds(150, 50, 100, 30);
 
         //JMenuItem brigadeiro
         ListenerItemBrigadeiro l4 = new ListenerItemBrigadeiro(this);
@@ -64,13 +78,17 @@ public class DoceView extends JFrame {
         itemBeijinho.addActionListener(l6);
 
         //Btn Finalizar
+        JPanel painelFinalizar = new JPanel();
         btnFinalizarBr = new JButton("Finalizar");
         btnFinalizarBr.setBounds(150, 100, 100, 30);
         add(btnFinalizarBr);
         ListenerBtnFinalizar l2 = new ListenerBtnFinalizar(this);
         btnFinalizarBr.addActionListener(l2);
             
-        add(txtNumero);
+       painelCentro.add(painelQtd);
+        painelCentro.add(painelFinalizar);
+
+        add(painelCentro, BorderLayout.CENTER);
         setJMenuBar(menuBar);
         setVisible(true);
     }
@@ -107,4 +125,5 @@ public class DoceView extends JFrame {
     public ProdutoView getProdutoView() {
         return paginaProduto;
     }
+    
 }
