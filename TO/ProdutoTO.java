@@ -5,7 +5,7 @@ public abstract class ProdutoTO {
     protected String tipoProduto;
     protected double precoBase;
     protected int quantidade;
-    public static int proximoCodigo = 0;
+    public static int proximoCodigo = 0; // Inicializa em 0 e incrementa conforme cria novos produtos
     private int codigoUnico;
 
     //método construtor
@@ -55,7 +55,7 @@ public abstract class ProdutoTO {
     // Método ABSTRATO que formata como os atributos de cada produto aparecera no arquivo produtos.txt
     public abstract String gerarLinhaArquivo();
 
-    // Método base toString para exibir informações do produto
+    // Método base toString para exibir informações do produto, utilizado na EncomendaView
     @Override
     public String toString() {
         return " | Qtd: " + quantidade + " | Unit: R$ " + precoBase + " | Total: R$ " + calcularPrecoFinal();

@@ -3,13 +3,14 @@ package TO;
 public class DoceTO extends ProdutoTO {
     String tipo;
 
+    // Construtor
     public DoceTO() {
         super("DOCE", 1.50);
     }
 
+    // Implementação do método abstrato do calculo do preço do produto personalizado
     @Override
     public double calcularPrecoFinal() {
-
         double precoFinal = super.precoBase;
         switch (tipo) {
             case "brigadeiro":
@@ -28,6 +29,7 @@ public class DoceTO extends ProdutoTO {
         return precoFinal * quantidade;
     }
 
+    // Gets e sets
     public String getTipo() {
         return tipo;
     }
@@ -36,12 +38,13 @@ public class DoceTO extends ProdutoTO {
         this.tipo = tipo;
     }
 
+    // Sobrescrita do método abstrato de geração das linhas no arquivo
     @Override
     public String gerarLinhaArquivo() {
         return getCodigo() + ";" + getTipoProduto() + ";" + quantidade + ";" + tipo;
     }
 
-    //Sobrescrita de toString: seu toString() + super.toString()
+    // Sobrescrita do método abstrato toString() para mostrar na encomenda
     @Override
     public String toString() {
         return (getTipoProduto() + super.toString() + " | Tipo: " + tipo + " | Total: R$" + calcularPrecoFinal());

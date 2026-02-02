@@ -8,6 +8,7 @@ public class EncomendaTO implements EntregavelTO {
     private String data;
     private ArrayList<ProdutoTO> produtos;
     
+    // Construtor com tratamento de exceção
     public EncomendaTO(ClienteTO cliente, String tipoEntrega) {
         if(cliente == null) {
             throw new IllegalArgumentException("Cliente inválido.");
@@ -38,20 +39,23 @@ public class EncomendaTO implements EntregavelTO {
         this.tipoEntrega = tipo;
     }
 
+    // Método que retorna a data de finalização da encomenda
     public String getData() {
         return data;
     }
 
+    // Método que define a data de finalização da encomenda
     public void setData(String data) {
         this.data = data;
     }
 
-    // Método que retorna o produto
+    // Método que retorna os produtos dentro da encomenda como ArrayList
     public ArrayList<ProdutoTO> getListaProdutos() {
         return produtos;
     }
 
-    // Método que adiciona um produto personalizado à encomenda
+    // Método que adiciona um produto personalizado à encomenda (ArrayList)
+    // Trata exceções
     public void adicionarProduto(ProdutoTO p) {
         // Verifica erros
         if(p == null) {
@@ -68,7 +72,7 @@ public class EncomendaTO implements EntregavelTO {
     }
 
     // Método sobrecarregado que adiciona um quantidade específica para aumentar em determinado
-    // produto da encomenda aplicável apenas a produtos que já existem na encomenda.
+    // produto da encomenda. Aplicável apenas a produtos que já existem na encomenda.
     public void adicionarProduto(ProdutoTO p, int sum) {
         // Verifica erros
         if(p == null) {
@@ -91,13 +95,14 @@ public class EncomendaTO implements EntregavelTO {
         for(int i = 0; i < produtos.size(); i++) {
             if(produtos.get(i).getCodigo() == p.getCodigo()) {
                 produtos.remove(i);
-                return; // ← IMPORTANTE
+                return;
             }
         }
         throw new IllegalArgumentException("Produto não está na encomenda");
     }
     
     // Método sobrecarregado que remove uma quantidade específica de item da encomenda
+    // Verifica exceções e manipula o ArrayList
     public void removerProduto(ProdutoTO p, int qtdDif) {
         if(p == null || qtdDif <= 0) {
             throw new IllegalArgumentException("Dados inválidos");
@@ -156,6 +161,7 @@ public class EncomendaTO implements EntregavelTO {
         return total;
     }
     
+    // Método que calcua o subtotal, sem frete adicionado
     public double calcularSubTotal() {
         return calcularValorTotal(false);
     }
@@ -167,6 +173,7 @@ public class EncomendaTO implements EntregavelTO {
         }
     }
 
+    // Sobreescrita do método toString() para mostrar no histórico de pedidos
     @Override
     public String toString() {
         return "Data: " + data + " | Entrega: " + tipoEntrega + " | Itens: " + produtos.size() + " | Total: R$ " + String.format("%.2f", calcularValorTotal(true));

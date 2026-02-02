@@ -4,10 +4,12 @@ public class DonutTO extends ProdutoTO {
     private String cobertura;
     private boolean confete;
 
+    // Construtor
     public DonutTO() {
         super("DONUT", 5.0);
     }
 
+    // Gets e sets
     public String getCobertura() {
         return cobertura;
     }
@@ -24,6 +26,7 @@ public class DonutTO extends ProdutoTO {
         this.confete = confete;
     }
 
+    // Implementação do método abstrato do calculo do preço do produto personalizado
     @Override
     public double calcularPrecoFinal() {
         double preco = precoBase;
@@ -39,11 +42,13 @@ public class DonutTO extends ProdutoTO {
         return preco * quantidade;
     }
 
+    // Sobrescrita do método abstrato de geração das linhas no arquivo
     @Override
     public String gerarLinhaArquivo() {
         return getCodigo() +  ";" + getTipoProduto() + ";" + quantidade + ";" + cobertura + ";" + confete;
     }
 
+    // Sobrescrita do método abstrato toString() para mostrar na encomenda
     @Override
     public String toString() {
         return (getTipoProduto() + super.toString() + " | Cobertura: " + cobertura + " | Confete: " + confete + " | Total: " + calcularPrecoFinal());

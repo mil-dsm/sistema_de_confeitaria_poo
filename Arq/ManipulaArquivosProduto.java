@@ -142,12 +142,16 @@ public class ManipulaArquivosProduto {
 		return(confirmacao);				
 	}
 
-	// Método que recebe o produto criado e adiciona ao arquivo produtos.txt
+	/* Métodos adicionais */
+
+	// Método que recebe o produto criado e adiciona seus atributos ao arquivo produtos.txt
+	// a partir do seu método gerador de linha, depende da instância específica de ProdutoTO.
     public boolean salvarProduto(ProdutoTO produto) {
 		return escreverArquivo(produto.gerarLinhaArquivo());
 	}
 
-    // Método que recebe o produto que quer remover e remove sua linha no arquivo produtos.txt
+    // Método que recebe o produto que quer remover e remove sua linha no arquivo produtos.txt.
+	// É identificado a partir do código do produto.
     public boolean removerProduto(int codigo) {
 		ArrayList<String> alArquivo = retornarConteudoArquivo();
 		boolean removido = false;
@@ -164,6 +168,9 @@ public class ManipulaArquivosProduto {
 	}
 
     // Método que retorna o produto a partir do código
+	// Ao identificar o produto procurado, vai construir um ProdutoTO, descobrindo qual a sua instância a
+	// partir dos atributos colocados no arquivo txt, e, ao finalizar, retorna essa instancia, se não en-
+	// contrar, retorna NULL.
 	public ProdutoTO getProdutoPorCodigo(int codigo) {
     	ArrayList<String> alArquivo = retornarConteudoArquivo();
 
@@ -219,6 +226,8 @@ public class ManipulaArquivosProduto {
 			return -1.0;
 	}
 
+	// Método utilizado para atualizar os numeros dos códigos atualmente no arquivo.txt
+	// Para não perder o código do último produto criado, verificamos com esse método.
 	public int getMaiorCodigo() {
 		int maior = 0;
 		ArrayList<String> linhas = retornarConteudoArquivo();

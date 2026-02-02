@@ -5,12 +5,15 @@ public class ClienteTO {
     private String endereco;
     private String cpf;
     
+    // Construtor
     public ClienteTO(String cpf, String nome, String endereco) {
         this.cpf = cpf;
         this.nome = nome;
         this.endereco = endereco;
     }
 
+    // Implementação de método que calcula a distância da loja ao bairro do cliente
+    // para o calculo do frete
     public double estimarDistancia(){
         switch(endereco){
             case "Alto São Francisco":
@@ -28,8 +31,9 @@ public class ClienteTO {
             default:
                 return 0;
         }
-    } 
+    }
 
+    // Gets e sets
     public String getNome() {
         return nome;
     }
@@ -54,6 +58,7 @@ public class ClienteTO {
         this.cpf = cpf;
     }
 
+    // Sobrescrita do método toString()
     @Override
     public String toString() {
         return "Cliente: " + nome + ", Endereço: " + endereco + ", Cpf: " + cpf;

@@ -260,6 +260,9 @@ public class ManipulaArquivosEncomenda {
         return total;
     }
 
+    // Método que recebe o cpf da encomenda e a instacia da encomenda (EncomendaTO) para finalizar.
+    // Será reescrito a linha, com o status "FECHADA", a data e o valor total da encomenda na linha.
+    // Além disso, esses mesmos atributos serão atualizados na instância passada de EncomendaTO.
     public boolean finalizarEncomenda(String cpf, EncomendaTO encomenda) {
         ArrayList<String> linhas = retornarConteudoArquivo();
 
@@ -297,7 +300,7 @@ public class ManipulaArquivosEncomenda {
         return true;
     }
 
-    // Retorna todas as encomendas FECHADAS de um CPF
+    // Retorna todas as encomendas FECHADAS de um CPF em um ArrayList de EncomendaTO
     public ArrayList<EncomendaTO> getHistoricoPorCpf(String cpf) {
         ArrayList<EncomendaTO> historico = new ArrayList<>();
         ArrayList<String> linhas = retornarConteudoArquivo();
