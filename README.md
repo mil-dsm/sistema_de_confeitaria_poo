@@ -1,2 +1,25 @@
-# sistema_de_confeitaria_poo
+# Sistema de Confeitaria
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java" />
+  <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/github/license/mil-dsm/Sistema-de-Confeitaria?style=for-the-badge" alt="License" />
+</p>
+
+## 📝 Sobre o Projeto
+O **Sistema de Confeitaria** é uma aplicação desenvolvida em Java para auxiliar na gestão de uma doceria/confeitaria. O objetivo é facilitar o controle de pedidos e cadastro de clientes.
+
+Este projeto foi desenvolvido como parte do aprendizado em Programação Orientada a Objetos (POO) da Universidade Federal do Ceará (UFC) do campus de Quixadá.
+
+## 🚀 Funcionalidades
+- [x] **Cadastro de Clientes:** Registro completo com nome, telefone e endereço.
+- [x] **Personalização de Pedidos:** Personalização de bolos, doces e donuts com preços e categorias.
+- [x] **Controle de Pedidos:** Registro de vendas com cálculo automático de total.
+- [x] **Interface Gráfica:** Desenvolvido utilizando Swing/JavaFX (se aplicável).
+
+## 🛠️ Tecnologias Utilizadas
+- **Linguagem:** Java (JDK 21 ou superior)
+- **Interface:** Swing / JavaFX
+- **Banco de Dados:** MySQL / PostgreSQL / SQLite
+- **Persistência:** JDBC (ou JPA/Hibernate)
+- **IDE Utilizada:** Eclipse e VS Code
