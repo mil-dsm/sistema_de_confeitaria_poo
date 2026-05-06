@@ -13,9 +13,9 @@ Este projeto foi desenvolvido como parte do aprendizado em Programação Orienta
 - [x] **Cadastro de Clientes:** Registro completo com nome, telefone e endereço.
 - [x] **Personalização de Pedidos:** Personalização de bolos, doces e donuts com preços e categorias.
 - [x] **Controle de Pedidos:** Registro de vendas com cálculo automático de total.
-- [x] **Interface Gráfica:** Desenvolvido utilizando Swing/JavaFX (se aplicável).
+- [x] **Interface Gráfica:** Desenvolvido utilizando Swing.
 
 ## 🛠️ Tecnologias Utilizadas
 - **Linguagem:** Java (JDK 21)
-- **Interface:** Swing / JavaFX
+- **Interface:** Swing.
 - **IDE Utilizada:** Eclipse e VS Code
