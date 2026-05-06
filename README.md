@@ -18,6 +18,4 @@ Este projeto foi desenvolvido como parte do aprendizado em Programação Orienta
 ## 🛠️ Tecnologias Utilizadas
 - **Linguagem:** Java (JDK 21 ou superior)
 - **Interface:** Swing / JavaFX
-- **Banco de Dados:** MySQL / PostgreSQL / SQLite
-- **Persistência:** JDBC (ou JPA/Hibernate)
 - **IDE Utilizada:** Eclipse e VS Code
