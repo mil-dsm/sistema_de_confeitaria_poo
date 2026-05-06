@@ -16,6 +16,6 @@ Este projeto foi desenvolvido como parte do aprendizado em Programação Orienta
 - [x] **Interface Gráfica:** Desenvolvido utilizando Swing/JavaFX (se aplicável).
 
 ## 🛠️ Tecnologias Utilizadas
-- **Linguagem:** Java (JDK 21 ou superior)
+- **Linguagem:** Java (JDK 21)
 - **Interface:** Swing / JavaFX
 - **IDE Utilizada:** Eclipse e VS Code
