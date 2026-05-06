@@ -1,9 +1,5 @@
 # Sistema de Confeitaria
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java" />
-</p>
-
 ## 📝 Sobre o Projeto
 O **Sistema de Confeitaria** é uma aplicação desenvolvida em Java para auxiliar na gestão de uma doceria/confeitaria. O objetivo é facilitar o controle de pedidos e cadastro de clientes.
 
